@@ -1,0 +1,66 @@
+<div class="systems-search-section search-section">
+  <form action="<?=$form_action?>" method="post" class="phpws-form">
+    <div class="row">
+      <legend>Systems Search</legend>
+      <div class="col-sm-3">
+        <fieldset>
+  	  <div class="form-group">
+	    <label for="system_type">System Type</label>
+	    <select name="system-type">
+	    <?=$system_types?>
+	    </select>
+	  </div>
+	</fieldset>
+      </div>
+      <div class="col-sm-3">
+        <fieldset>
+	  <div class="form-group">
+	    <label for="department">Department</label>
+	    <select name="department">
+	      <?=$departments?>
+	    </select>
+	  </div>
+	</fieldset>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <fieldset>
+          <div class="form-group">
+            <label for="physical_id">Physical ID</label>
+            <input name="physical_id" id="physical-id" type="text" class="form-control" value="" />
+          </div>
+          <div class="form-group">
+            <label for="model">Model</label>
+            <input name="model" id="model" type="text" class="form-control"  value="" />
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm-3">
+        <fieldset>
+	  <div class="form-group">
+            <label for="mac">MAC Address</label>
+            <input id="mac" name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX"value="" />
+          </div>
+	  <div class="form-group">
+            <label for="ip">IP Address</label>
+	    <input id="ip" name="ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX"value="" />
+          </div>
+        </fieldset>
+      </div>
+      <div class="col-sm-3">
+        <fieldset>
+	  <div class="form-group">
+            <label for="purchase_date">Purchase Date</label>
+            <input id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+          </div>
+	  <div class="form-group">
+            <label for="username">Username</label>
+            <input name="username" id="username" type="text" class="form-control"  value="" />
+	  </div>
+	</fieldset>
+      </div>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Search" />
+  </form>
+</div>
