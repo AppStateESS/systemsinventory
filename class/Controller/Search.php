@@ -26,11 +26,34 @@ class Search extends \Http\Controller
         return $view;
     }
 
+    protected function getJsonView($data, \Request $request){
+      \Layout::addJSHeader(PHPWS_SOURCE_DIR . "mod/systemsinventory/javascript/sys_pager.js");
+      $db = \Database::newDB();
+      $sd = $db->addTable('systems_device');
+      $dbpager = new \DatabasePager($db);
+      $dbpager->setHeaders(array('physical_id'=>'Physical ID', 'department_id'=>'Department','location_id'=>'Location','model'=>'Model','room_number'=>'Room Number', 'username'=>'Username','purchase_date'=>'Purchase Date'));
+      $tbl_headers['physical_id'] = $sd->getField('physical_id');
+      $tbl_headers['department_id'] = $sd->getField('department_id');
+      $tbl_headers['location_id'] = $sd->getField('location_id');
+      $tbl_headers['model'] = $sd->getField('model');
+      $tbl_headers['room_number'] = $sd->getField('room_number');
+      $tbl_headers['username'] = $sd->getField('username');
+      $tbl_headers['purchase_date'] = $sd->getField('purchase_date');
+      $dbpager->setTableHeaders($tbl_headers);
+      $dbpager->setId('device-list');
+      $dbpager->setRowIdColumn('id');
+      $data = $dbpager->getJson();
+      return parent::getJsonView($data, $request);
+    }
+
     public function post(\Request $request){
       $factory = new Factory;
 
-      $factory->runSearch($request);
-      $view = $this->getHtmlView($request);
+      \Pager::prepare();
+      $template = new \Template;
+      $template->setModuleTemplate('systemsinventory', 'search_results.html');
+
+      $view = new \View\HtmlView($template->get());
       $response = new \Response($view);
       return $response;
     }

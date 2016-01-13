@@ -1,0 +1,54 @@
+<script type="text/javascript">
+$('.pager-row').click(function(){
+    alert($(this).data('rowId'));
+});
+
+var runOnLoad = function()
+{
+$('.pager-row').click(function() {
+$.getJSON('systemsinventory/system/getDetails',{
+'system_id': $(this).data('rowId')}).done(function(data) {
+// display data
+alert(data.something);
+  });
+});
+}
+
+$(document).ready(function () {
+    Pagers.callback = runOnLoad;
+});
+
+</script>
+
+<div class="pager-listing" id="device-list" data-rpp="25">
+    <div style="text-align:right" class="pager-search"></div>
+    <table class="table table-striped">
+        <thead class="pager-head">
+            <tr>
+                <th class="pager-header physical_id"></th>
+                <th class="pager-header department_id"></th>
+                <th class="pager-header location_id"></th>
+                <th class="pager-header model"></th>
+                <th class="pager-header room_number"></th>
+                <th class="pager-header username"></th>
+                <th class="pager-header purchase_date"></th>
+            </tr>
+        </thead>
+        <tbody class="pager-body">
+            <tr class="pager-row" data-row-id="">
+                <td class="pager-column physical_id"></td>
+                <td class="pager-column department_id"></td>
+                <td class="pager-column location_id"></td>
+                <td class="pager-column model"></td>
+                <td class="pager-column room_number"></td>
+                <td class="pager-column username"></td>
+                <td class="pager-column purchase_date"></td>
+            </tr>
+	    <tr>
+
+	    </tr> 
+        </tbody>
+    </table>
+    <div class="page-list pagination pagination-centered"></div>
+    <div class="page-limit"></div>
+</div>

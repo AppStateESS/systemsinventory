@@ -15,7 +15,6 @@ class PC extends \Resource
   protected $primary_monitor;
   protected $secondary_monitor;
   protected $video_card;
-  protected $mac2;
   protected $os;
   protected $server_type;
   protected $system_usage;
@@ -40,8 +39,6 @@ class PC extends \Resource
       $this->secondary_monitor->allowNull(true);
       $this->video_card = new \Variable\TextOnly(null,'video_card');
       $this->video_card->allowNull(true);
-      $this->mac2 = new \Variable\TextOnly(null,'mac2');
-      $this->mac2->allowNull(true);
       $this->os = new \Variable\TextOnly(null,'os');
       $this->os->allowNull(true);
       $this->server_type = new \Variable\TextOnly(null,'server_type');
@@ -78,10 +75,6 @@ class PC extends \Resource
 
     public function setVideoCard($video_card){
       $this->video_card->set($video_card);
-    }
-
-    public function setMac2($mac2){
-      $this->mac2->set($mac2);
     }
 
     public function setOS($os){

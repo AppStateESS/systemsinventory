@@ -19,6 +19,7 @@ class SystemDevice extends \Resource
   protected $processor;
   protected $ram;
   protected $mac;
+  protected $mac2;
   protected $primary_ip;
   protected $secondary_ip;
   protected $manufacturer;
@@ -51,6 +52,8 @@ class SystemDevice extends \Resource
       $this->ram->allowNull(true);
       $this->mac = new \Variable\TextOnly(null, 'mac');
       $this->mac->allowNull(true);
+      $this->mac2 = new \Variable\TextOnly(null,'mac2');
+      $this->mac2->allowNull(true);
       $this->primary_ip = new \Variable\TextOnly(null, 'primary_ip');
       $this->primary_ip->allowNull(true);
       $this->secondary_ip = new \Variable\TextOnly(null, 'secondary_ip');
@@ -126,6 +129,10 @@ class SystemDevice extends \Resource
 
     public function setMac($mac){
       $this->mac->set($mac);
+    }
+
+    public function setMac2($mac2){
+      $this->mac2->set($mac2);
     }
 
     public function setPrimaryIP($ip){

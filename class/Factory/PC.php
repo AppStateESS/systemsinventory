@@ -16,7 +16,6 @@ class PC extends SystemDevice
     $pc->setPrimaryMonitor(filter_input(INPUT_POST, 'primary_monitor', FILTER_SANITIZE_STRING));
     $pc->setSecondaryMonitor(filter_input(INPUT_POST, 'secondary_monitor', FILTER_SANITIZE_STRING));
     $pc->setVideoCard(filter_input(INPUT_POST, 'video_card', FILTER_SANITIZE_STRING));
-    $pc->setMac2(filter_input(INPUT_POST, 'mac2', FILTER_SANITIZE_STRING));
     $pc->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));
     $pc->setSystemUsage(filter_input(INPUT_POST, 'system_usage', FILTER_SANITIZE_STRING));
     $pc->setServerType(filter_input(INPUT_POST, 'server_type', FILTER_SANITIZE_STRING));
