@@ -1,21 +1,21 @@
 <script type="text/javascript">
-$('.pager-row').click(function(){
-    alert($(this).data('rowId'));
-});
-
 var runOnLoad = function()
 {
-$('.pager-row').click(function() {
-$.getJSON('systemsinventory/system/getDetails',{
-'system_id': $(this).data('rowId')}).done(function(data) {
-// display data
-alert(data.something);
-  });
-});
-}
+    $('.pager-row').click(function() {
+        $.getJSON('systemsinventory/system/getDetails/',{
+            'system_id': $(this).data('rowId')}, function(jsondata) {
+            // display data
+            $.each(jsondata, function(index, d){
+                console.log("json data: " + d.device_id);
+            });
+                });
+                });
+};
 
 $(document).ready(function () {
-    Pagers.callback = runOnLoad;
+    $('.pager-column').css('cursor', 'pointer');
+
+        Pagers.callback = runOnLoad;
 });
 
 </script>
@@ -44,6 +44,7 @@ $(document).ready(function () {
                 <td class="pager-column username"></td>
                 <td class="pager-column purchase_date"></td>
             </tr>
+            <?php $device_details ?>
 	    <tr>
 
 	    </tr> 

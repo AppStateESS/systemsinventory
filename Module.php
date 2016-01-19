@@ -17,8 +17,7 @@ class Module extends \Module implements \SettingDefaults
     
     public function getController(\Request $request)
     {
-      
-      $cmd = $request->shiftCommand();
+        $cmd = $request->shiftCommand();
       
         if (\Current_User::allow('sysinventory')) {
 
