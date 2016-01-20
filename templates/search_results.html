@@ -5,23 +5,43 @@ var runOnLoad = function()
         $.getJSON('systemsinventory/system/getDetails/',{
             'system_id': $(this).data('rowId')}, function(jsondata) {
             // display data
+            var modalContent = '<table class="table table-bordered table-responsive"><tr>';
+            var count = 0;
+            var notes;
+            var sysid;
             $.each(jsondata, function(index, d){
-                console.log("json data: " + d.device_id);
+                if(index == 'ID'){
+                    sys_id = d;
+                }else if(index == 'Notes'){
+                    notes = d;
+                }else{
+                    if(count == 3){
+                        count = 0;
+                        modalContent += '</tr><tr>';
+                    }
+                    modalContent += "<td><p class='bg-info'><b>"+index+":</b></p>"+d+"</td>";
+                    count++;
+                }
             });
-                });
-                });
+            modalContent += "</tr><tr><td colspan=3><p class='bg-info'><b>Notes:</b></p>"+notes+"</td></tr></table>";
+            $(".modal-body").empty();
+            $(".modal-body").append(modalContent);
+
+            $("#device-modal").modal('show');
+        });
+    });
 };
 
 $(document).ready(function () {
     $('.pager-column').css('cursor', 'pointer');
-
-        Pagers.callback = runOnLoad;
+    Pagers.callback = runOnLoad;
 });
 
 </script>
 
 <div class="pager-listing" id="device-list" data-rpp="25">
     <div style="text-align:right" class="pager-search"></div>
+   
     <table class="table table-striped">
         <thead class="pager-head">
             <tr>
@@ -43,13 +63,26 @@ $(document).ready(function () {
                 <td class="pager-column room_number"></td>
                 <td class="pager-column username"></td>
                 <td class="pager-column purchase_date"></td>
-            </tr>
-            <?php $device_details ?>
-	    <tr>
-
-	    </tr> 
+        
+            </tr> 
         </tbody>
     </table>
     <div class="page-list pagination pagination-centered"></div>
     <div class="page-limit"></div>
+</div>
+<div id="device-modal" class="modal fade" role="dialog" style="display:none;">
+    <div class="modal-dialog">
+        <div class="modal-content" id="system-device-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">System Details</h4>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+<!--                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+            </div>
+        </div>
+    </div>
 </div>

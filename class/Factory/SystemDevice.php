@@ -84,6 +84,101 @@ EOF;
       return $system_device->getId();
     }
      
+    public static function getSystemDetails($system_id){
+        include(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+        $device_details = array();
+        if(empty($system_id)){
+            throw new Exception("System ID invalid.");
+        }
+        $db = \Database::getDB();
+        $query = "SELECT * FROM systems_device WHERE id='$system_id'";
+        $pdo = $db->query($query);
+        $result = $pdo->fetch(\PDO::FETCH_ASSOC);
+        $device_type_id = $result['device_type_id'];
+        
+        foreach($result as $key=>$value){
+                $tmp_key = $systems_device[$key];
+                if(!empty($tmp_key) && !is_null($value))
+                    $device_details[$tmp_key] = $value;
+        }
+        $table = SystemDevice::getSystemType($device_type_id);
+        $device_table = $db->addTable($table);
+        $device_table->addFieldConditional('device_id', $system_id);
+        $device_result = $db->select();
+        $device_result = $device_result['0'];
+        $device_attr = SystemDevice::getDeviceAttributes($device_type_id);
+        foreach($device_result as $key=>$value){
+            $tmp_key = $device_attr[$key];
+            if(!empty($tmp_key) && !is_null($value)){
+                if($value == '0')
+                    $device_details[$tmp_key] = 'No';
+                elseif($value == '1')
+                    $device_details[$tmp_key] = 'Yes';
+                else
+                    $device_details[$tmp_key] = $value;
+            }
+        }
+        return $device_details;
+    }
+    
+    public static function getDeviceAttributes($type_id){
+        $systems_pc = array("device_id" => NULL,"peripheral_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"hold_system" => "Hold System","dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
+        $systems_server = array("OS" => "os","Server Type" => "server_type", "Primary Monitor" => "primary_monitor","Secondary Monitor" => "secondary_monitor","Video Card" => "vidoe_card","Battery Backup" => "batery_backup","redundant_backup" => "redundant_backup","Hold System" => "hold_system","Dual Monitor" => "dual_monitor","Rotation" => "rotation","Stand" => "stand","Check in" => "check_in");
+        switch($type_id){
+            case '1':
+                $attr = $systems_pc;
+                break;
+            case '2':
+                $attr = $systems_server;
+                break;
+            case '3':
+                $attr = $systems_ipad;
+                break;
+            case '4':
+                $attr = $systems_printer;
+                break;
+            case '5':
+                $attr = $systems_camera;
+                break;
+            case '6':
+                $attr = $digital_sign;
+                break;
+            case '7':
+                $attr = $systems_timeclock;
+                break;
+            default:
+                $attr = $systems_pc;
+        }
+        return $attr;
+    }
+    
+    public static function getSystemType($type_id){
+        switch($type_id){
+            case '1':
+            case '2':
+                $table = 'systems_pc';
+                break;
+            case '3':
+                $table = 'systems_ipad';
+                break;
+            case '4':
+                $table = 'systems_printer';
+                break;
+            case '5':
+                $table = 'systems_camera';
+                break;
+            case '6':
+                $table = 'systems_digital_sign';
+                break;
+            case '7':
+                $table = 'systems_timeclock';
+                break;
+            default:
+                $table = 'systems_pc';
+        }
+        return $table;
+    }
+    
     /**
     public static function load()
     {

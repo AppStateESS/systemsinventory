@@ -27,7 +27,6 @@ class Search extends \Http\Controller
     }
 
     protected function getJsonView($data, \Request $request){
-      \Layout::addJSHeader(PHPWS_SOURCE_DIR . "mod/systemsinventory/javascript/sys_pager.js");
       $db = \Database::newDB();
       $sd = $db->addTable('systems_device');
       $dbpager = new \DatabasePager($db);
@@ -57,4 +56,5 @@ class Search extends \Http\Controller
       $response = new \Response($view);
       return $response;
     }
+    
 }

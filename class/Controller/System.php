@@ -67,50 +67,13 @@ class System extends \Http\Controller {
         $system_details = '';
         switch ($command) {
             case 'getDetails':
-                $system_details = $this->getSystemDetails($sys_id);
+                $system_details = SDFactory::getSystemDetails($sys_id);
                 break;
         }
         $view = new \View\JsonView($system_details);
         return $view;
     }
     
-    public function getSystemDetails($system_id){
-        if(empty($system_id)){
-            throw new Exception("System ID invalid.");
-        }
-        $db = \Database::getDB();
-        $tbl = $db->addTable('systems_device');
-        $tbl->addFieldConditional('id', $system_id);
-        $result = $db->select();
-        $system_type = $result['0']['device_type_id'];
-        switch($system_type){
-            case '1':
-            case '2':
-                $table = 'systems_pc';
-                break;
-            case '3':
-                $table = 'systems_ipad';
-                break;
-            case '4':
-                $table = 'systems printer';
-                break;
-            case '5':
-                $table = 'systems_camera';
-                break;
-            case '6':
-                $table = 'systems_digital_sign';
-                break;
-            case '7':
-                $table = 'systems_timeclock';
-                break;
-            default:
-                $table = 'systems_pc';
-        }
-        $device_db = \Database::getDB();
-        $device_table = $device_db->addTable($table);
-        $device_table->addFieldConditional('device_id', $system_id);
-        $result = $device_db->select();
-        return $result;
-    }
+    
 
 }
