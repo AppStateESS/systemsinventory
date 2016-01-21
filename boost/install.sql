@@ -63,6 +63,7 @@ CREATE TABLE systems_pc (
        system_usage integer,
        rotation smallint default 0,
        stand smallint default 0,
+       smart_room smallint default 0,
        check_in smallint default 0
 );
 
@@ -108,7 +109,9 @@ CREATE TABLE systems_permission (
 
 CREATE TRIGGER versioning_trigger BEFORE INSERT OR UPDATE OR DELETE ON systems_device FOR EACH ROW EXECUTE PROCEDURE versioning('sys_period', 'systems_device_history', true);
 
+insert into systems_location ("description") values ('NONE');
 insert into systems_location ("description") values ('JET');
+insert into systems_department ("description") values ('NONE');
 insert into systems_department ("description") values ('ESS');
 insert into systems_device_type ("id","description") values (1,'pc');
 insert into systems_device_type ("id","description") values (2,'server');

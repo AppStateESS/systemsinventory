@@ -27,10 +27,12 @@ class PC extends SystemDevice
       $pc->setRotation(true);
     if(isset($vars['stand']))
       $pc->setStand(true);
-    if(isset($vars['hold_system']))
-      $pc->setHold(true);
+    if(isset($vars['touch_screen']))
+      $pc->setTouchScreen(true);
     if(isset($vars['dual_monitor']))
       $pc->setDual(true);
+    if(isset($vars['smart_room']))
+      $pc->setSmartRoom(true);
     if(isset($vars['checkin']))
       $pc->setCheckIn(true);
 

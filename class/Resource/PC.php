@@ -23,8 +23,9 @@ class PC extends \Resource
   protected $rotation;
   protected $stand; 
   protected $check_in;
-  protected $hold_system;
+  protected $touch_screen;
   protected $dual_monitor;
+  protected $smart_room;
   protected $table = 'systems_pc';
 
     public function __construct()
@@ -49,9 +50,10 @@ class PC extends \Resource
       $this->redundant_backup = new \Variable\Bool(false,'redundant_backup');
       $this->rotation = new \Variable\Bool(false,'rotation');
       $this->stand = new \Variable\Bool(false,'stand');
-      $this->hold_system = new \Variable\Bool(false,'hold_system');
+      $this->touch_screen = new \Variable\Bool(false,'touch_screen');
       $this->dual_monitor = new \Variable\Bool(false,'dual_monitor');
       $this->check_in = new \Variable\Bool(false,'check_in');
+      $this->smart_room = new \Variable\Bool(false,'smart_room');
     }
 
     public function setDeviceID($device_id){
@@ -105,8 +107,12 @@ class PC extends \Resource
       $this->stand->set($stand);
     }
     
-    public function setHold($hold){
-      $this->hold_system->set($hold);
+    public function setSmartRoom($smart){
+      $this->smart_room->set($smart);
+    }
+    
+    public function setTouchScreen($touch){
+      $this->touch_screen->set($touch);
     }
 
     public function setDual($dual){

@@ -69,13 +69,17 @@
                         <label for="rotation">Exclude from rotation?</label>
 			<input id="rotation" name="rotation" type="checkbox" value="" />
                     </div>
+                    <div>
+                        <label for="smart_room">Smart Room?</label>
+			<input id="smart-room" name="smart_room" type="checkbox" value="" />
+                    </div>
                 </fieldset>
             </div>
             <div class="col-sm-6">
                 <fieldset>
                     <div class="form-group">
-                        <label for="mac">MAC Address</label>
-                        <input id="mac" name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" value="" />
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="mac" required name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" value="" />
                     </div>
                     <div class="form-group">
                         <label for="mac2">Second MAC Address</label>
@@ -106,8 +110,8 @@
                         <input id="server_type" name="server_type" type="text" class="form-control"  value="" placeholder="2u, 4u, tower, etc..."/>
                     </div>
                     <div>
-                        <label for="hold_system">Hold System?</label>
-			<input id="hold-system" name="hold_system" type="checkbox"/>
+                        <label for="touch_screen">Touch Screen?</label>
+			<input id="touch-screen" name="touch_screen" type="checkbox"/>
                     </div>
                     <div>
                         <label for="stand">Docking Stand?</label>
@@ -147,21 +151,21 @@
                         <input name="last_name" id="last_name" type="text" class="form-control" value="" />
                     </div>
                     <div class="form-group">
-                        <label for="username">Username</label>
-                        <input name="username" id="username" type="text" class="form-control"  value="" />
+                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input name="username" required id="username" type="text" class="form-control"  value="" />
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
                         <select name="department">
-                            <option value="0">Select Department</option>
-                            <option value="1">ESS</option>
+                            <option value="1">Select Department</option>
+                            <option value="2">ESS</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="location">Location</label>
                         <select name="location">
-                            <option value="0">Select Location</option>
-                            <option value="1">JET</option>
+                            <option value="1">Select Location</option>
+                            <option value="2">JET</option>
                         </select>
                     </div>
                 </fieldset>
