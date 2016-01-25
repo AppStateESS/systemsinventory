@@ -11,6 +11,7 @@ $(window).load(function() {
     //systems_camera_tab.start();
     //systems_sign_tab.start();
     //systems_clock_tab.start();
+    mac.on("keyup", formatMAC);
 });
 
 function SystemsTab() {
@@ -186,3 +187,15 @@ function SystemsPrinter() {
     };
     
 }
+
+function formatMAC(e) {
+    var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
+        str = e.target.value.replace(/[^a-f0-9]/ig, "");
+    
+    while (r.test(str)) {
+        str = str.replace(r, '$1' + ':' + '$2');
+    }
+
+    e.target.value = str.slice(0, 17);
+};
+
