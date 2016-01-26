@@ -109,10 +109,18 @@ class Search extends \Http\Controller
       $dbpager->setTableHeaders($tbl_headers);
       $dbpager->setId('device-list');
       $dbpager->setRowIdColumn('id');
+      $dbpager->setCallback(array('\systemsinventory\Controller\Search','alterSearchRow'));
       $data = $dbpager->getJson();
       return parent::getJsonView($data, $request);
     }
 
+    public static function alterSearchRow($row){
+        $row['department_id'] = \systemsinventory\Factory\SystemDevice::getDepartmentByID($row['department_id']);
+        $row['location_id'] = \systemsinventory\Factory\SystemDevice::getLocationByID($row['location_id']);
+        $row['purchase_date'] = date('n/d/Y',$row['purchase_date']);
+        return $row;
+    }
+    
     public function post(\Request $request){
       $factory = new Factory;
       $search_vars = $request->getVars();

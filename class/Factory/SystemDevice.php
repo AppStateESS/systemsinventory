@@ -34,7 +34,19 @@ EOF;
 	$vars['message'] = '';
 	$vars['display'] = 'display: none;';
       }
-
+      
+      $system_locations = SystemDevice::getSystemLocations();
+      $location_options = '<option value="1">Select Location</opton>';
+      foreach($system_locations as $key=>$val){
+          $location_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+      }
+      $vars['locations'] = $location_options;
+      $system_dep = SystemDevice::getSystemDepartments();
+      $dep_optons = '<option value="1">Select Department</opton>';
+      foreach($system_dep as $val){
+          $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+      }
+      $vars['departments'] = $dep_optons;
       $command = 'add';
       
       $vars['form_action'] = "./systemsinventory/system/".$command;
@@ -179,64 +191,63 @@ EOF;
         return $table;
     }
     
-    /**
-    public static function load()
-    {
+     public static function getLocationByID($location_id){
+        $db = \Database::getDB();
+        $tbl = $db->addTable('systems_location');
+        $tbl->addField('description');
+        $tbl->addFieldConditional('id', $location_id, '=');
+        $result = $db->select();
+        if(empty($result))
+            return 0; //should be exception
+        return $result[0]['description'];
+  }
+  
+  public static function getDepartmentByID($department_id){
+      $db = \Database::getDB();
+      $tbl = $db->addTable('systems_department');
+      $tbl->addField('description');
+      $tbl->addFieldConditional('id', $department_id, '=');
+      $result = $db->select();
+      if(empty($result))
+          return 'Not Found'; //should be exception
       
-      $system_device = new \systemsinventory\Resource\SystemDevice;
+      return $result[0]['description'];
+  }
+  
+    public static function getSystemLocations(){
+        $db = \Database::getDB();
+        $tbl = $db->addTable('systems_location');
+        $tbl->addField('id');
+        $tbl->addField('description');
+        $result = $db->select();
+        if(empty($result))
+            return 0; //should be exception
+        return $result;
+  }
 
-      //	$contact_info->setPhoneNumber(\Settings::get('systemsinventory', 'phone_number'));
-      //	$contact_info->setFaxNumber(\Settings::get('systemsinventory', 'fax_number'));
-      //        $contact_info->setEmail(\Settings::get('systemsinventory', 'email'));
+  public static function getSystemTypes(){
+      $db = \Database::getDB();
+      $tbl = $db->addTable('systems_device_type');
+      $tbl->addField('id');
+      $tbl->addField('description');
+      $result = $db->select();
+      if(empty($result))
+          return 0; //should be exception
+      return $result;
+  }
+  
+  public static function getSystemDepartments(){
+      $db = \Database::getDB();
+      $tbl = $db->addTable('systems_department');
+      $tbl->addField('id');
+      $tbl->addField('description');
+      $result = $db->select();
+      if(empty($result))
+          return 0; //should be exception
+      return $result;
+  }
 
-      //	$contact_info->setPhysicalAddress(ContactInfo\PhysicalAddress::load());
-      //  $contact_info->setMap(Factory\ContactInfo\Map::load());
-      //  $contact_info->setSocial(Factory\ContactInfo\Social::load());
-
-        return $system_device;
-    }
-    */    
-
-    private static function getValues(\systemsinventory\Resource\SystemDevice $contact_info)
-    {
-        $values['phone_number'] = $contact_info->getPhoneNumber();
-        $values['fax_number'] = $contact_info->getFaxNumber();
-        $values['email'] = $contact_info->getEmail();
-        $values['formatted_phone_number'] = $contact_info->getPhoneNumber(true);
-        $values['formatted_fax_number'] = $contact_info->getFaxNumber(true);
-
-        $physical_address = $contact_info->getPhysicalAddress();
-        $map = $contact_info->getMap();
-        $social = $contact_info->getSocial();
-
-        $values = array_merge($values, ContactInfo\PhysicalAddress::getValues($physical_address));
-        $values = array_merge($values, ContactInfo\Map::getValues($map));
-        $values = array_merge($values, ContactInfo\Social::getValues($social));
-
-        return $values;
-    }
-
-    /**
-    public static function post(\contact\Resource\SystemDevice $system_device, $values)
-    {
-        $system_device->setPhoneNumber($values['phone_number']);
-        $system_device->setFaxNumber($values['fax_number']);
-        $system_device->setEmail($values['email']);
-        self::save($system_device);
-
-        $physical_address = $system_device->getPhysicalAddress();
-        Factory\ContactInfo\PhysicalAddress::set($physical_address, $values);
-        Factory\ContactInfo\PhysicalAddress::save($physical_address);
-    }
-
-    private static function save(\contact\Resource\SystemDevice $system_device)
-    {
-        \Settings::set('contact', 'phone_number', $system_device->getPhoneNumber());
-        \Settings::set('contact', 'fax_number', $system_device->getFaxNumber());
-        \Settings::set('contact', 'email', $system_device->getEmail());
-    }
-    */
-    public static function display()
+  public static function display()
     {
       
       //$contact_info = self::load();

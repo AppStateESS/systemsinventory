@@ -15,17 +15,15 @@ class Search extends \ResourceFactory
         javascript('jquery');
         \Form::requiredScript();
 
-        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/systems.js';
-        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
 	if(empty($command))
 	  $command = 'run_search';
-	$system_types = Search::getSystemTypes();
+	$system_types = \systemsinventory\Factory\SystemDevice::getSystemTypes();
 	$type_options = '<option value="0">All</opton>';
 	foreach($system_types as $val){
-	  $type_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+            $type_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
 	}
 	$vars['system_types'] = $type_options;
-	$system_dep = Search::getSystemDepartments();
+	$system_dep = \systemsinventory\Factory\SystemDevice::getSystemDepartments();
 	$dep_optons = '<option value="0">All</opton>';
 	foreach($system_dep as $val){
 	  $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
@@ -91,25 +89,4 @@ class Search extends \ResourceFactory
     return $where;
   }
 
-  public static function getSystemTypes(){
-    $db = \Database::getDB();
-    $tbl = $db->addTable('systems_device_type');
-    $tbl->addField('id');
-    $tbl->addField('description');
-    $result = $db->select();
-    if(empty($result))
-      return 0; //should be exception
-    return $result;
-  }
-
-  public static function getSystemDepartments(){
-    $db = \Database::getDB();
-    $tbl = $db->addTable('systems_department');
-    $tbl->addField('id');
-    $tbl->addField('description');
-    $result = $db->select();
-    if(empty($result))
-      return 0; //should be exception
-    return $result;
-  }
 }

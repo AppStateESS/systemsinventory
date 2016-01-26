@@ -59,7 +59,7 @@ CREATE TABLE systems_pc (
        os character varying,
        battery_backup smallint default 0,
        redundant_backup smallint default 0,       
-       hold_system smallint default 0,       
+       touch_screen smallint default 0,       
        dual_monitor smallint default 0,       
        system_usage integer,
        rotation smallint default 0,
