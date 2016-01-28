@@ -12,6 +12,7 @@ class SystemDevice extends \ResourceFactory
 
   public static function form(\Request $request, $active_tab, $command)
     {
+      include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
       javascript('jquery');
       \Form::requiredScript();
       
@@ -56,7 +57,7 @@ EOF;
     }
 
     public function postDevice(\Request $request){
-      include(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+      include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
       $system_device = new Resource;
       $device_type = PC;
       $vars = $request->getRequestVars();
@@ -97,7 +98,7 @@ EOF;
     }
      
     public static function getSystemDetails($system_id){
-        include(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $device_details = array();
         if(empty($system_id)){
             throw new Exception("System ID invalid.");
@@ -134,8 +135,11 @@ EOF;
     }
     
     public static function getDeviceAttributes($type_id){
-        $systems_pc = array("device_id" => NULL,"peripheral_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"hold_system" => "Hold System","dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
-        $systems_server = array("OS" => "os","Server Type" => "server_type", "Primary Monitor" => "primary_monitor","Secondary Monitor" => "secondary_monitor","Video Card" => "vidoe_card","Battery Backup" => "batery_backup","redundant_backup" => "redundant_backup","Hold System" => "hold_system","Dual Monitor" => "dual_monitor","Rotation" => "rotation","Stand" => "stand","Check in" => "check_in");
+        $systems_pc = array("device_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"touch_screen" => "Touch Screen","smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
+        $systems_server = array("device_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"touch_screen" => "Touch Screen","smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
+        $systems_ipad = array("device_id" => NULL, "generation" => "Generation", "apple_id" => "Apple ID");
+        $systems_printer = array("device_id" => NULL, "toner_cartridge" => "Toner Cartridge", "color" => "Color", "network" => "Network", "duplex" => "Duplex");
+
         switch($type_id){
             case '1':
                 $attr = $systems_pc;

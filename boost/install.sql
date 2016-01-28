@@ -51,7 +51,6 @@ CREATE TABLE systems_device_history (LIKE systems_device);
 
 CREATE TABLE systems_pc (
        device_id integer REFERENCES systems_device(id),
-       peripheral_id integer,
        primary_monitor character varying,
        secondary_monitor character varying,
        video_card character varying,
@@ -81,7 +80,6 @@ CREATE TABLE systems_camera (
 CREATE TABLE systems_ipad (
        device_id integer REFERENCES systems_device(id),
        generation integer,
-       special_apps character(255),
        apple_id character varying
 );
 
@@ -98,7 +96,7 @@ CREATE TABLE systems_printer (
        color smallint default 0,
        toner_cartridge character varying,
        duplex smallint default 0,
-       network smallint
+       network smallint default 0
 );
 
 CREATE TABLE systems_permission (

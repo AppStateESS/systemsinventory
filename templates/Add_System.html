@@ -144,16 +144,16 @@
             <div class="col-sm-6">
                 <fieldset>
                     <div class="form-group">
+                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input name="username" required id="username" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
                         <label for="first_name">First Name</label>
                         <input name="first_name" id="first-name" type="text" class="form-control" value="" />
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
                         <input name="last_name" id="last_name" type="text" class="form-control" value="" />
-                    </div>
-                    <div class="form-group">
-                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input name="username" required id="username" type="text" class="form-control"  value="" />
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
@@ -186,20 +186,226 @@
             <label for="system_notes">Notes</label>
             <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
         </div>	  
-<input class="btn btn-primary" type="submit" value="Save Systems Info" />
-</form>
+            <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
 </div>
-<div class="tablet-section systems-section">
-          <input name="device_type" type="hidden" value="1" />
-
-
+<div class="ipad-section systems-section">
+    <form action="<?=$form_action?>" method="post" class="phpws-form">
+        <input name="device_type" type="hidden" value=<?=IPAD?> />
+        <div class="row">   
+            <legend>iPad Information</legend>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="hd">Hard Drive</label>
+                        <input id="hd" name="hd" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="generation">Generation</label>
+                        <input id="generation" name="generation" type="text" class="form-control"  value="" />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="ipad-mac" required name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="apple_id">Apple ID</label>
+                        <input id="apple-id" name="apple_id" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <legend>User and Location Information</legend>
+            <div class="form-group">
+                <label for="system_usage">System Usage</label>
+                <select name="system-usage">
+                    <option value="not-selected">Select System Usage</option>
+                    <option value="staff">Staff</option>
+                    <option value="student">Student</option>
+                    <option value="public">Public</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input name="username" required id="username" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input name="first_name" id="first-name" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input name="last_name" id="last_name" type="text" class="form-control" value="" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
+        </div>	  
+        <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
+</div>
+<div class="printer-section systems-section">
+    <form action="<?=$form_action?>" method="post" class="phpws-form">
+        <input name="device_type" type="hidden" value=<?=PRINTER?> />
+        <div class="row">   
+            <legend>Printer Information</legend>
+            <div class="form-group">
+                <label for="system_profile">System Profile</label>
+                <select name="system-profile">
+                    <option value="not-selected">Select Printer Profile</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required name="model" id="model" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="toner_cartridge">Toner</label>
+                        <input id="toner" name="toner_cartridge" type="text" class="form-control"  value="" />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+                    </div>
+                    <div>
+                        <label for="color">Color?</label>
+			<input id="color" name="color" type="checkbox"/>
+                    </div>
+                    <div>
+                        <label for="duplex">Duplex?</label>
+			<input id="duplex" name="duplex" type="checkbox"/>
+                    </div>
+                    <div>
+                        <label for="network">Network?</label>
+			<input id="network" name="network" type="checkbox"/>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <legend>User and Location Information</legend>
+            <div class="form-group">
+                <label for="system_usage">System Usage</label>
+                <select name="system-usage">
+                    <option value="not-selected">Select System Usage</option>
+                    <option value="staff">Staff</option>
+                    <option value="student">Student</option>
+                    <option value="public">Public</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input name="username" required id="username" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input name="first_name" id="first-name" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input name="last_name" id="last_name" type="text" class="form-control" value="" />
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
+        </div>	  
+        <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
 </div>
 
 <script type="text/javascript">
     
     var length = 1;
-    $("#mac").focusin(function (evt) {
-        
+$("#mac").focusin(function (evt) {
         $(this).keypress(function () {
             var content = $(this).val();
             var content1 = content.replace(/\:/g, '');
@@ -211,4 +417,29 @@
         });    
     });  
 
+ var length = 1;
+$("#mac2").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#mac2').val($('#mac2').val() + ':');
+            }    
+            $("#mac2").val($("#mac2").val().slice(0, 16));
+        });    
+    });  
+    
+     var length = 1;
+$("#ipad-mac").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#ipad-mac').val($('#ipad-mac').val() + ':');
+            }    
+            $("#ipad-mac").val($("#ipad-mac").val().slice(0, 16));
+        });    
+    });  
 </script>

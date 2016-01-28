@@ -11,7 +11,6 @@ class PC extends \Resource
 {
 
   protected $device_id;
-  protected $peripheral_id;
   protected $primary_monitor;
   protected $secondary_monitor;
   protected $video_card;
@@ -32,8 +31,6 @@ class PC extends \Resource
     {
       parent::__construct();
       $this->device_id = new \Variable\Integer(0,'device_id');
-      $this->peripheral_id = new \Variable\Integer(0,'peripheral_id');
-      $this->peripheral_id->allowNull(true);
       $this->primary_monitor = new \Variable\TextOnly(null,'primary_monitor');
       $this->primary_monitor->allowNull(true);
       $this->secondary_monitor = new \Variable\TextOnly(null,'secondary_monitor');

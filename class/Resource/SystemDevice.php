@@ -44,6 +44,7 @@ class SystemDevice extends \Resource
       $this->physical_id = new \Variable\TextOnly(null,'physical_id');
       $this->device_type_id = new \Variable\Integer(0, 'device_type');
       $this->model = new \Variable\TextOnly(null, 'model');
+      $this->model->allowNull(true);
       $this->hd_size = new \Variable\TextOnly(null, 'hd_size');
       $this->hd_size->allowNull(true);
       $this->processor = new \Variable\TextOnly(null, 'processor');

@@ -3,6 +3,8 @@
 namespace systemsinventory\Controller;
 
 use systemsinventory\Factory\PC as PCFactory;
+use systemsinventory\Factory\IPAD as IPADFactory;
+use systemsinventory\Factory\Printer as PrinterFactory;
 use systemsinventory\Factory\SystemDevice as SDFactory;
 use systemsinventory\Resource;
 
@@ -31,13 +33,36 @@ class System extends \Http\Controller {
     }
 
     public function post(\Request $request) {
-        $pcfactory = new PCFactory;
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
-
+        $vars = $request->getRequestVars();
+        $device_type = PC;
+        
+        if(isset($vars['server'])){
+            $device_type = SERVER;
+        }elseif(isset($vars['device_type'])){
+            $device_type = $vars['device_type'];
+        }
         $device_id = $sdfactory->postDevice($request);
-        $pcfactory->postNewPC($request, $device_id);
+        
+        switch ($device_type) {
+            case SERVER:
+            case PC:
+                $pcfactory = new PCFactory;
+                $pcfactory->postNewPC($request, $device_id);
+                break;
+            case IPAD:
+                $ipadfactory = new IPADFactory;
+                $ipadfactory->postNewIPAD($request, $device_id);
+                break;
+            case PRINTER:
+                $printerfactory = new PrinterFactory;
+                $printerfactory->postNewPrinter($request, $device_id);
+                break;
+            default:
+                break;
+        }
 
-        // Need to add a command field to each form so you can switch and decided witch factory to use. ex. command=pc , command=server, etc...
 
         $data['command'] = 'success';
         $view = $this->getHtmlView($data, $request);

@@ -12,7 +12,6 @@ class PC extends SystemDevice
     $vars = $request->getRequestVars();
     
     $pc->setDeviceID($device_id);
-    $pc->setPeripheralID(filter_input(INPUT_POST, 'peripheral_id'));
     $pc->setPrimaryMonitor(filter_input(INPUT_POST, 'primary_monitor', FILTER_SANITIZE_STRING));
     $pc->setSecondaryMonitor(filter_input(INPUT_POST, 'secondary_monitor', FILTER_SANITIZE_STRING));
     $pc->setVideoCard(filter_input(INPUT_POST, 'video_card', FILTER_SANITIZE_STRING));
