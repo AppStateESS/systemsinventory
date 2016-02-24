@@ -13,6 +13,16 @@ class SystemDevice extends \ResourceFactory
   public static function form(\Request $request, $active_tab, $command)
     {
       include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+      $vars = array();
+      $req_vars = $request->getRequestVars();
+      $vars['title'] = '';
+      $system_id = NULL;
+      if(!empty($req_vars['system_id']) && $command == 'edit'){
+          $system_id = $req_vars['system_id'];
+          $vars['title'] = "Edit ";
+      }
+      $vars = SystemDevice::initSystem($vars, $system_id);
+
       javascript('jquery');
       \Form::requiredScript();
       
@@ -27,6 +37,49 @@ EOF;
       $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/systems.js';
       \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
 
+
+      if($command == 'success'){
+	$vars['message'] = "Device Saved!";
+	$vars['display'] = 'display: block;';
+      }else{
+	$vars['message'] = '';
+	$vars['display'] = 'display: none;';
+      }
+      
+      $system_locations = SystemDevice::getSystemLocations();
+      $location_options = '<option value="1">Select Location</opton>';
+      foreach($system_locations as $key=>$val){
+          $location_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+      }
+      $vars['locations'] = $location_options;
+      $system_dep = SystemDevice::getSystemDepartments();
+      $dep_optons = '<option value="1">Select Department</opton>';
+      foreach($system_dep as $val){
+          $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+      }
+      $vars['departments'] = $dep_optons;
+      $command = 'add';
+      
+      $vars['form_action'] = "./systemsinventory/system/".$command;
+      $template = new \Template($vars);
+      $template->setModuleTemplate('systemsinventory', 'Add_System.html');
+      return $template->get();
+    }
+    
+    public static function editForm(\Request $request, $command)
+    {
+      include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+      $vars = array();
+      $req_vars = $request->getRequestVars();
+      $vars['title'] = 'Edit ';
+      $system_id = NULL;
+      if(!empty($req_vars['system_id'])){
+          $system_id = $req_vars['system_id'];
+      }else{
+          throw new Exception("Invalid system id in system edit.");
+      }
+      
+      $vars = SystemDevice::initSystem($vars, $system_id);
 
       if($command == 'success'){
 	$vars['message'] = "Device Saved!";
@@ -70,6 +123,8 @@ EOF;
 	$device_type = SERVER;
       }
 
+      if(!empty($vars['device_id']))
+          $system_device->setId ($vars['device_id']);
       $system_device->setDeviceType($device_type);
       $system_device->setPhysicalID(filter_input(INPUT_POST, 'physical_id'));
       $system_device->setName(filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_STRING), filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_STRING));
@@ -97,6 +152,11 @@ EOF;
       return $system_device->getId();
     }
      
+    public static function initSystem($vars, $system_id){
+        
+        return $vars;
+    }
+    
     public static function getSystemDetails($system_id){
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $device_details = array();
@@ -109,28 +169,31 @@ EOF;
         $result = $pdo->fetch(\PDO::FETCH_ASSOC);
         $device_type_id = $result['device_type_id'];
         
-        foreach($result as $key=>$value){
-                $tmp_key = $systems_device[$key];
-                if(!empty($tmp_key) && !is_null($value))
-                    $device_details[$tmp_key] = $value;
-        }
+        $device_details = $result;
         $table = SystemDevice::getSystemType($device_type_id);
         $device_table = $db->addTable($table);
         $device_table->addFieldConditional('device_id', $system_id);
         $device_result = $db->select();
         $device_result = $device_result['0'];
-        $device_attr = SystemDevice::getDeviceAttributes($device_type_id);
-        foreach($device_result as $key=>$value){
-            $tmp_key = $device_attr[$key];
-            if(!empty($tmp_key) && !is_null($value)){
-                if($value == '0')
-                    $device_details[$tmp_key] = 'No';
-                elseif($value == '1')
-                    $device_details[$tmp_key] = 'Yes';
-                else
-                    $device_details[$tmp_key] = $value;
-            }
+        //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
+        $device_details = array_merge($device_details, $device_result);
+        $device_details['device-type-id'] = $device_type_id;
+        $purchase_date = $device_details['purchase_date'];
+        $device_details["purchase_date"] = date('Y-m-d', $purchase_date);
+        $system_locations = SystemDevice::getSystemLocations();
+        $location_options = '<option value="1">Select Location</opton>';
+        foreach($system_locations as $key=>$val){
+            $location_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
         }
+        $device_details['locations'] = $location_options;
+        $system_dep = SystemDevice::getSystemDepartments();
+        $dep_optons = '<option value="1">Select Department</opton>';
+        foreach($system_dep as $val){
+            $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+        }
+        $device_details['departments'] = $dep_optons;
+        $device_details['testarray'] = array("test1"=>"test1","test2"=>"test2","test3"=>"test3");
+                
         return $device_details;
     }
     

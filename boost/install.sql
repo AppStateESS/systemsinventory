@@ -79,7 +79,7 @@ CREATE TABLE systems_camera (
 
 CREATE TABLE systems_ipad (
        device_id integer REFERENCES systems_device(id),
-       generation integer,
+       generation character varying,
        apple_id character varying
 );
 

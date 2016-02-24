@@ -1,0 +1,58 @@
+<div class="row">
+                    <legend>User and Location Information</legend>
+                    <div class="form-group">
+                        <label for="system_usage">System Usage</label>
+                        <select id="system-usage" name="system-usage" disabled>
+                            <option value="0">Select System Usage</option>
+                            <option value="1">Staff</option>
+                            <option value="2">Student</option>
+                            <option value="3">Public</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                                <input name="username" required id="username" type="text" class="form-control"  disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">First Name</label>
+                                <input name="first_name" id="first-name" type="text" class="form-control" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input name="last_name" id="last-name" type="text" class="form-control" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <select id="department" name="department" disabled>
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <select id="location" name="location" disabled>
+                                    
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" disabled />
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="notes" name="system_notes" class="form-control"></textarea>
+        </div>
+
+</div>

@@ -1,0 +1,118 @@
+
+<!-- BEGIN message -->
+<div class="alert alert-success" style="display:none;"></div>
+<!-- END message -->
+<div class="systems-pc-section systems-section">
+        <input id="device-id" name="device_id" type="hidden">
+        <input id="device-type-id" name="device_type" type="hidden">
+        <div class="row">
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" disabled/>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required name="model" id="model" type="text" class="form-control"  disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="processor">Processor</label>
+                        <input id="processor" type="text" name="processor" class="form-control" placeholder="Intel core i5 ect..." disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="ram">RAM</label>
+                        <input id="ram" name="ram" type="text" class="form-control" placeholder="Amount of RAM in GB" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="hd">Hard Drive</label>
+                        <input id="hd" name="hd" type="text" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="video_card">Video Card</label>
+                        <input id="video-card" name="video_card" type="text" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="os">Operating System</label>
+                        <input id="os" name="os" type="text" class="form-control"  disabled />
+		    </div>
+                    <div class="form-group">
+                        <label for="vlan">VLAN</label>
+                        <input id="vlan" name="vlan" type="text" class="form-control"  disabled />
+                    </div>
+                    <div>
+                        <label for="server">Is Server?</label>
+			<input id="server" name="server" type="checkbox" disabled/>
+                    </div>
+                    <div>
+                        <label for="battery_bk">Battery Backup?</label>
+			<input id="battery-backup" name="battery_bk" type="checkbox" disabled />
+                    </div>
+                    <div>
+                        <label for="redundant_bk">Redundant Backup?</label>
+			<input id="redundant-backup" name="redundant_bk" type="checkbox" disabled />
+                    </div>
+                    <div>
+                        <label for="rotation">Exclude from rotation?</label>
+			<input id="rotation" name="rotation" type="checkbox" disabled />
+                    </div>
+                    <div>
+                        <label for="smart_room">Smart Room?</label>
+			<input id="smart-room" name="smart_room" type="checkbox" disabled />
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="mac" required name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="mac2">Second MAC Address</label>
+                        <input id="mac2" name="mac2" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="ip">Primary IP Address</label>
+                        <input id="primary-ip" name="primary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="ip2">Secondary IP Address</label>
+                        <input id="secondary-ip" name="secondary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="primary_monitor">Primary Monitor Size</label>
+                        <input id="primary-monitor" name="primary_monitor" type="text" class="form-control"  disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="secondary_monitor">Secondary Monitor Size</label>
+                        <input id="secondary-monitor" name="secondary_monitor" type="text" class="form-control"  disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="server-type">Server Type</label>
+                        <input id="server-type" name="server_type" type="text" class="form-control"  disabled placeholder="2u, 4u, tower, etc..."/>
+                    </div>
+                    <div>
+                        <label for="touch_screen">Touch Screen?</label>
+			<input id="touch-screen" name="touch_screen" type="checkbox" disabled/>
+                    </div>
+                    <div>
+                        <label for="stand">Docking Stand?</label>
+			<input id="stand" name="stand" type="checkbox" disabled/>
+                    </div>
+                    <div>
+                        <label for="dual_monitor">Dual Monitor?</label>
+			<input id="dual-monitor" name="dual_monitor" type="checkbox" disabled/>
+                    </div>
+                    <div>
+                        <label for="checkin">Check-in System?</label>
+			<input id="check-in" name="checkin" type="checkbox" disabled/>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <br />

@@ -2,34 +2,52 @@
 var runOnLoad = function()
 {
     $('.pager-row').click(function() {
+        $("#edit-device-button").css("display","block");
+        $("#edit-device-button1").css("display","block");
+        $("#save-device-button").css("display","none");
+        $("#device-save-result").css("display", "none");
         $.getJSON('systemsinventory/system/getDetails/',{
-            'system_id': $(this).data('rowId')}, function(jsondata) {
+            'device_id': $(this).data('rowId')}, function(jsondata) {
             // display data
-            var modalContent = '<table class="table table-bordered table-responsive"><tr>';
-            var count = 0;
-            var notes;
-            var sysid;
-            $.each(jsondata, function(index, d){
-                if(index == 'ID'){
-                    sys_id = d;
-                }else if(index == 'Notes'){
-                    notes = d;
-                }else{
-                    if(count == 3){
-                        count = 0;
-                        modalContent += '</tr><tr>';
-                    }
-                    modalContent += "<td><p class='bg-info'><b>"+index+":</b></p>"+d+"</td>";
-                    count++;
-                }
+            var device_type_id = jsondata['device_type_id'];
+            $("#system-body").load("./mod/systemsinventory/templates/Edit_PC.html");
+            $("#user-body").load("./mod/systemsinventory/templates/Edit_User.html", function(){
+                loadSystemDetails(jsondata,device_type_id);
             });
-            modalContent += "</tr><tr><td colspan=3><p class='bg-info'><b>Notes:</b></p>"+notes+"</td></tr></table>";
-            $(".modal-body").empty();
-            $(".modal-body").append(modalContent);
-
             $("#device-modal").modal('show');
+
         });
     });
+    
+    function loadSystemDetails(jsondata,device_type_id){
+        $.each(jsondata, function(index, d){
+            var element_id = index.replace("_","-");
+            if(index == "departments"){
+                $("#department").append(d);
+                $("#department").val(jsondata['department_id']);
+            }
+            if(index == "locations"){
+                $("#location").append(d);
+                $("#location").val(jsondata['location_id']);
+            }
+            if(index == "system_usage"){
+                $("#system-usage").val(jsondata['system_usage']);
+            }
+        $("#"+element_id).val(d);
+        });
+        if(device_type_id == 2)
+            $("#server").prop("checked",true);
+        // Need to move this section to pc/server specific function
+        $("#battery-backup").prop("checked",jsondata['battery_backup']);
+        $("#redundant-backup").prop("checked",jsondata['redundant_backup']);
+        $("#touch-screen").prop("checked",jsondata['touch_screen']);
+        $("#dual-monitor").prop("checked",jsondata['dual_monitor']);
+        $("#rotation").prop("checked",jsondata['rotation']);
+        $("#stand").prop("checked",jsondata['stand']);
+        $("#smart-screen").prop("checked",jsondata['smart_screen']);
+        $("#check-in").prop("checked",jsondata['check_in']);
+
+    }
 };
 
 $(document).ready(function () {
@@ -37,6 +55,22 @@ $(document).ready(function () {
     Pagers.callback = runOnLoad;
 });
 
+ function enableFormFields(){
+       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","touch-screen","stand","dual-monitor","check-in"];
+       var user_attributes = ["system-usage","username","first-name","last-name","department","location","room-number","phone"];
+       $.each(pc_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $.each(user_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $("#edit-device-button").css("display","none");
+    $("#edit-device-button1").css("display","none");
+    $("#save-device-button").css("display","block");
+    }
+    
 </script>
 
 <div class="pager-listing" id="device-list" data-rpp="25">
@@ -75,10 +109,17 @@ $(document).ready(function () {
         <div class="modal-content" id="system-device-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">System Details</h4>
+                <h4 class="modal-title">System Details</h4>              
+                <input id="edit-device-button" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit"/>
+                <div id="device-save-result" class="alert alert-success" style="display:none;"></div>
             </div>
             <div class="modal-body">
-                
+                <form action="/" method="post" id="edit-device-form" class="phpws-form">
+                <div id="system-body"></div>
+                <div id="user-body"></div>
+                <input id="edit-device-button1" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit" />
+                <input id="save-device-button" style="display:none;" class="btn btn-primary" type="submit" value="Save" />
+                </form>
             </div>
             <div class="modal-footer">
 <!--                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
@@ -86,3 +127,23 @@ $(document).ready(function () {
         </div>
     </div>
 </div>
+<script type="text/javascript">
+ $('#edit-device-form').submit( function(event) {
+     event.preventDefault();
+     var posting = $.post('systemsinventory/system/save/', $('form#edit-device-form').serialize(), null ,'json');
+     //var jsondata = posting["responseText"];
+     //$( "#device-save-result" ).empty().append( posting['success'] );
+     posting.done(function( data ) {
+         //var content = $( data ).find( "#content" );
+         var result = jQuery.parseJSON(posting['responseText']);
+         if(result.success)
+             $( "#device-save-result" ).empty().append( "Device Saved Successfully" );
+         else
+             $( "#device-save-result" ).empty().append( "There was a problem saving device!" );
+
+         $("#device-save-result").css("display", "block");
+         $('#device-modal').animate({scrollTop:0}, 'fast');
+     });
+     
+    });   
+</script>

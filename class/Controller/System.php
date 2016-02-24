@@ -26,8 +26,12 @@ class System extends \Http\Controller {
         $command = 'add';
         if (!empty($data['command']))
             $command = $data['command'];
-
-        $content = SDFactory::form($request, 'system-pc', $command);
+        
+        if($command == 'edit')
+            $content = SDFactory::editForm($request, $command);
+        else
+            $content = SDFactory::form($request, 'system-pc', $command);
+        
         $view = new \View\HtmlView($content);
         return $view;
     }
@@ -36,6 +40,9 @@ class System extends \Http\Controller {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $vars = $request->getRequestVars();
+        $isJSON = false;
+        if(isset($vars['device_id']))
+            $isJSON = true;        
         $device_type = PC;
         
         if(isset($vars['server'])){
@@ -45,6 +52,21 @@ class System extends \Http\Controller {
         }
         $device_id = $sdfactory->postDevice($request);
         
+        $this->postSpecificDevice($request, $device_type, $device_id);
+        
+        $data['command'] = 'success';
+        if($isJSON){
+            $view = new \View\JsonView(array('success'=> TRUE));
+        }else{
+            $view = $this->getHtmlView($data, $request);
+        }
+        $response = new \Response($view);
+        return $response;
+    }
+
+    public function postSpecificDevice(\Request $request, $device_type, $device_id){
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
+
         switch ($device_type) {
             case SERVER:
             case PC:
@@ -62,14 +84,8 @@ class System extends \Http\Controller {
             default:
                 break;
         }
-
-
-        $data['command'] = 'success';
-        $view = $this->getHtmlView($data, $request);
-        $response = new \Response($view);
-        return $response;
     }
-
+    
     public static function loadAdminBar() {
         $auth = \Current_User::getAuthorization();
 
@@ -83,8 +99,10 @@ class System extends \Http\Controller {
     }
 
     protected function getJsonView($data, \Request $request) {
-        $vars = $request->getVars();
-        $sys_id = $vars['vars']['system_id'];
+        $vars = $request->getRequestVars();
+        $device_id = $vars['device_id'];
+        if(!empty($vars['device_type_id']))
+            $device_type_id = $vars['device_type_id'];
         $command = '';
         if(!empty($data['command']))
             $command = $data['command'];
@@ -92,10 +110,14 @@ class System extends \Http\Controller {
         $system_details = '';
         switch ($command) {
             case 'getDetails':
-                $system_details = SDFactory::getSystemDetails($sys_id);
+                $system_result = SDFactory::getSystemDetails($device_id);
+                break;
+            case 'save':
+                $system_result = SDFactory::postDevice($request);
+                $this->postSpecificDevice($request, $device_type_id, $device_id);
                 break;
         }
-        $view = new \View\JsonView($system_details);
+        $view = new \View\JsonView($system_result);
         return $view;
     }
     
