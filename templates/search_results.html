@@ -10,7 +10,28 @@ var runOnLoad = function()
             'device_id': $(this).data('rowId')}, function(jsondata) {
             // display data
             var device_type_id = jsondata['device_type_id'];
-            $("#system-body").load("./mod/systemsinventory/templates/Edit_PC.html");
+            switch(device_type_id){
+                case 3:
+                    device_template = "Edit_Ipad.html";
+                    break;
+                case 4:
+                    device_template = "Edit_Printer.html";
+                    break;
+                case 5:
+                    device_template = "Edit_Camera.html";
+                    break;    
+                case 6:
+                    device_template = "Edit_DigitalSign.html";
+                    break;    
+                case 7:
+                    device_template = "Edit_TimeClock.html";
+                    break;    
+                default:
+                    var device_template = "Edit_PC.html";
+                    break;
+                            
+            }
+            $("#system-body").load("./mod/systemsinventory/templates/"+device_template);
             $("#user-body").load("./mod/systemsinventory/templates/Edit_User.html", function(){
                 loadSystemDetails(jsondata,device_type_id);
             });
@@ -35,20 +56,42 @@ var runOnLoad = function()
             }
             if(index == "hd_size")
                 $("#hd").val(d);
-            
+
         $("#"+element_id).val(d);
         });
         if(device_type_id == 2)
             $("#server").prop("checked",true);
+        switch(device_type_id){
+            case 1:
+            case 2:
+                $("#battery-backup").prop("checked",jsondata['battery_backup']);
+                $("#redundant-backup").prop("checked",jsondata['redundant_backup']);
+                $("#touch-screen").prop("checked",jsondata['touch_screen']);
+                $("#dual-monitor").prop("checked",jsondata['dual_monitor']);
+                $("#rotation").prop("checked",jsondata['rotation']);
+                $("#stand").prop("checked",jsondata['stand']);
+                $("#smart-room").prop("checked",jsondata['smart_room']);
+                $("#check-in").prop("checked",jsondata['check_in']);
+                break;
+            case 3:
+                break;
+            case 4:
+                $("#color").prop("checked",jsondata['color']);
+                $("#duplex").prop("checked",jsondata['duplex']);
+                $("#network").prop("checked",jsondata['network']);
+                break;
+            case 5:
+                break;    
+            case 6:
+                break;    
+            case 7:
+                break;    
+            default:
+                break;
+            
+        }
         // Need to move this section to pc/server specific function
-        $("#battery-backup").prop("checked",jsondata['battery_backup']);
-        $("#redundant-backup").prop("checked",jsondata['redundant_backup']);
-        $("#touch-screen").prop("checked",jsondata['touch_screen']);
-        $("#dual-monitor").prop("checked",jsondata['dual_monitor']);
-        $("#rotation").prop("checked",jsondata['rotation']);
-        $("#stand").prop("checked",jsondata['stand']);
-        $("#smart-room").prop("checked",jsondata['smart_room']);
-        $("#check-in").prop("checked",jsondata['check_in']);
+        
 
     }
 };
@@ -60,8 +103,19 @@ $(document).ready(function () {
 
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
-       var user_attributes = ["system-usage","username","first-name","last-name","department","location","room-number","phone"];
+       var ipad_attributes = ["physical-id","hd","generation","mac","apple-id","purchase-date"];
+       var printer_attributes = ["physical-id","model","toner","manufacturer","purchase-date","color","duplex","network"];
+       var user_attributes = ["system-usage","username","first-name","last-name","department","location","room-number","phone","notes"];
+       
        $.each(pc_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $.each(ipad_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $.each(printer_attributes, function(index, d){
         $("#"+d).prop("disabled", false);
     });
     
@@ -112,7 +166,7 @@ $(document).ready(function () {
         <div class="modal-content" id="system-device-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">System Details</h4>              
+                <h4 class="modal-title" >System Details</h4>    
                 <input id="edit-device-button" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit"/>
                 <div id="device-save-result" class="alert alert-success" style="display:none;"></div>
             </div>

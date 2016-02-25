@@ -63,6 +63,7 @@ class SystemDevice extends \Resource
       $this->manufacturer = new \Variable\TextOnly(null, 'manufacturer');
       $this->manufacturer->allowNull(true);
       $this->vlan = new \Variable\Integer(0, 'vlan');
+      $this->vlan->allowNull(true);
       $this->first_name = new \Variable\TextOnly(null, 'first_name');
       $this->first_name->allowNull(true);
       $this->last_name = new \Variable\TextOnly(null, 'last_name');

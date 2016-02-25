@@ -35,7 +35,7 @@ CREATE TABLE systems_device (
        primary_ip character varying,
        secondary_ip character varying,
        manufacturer character varying,
-       vlan integer,
+       vlan integer 0,
        first_name character varying,
        last_name character varying,
        username character varying,
