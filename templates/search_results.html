@@ -31,8 +31,11 @@ var runOnLoad = function()
                 $("#location").val(jsondata['location_id']);
             }
             if(index == "system_usage"){
-                $("#system-usage").val(jsondata['system_usage']);
+                $("#system-usage").val(d);
             }
+            if(index == "hd_size")
+                $("#hd").val(d);
+            
         $("#"+element_id).val(d);
         });
         if(device_type_id == 2)
@@ -44,7 +47,7 @@ var runOnLoad = function()
         $("#dual-monitor").prop("checked",jsondata['dual_monitor']);
         $("#rotation").prop("checked",jsondata['rotation']);
         $("#stand").prop("checked",jsondata['stand']);
-        $("#smart-screen").prop("checked",jsondata['smart_screen']);
+        $("#smart-room").prop("checked",jsondata['smart_room']);
         $("#check-in").prop("checked",jsondata['check_in']);
 
     }
@@ -56,7 +59,7 @@ $(document).ready(function () {
 });
 
  function enableFormFields(){
-       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","touch-screen","stand","dual-monitor","check-in"];
+       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
        var user_attributes = ["system-usage","username","first-name","last-name","department","location","room-number","phone"];
        $.each(pc_attributes, function(index, d){
         $("#"+d).prop("disabled", false);
@@ -146,4 +149,6 @@ $(document).ready(function () {
      });
      
     });   
+    
+   
 </script>

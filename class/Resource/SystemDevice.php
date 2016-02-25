@@ -23,6 +23,7 @@ class SystemDevice extends \Resource
   protected $primary_ip;
   protected $secondary_ip;
   protected $manufacturer;
+  protected $vlan;
   protected $first_name;
   protected $last_name;
   protected $username;
@@ -61,6 +62,7 @@ class SystemDevice extends \Resource
       $this->secondary_ip->allowNull(true);
       $this->manufacturer = new \Variable\TextOnly(null, 'manufacturer');
       $this->manufacturer->allowNull(true);
+      $this->vlan = new \Variable\Integer(0, 'vlan');
       $this->first_name = new \Variable\TextOnly(null, 'first_name');
       $this->first_name->allowNull(true);
       $this->last_name = new \Variable\TextOnly(null, 'last_name');
@@ -148,6 +150,10 @@ class SystemDevice extends \Resource
       $this->manufacturer->set($manufacturer);
     }
 
+    public function setVlan($vlan){
+        $this->vlan->set($vlan);
+    }
+    
     public function setPurchaseDate($purchase_date){
       $this->purchase_date->set(strtotime($purchase_date));
     }

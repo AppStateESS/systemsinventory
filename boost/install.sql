@@ -27,7 +27,7 @@ CREATE TABLE systems_device (
        department_id integer REFERENCES systems_department(id),
        device_type_id integer REFERENCES systems_device_type(id),
        model character varying,
-       hd_size integer,
+       hd_size character varying,
        processor character varying,
        ram character varying,
        mac character(20),
@@ -35,6 +35,7 @@ CREATE TABLE systems_device (
        primary_ip character varying,
        secondary_ip character varying,
        manufacturer character varying,
+       vlan integer,
        first_name character varying,
        last_name character varying,
        username character varying,
@@ -50,6 +51,7 @@ CREATE TABLE systems_device (
 CREATE TABLE systems_device_history (LIKE systems_device);
 
 CREATE TABLE systems_pc (
+       id    serial,
        device_id integer REFERENCES systems_device(id),
        primary_monitor character varying,
        secondary_monitor character varying,
@@ -60,43 +62,52 @@ CREATE TABLE systems_pc (
        redundant_backup smallint default 0,       
        touch_screen smallint default 0,       
        dual_monitor smallint default 0,       
-       system_usage integer,
+       system_usage character varying,
        rotation smallint default 0,
        stand smallint default 0,
        smart_room smallint default 0,
-       check_in smallint default 0
+       check_in smallint default 0,
+       PRIMARY KEY (id)
 );
 
 CREATE TABLE systems_camera (
+       id    serial,
        device_id integer REFERENCES systems_device(id),
        sd_support smallint default 0,
        megapixels character varying,
        hd smallint,
        outdoor smallint default 0,
        covert smallint default 0,
-       is_on smallint default 0
+       is_on smallint default 0,
+       PRIMARY KEY (id)
 );
 
 CREATE TABLE systems_ipad (
+       id    serial,
        device_id integer REFERENCES systems_device(id),
        generation character varying,
-       apple_id character varying
+       apple_id character varying,
+       PRIMARY KEY (id)
 );
 
 CREATE TABLE systems_digital_sign (
+       id    serial,
        device_id integer REFERENCES systems_device(id),
        screen_size integer,
        hd smallint,
        player_id integer REFERENCES systems_device(id),
-       designer character varying
+       designer character varying,
+       PRIMARY KEY (id)
 );
 
 CREATE TABLE systems_printer (
+       id    serial,
        device_id integer REFERENCES systems_device(id),
        color smallint default 0,
        toner_cartridge character varying,
        duplex smallint default 0,
-       network smallint default 0
+       network smallint default 0,
+       PRIMARY KEY (id)
 );
 
 CREATE TABLE systems_permission (

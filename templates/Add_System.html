@@ -51,28 +51,32 @@
                         <input id="os" name="os" type="text" class="form-control"  value="" />
 		    </div>
                     <div class="form-group">
-                        <label for="vlan">VLAN</label>
-                        <input id="vlan" name="vlan" type="text" class="form-control"  value="" />
+                        <label for="manufacturer">Manufacturer</label>
+                        <input id="manufacturer" name="manufacturer" type="text" class="form-control"  value="" />
                     </div>
-                    <div>
-                        <label for="server">Is Server?</label>
-			<input id="server" name="server" type="checkbox" value="" />
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="server">Is Server?</label>
+                            <input id="server" name="server" type="checkbox" value="" />
+                        </div>
+                        <div>
+                            <label for="battery_bk">Battery Backup?</label>
+                            <input id="battery-bk" name="battery_bk" type="checkbox" value="" />
+                        </div>
+                        <div>
+                            <label for="redundant_bk">Redundant Backup?</label>
+                            <input id="redundant_bk" name="redundant_bk" type="checkbox" value="" />
+                        </div>
                     </div>
-                    <div>
-                        <label for="battery_bk">Battery Backup?</label>
-			<input id="battery-bk" name="battery_bk" type="checkbox" value="" />
-                    </div>
-                    <div>
-                        <label for="redundant_bk">Redundant Backup?</label>
-			<input id="redundant_bk" name="redundant_bk" type="checkbox" value="" />
-                    </div>
-                    <div>
-                        <label for="rotation">Exclude from rotation?</label>
-			<input id="rotation" name="rotation" type="checkbox" value="" />
-                    </div>
-                    <div>
-                        <label for="smart_room">Smart Room?</label>
-			<input id="smart-room" name="smart_room" type="checkbox" value="" />
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="rotation">Exclude from rotation?</label>
+                            <input id="rotation" name="rotation" type="checkbox" value="" />
+                        </div>
+                        <div>
+                            <label for="smart_room">Smart Room?</label>
+                            <input id="smart-room" name="smart_room" type="checkbox" value="" />
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -110,21 +114,35 @@
                         <label for="server-type">Server Type</label>
                         <input id="server_type" name="server_type" type="text" class="form-control"  value="" placeholder="2u, 4u, tower, etc..."/>
                     </div>
-                    <div>
-                        <label for="touch_screen">Touch Screen?</label>
-			<input id="touch-screen" name="touch_screen" type="checkbox"/>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="vlan">VLAN</label>
+                            <select name="vlan">
+                                <option value="0">Select VLAN</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Closed</option>
+                                <option value="3">Public</option>
+                                <option value="4">VOIP</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="touch_screen">Touch Screen?</label>
+                            <input id="touch-screen" name="touch_screen" type="checkbox"/>
+                        </div>
+                        <div>
+                            <label for="stand">Docking Stand?</label>
+                            <input id="stand" name="stand" type="checkbox"/>
+                        </div>
                     </div>
-                    <div>
-                        <label for="stand">Docking Stand?</label>
-			<input id="stand" name="stand" type="checkbox"/>
-                    </div>
-                    <div>
-                        <label for="dual_monitor">Dual Monitor?</label>
-			<input id="dual-monitor" name="dual_monitor" type="checkbox"/>
-                    </div>
-                    <div>
-                        <label for="checkin">Check-in System?</label>
-			<input id="checkin" name="checkin" type="checkbox" />
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="dual_monitor">Dual Monitor?</label>
+                            <input id="dual-monitor" name="dual_monitor" type="checkbox"/>
+                        </div>
+                        <div>
+                            <label for="checkin">Check-in System?</label>
+                            <input id="checkin" name="checkin" type="checkbox" />
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -134,7 +152,7 @@
             <legend>User and Location Information</legend>
             <div class="form-group">
                 <label for="system_usage">System Usage</label>
-                <select name="system-usage">
+                <select name="system_usage">
                     <option value="0">Select System Usage</option>
                     <option value="1">Staff</option>
                     <option value="2">Student</option>
@@ -155,18 +173,7 @@
                         <label for="last_name">Last Name</label>
                         <input name="last_name" id="last-name" type="text" class="form-control" value="" />
                     </div>
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <select name="department">
-                            <?=$departments?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <select name="location">
-                            <?=$locations?>
-                        </select>
-                    </div>
+                    
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -178,6 +185,18 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
                     </div>
                 </fieldset>
             </div>
@@ -253,19 +272,7 @@
                         <label for="last_name">Last Name</label>
                         <input name="last_name" id="last_name" type="text" class="form-control" value="" />
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <select name="department">
-                            <?=$departments?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <select name="location">
-                            <?=$locations?>
-                        </select>
-                    </div>
+                                      
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -277,6 +284,18 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
                     </div>
                 </fieldset>
             </div>
@@ -325,17 +344,21 @@
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
                         <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
                     </div>
-                    <div>
-                        <label for="color">Color?</label>
-			<input id="color" name="color" type="checkbox"/>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="color">Color?</label>
+                            <input id="color" name="color" type="checkbox"/>
+                        </div>
+                        <div>
+                            <label for="duplex">Duplex?</label>
+                            <input id="duplex" name="duplex" type="checkbox"/>
+                        </div>
                     </div>
-                    <div>
-                        <label for="duplex">Duplex?</label>
-			<input id="duplex" name="duplex" type="checkbox"/>
-                    </div>
-                    <div>
-                        <label for="network">Network?</label>
-			<input id="network" name="network" type="checkbox"/>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="network">Network?</label>
+                            <input id="network" name="network" type="checkbox"/>
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -366,19 +389,7 @@
                         <label for="last_name">Last Name</label>
                         <input name="last_name" id="last_name" type="text" class="form-control" value="" />
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="department">Department</label>
-                        <select name="department">
-                            <?=$departments?>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <select name="location">
-                            <?=$locations?>
-                        </select>
-                    </div>
+                                        
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -390,6 +401,18 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
                     </div>
                 </fieldset>
             </div>

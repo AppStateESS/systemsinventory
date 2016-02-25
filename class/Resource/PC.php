@@ -41,8 +41,7 @@ class PC extends \Resource
       $this->os->allowNull(true);
       $this->server_type = new \Variable\TextOnly(null,'server_type');
       $this->server_type->allowNull(true);
-      $this->system_usage = new \Variable\TextOnly(null,'system_usage');
-      $this->system_usage->allowNull(true);
+      $this->system_usage = new \Variable\Integer(0,'system_usage');
       $this->battery_backup = new \Variable\Bool(false,'battery_backup');
       $this->redundant_backup = new \Variable\Bool(false,'redundant_backup');
       $this->rotation = new \Variable\Bool(false,'rotation');

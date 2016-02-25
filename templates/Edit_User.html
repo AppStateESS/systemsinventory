@@ -2,7 +2,7 @@
                     <legend>User and Location Information</legend>
                     <div class="form-group">
                         <label for="system_usage">System Usage</label>
-                        <select id="system-usage" name="system-usage" disabled>
+                        <select id="system-usage" name="system_usage" disabled>
                             <option value="0">Select System Usage</option>
                             <option value="1">Staff</option>
                             <option value="2">Student</option>
@@ -26,15 +26,13 @@
                             <div class="form-group">
                                 <label for="department">Department</label>
                                 <select id="department" name="department" disabled>
-                                    
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="location">Location</label>
                                 <select id="location" name="location" disabled>
-                                    
-                        </select>
-                    </div>
+                                </select>
+                            </div>
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -46,7 +44,8 @@
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" disabled />
-                    </div>
+                    </div>                
+                        
                 </fieldset>
             </div>
         </div>
@@ -56,3 +55,32 @@
         </div>
 
 </div>
+
+<script type="text/javascript">
+     // format mac addresses
+     var length = 1;
+$("#mac").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#mac').val($('#mac').val() + ':');
+            }    
+            $("#mac").val($("#mac").val().slice(0, 16));
+        });    
+    });  
+
+ var length = 1;
+$("#mac2").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#mac2').val($('#mac2').val() + ':');
+            }    
+            $("#mac2").val($("#mac2").val().slice(0, 16));
+        });    
+    });  
+</script>

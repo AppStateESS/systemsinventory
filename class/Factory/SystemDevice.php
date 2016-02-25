@@ -134,7 +134,7 @@ EOF;
       $system_device->setRoomNumber(filter_input(INPUT_POST, 'room_number', FILTER_SANITIZE_STRING));
       $system_device->setDepartment(filter_input(INPUT_POST, 'department', FILTER_SANITIZE_NUMBER_INT));
       $system_device->setModel(filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING));
-      $system_device->setHD(filter_input(INPUT_POST, 'hd_size', FILTER_SANITIZE_STRING));
+      $system_device->setHD(filter_input(INPUT_POST, 'hd', FILTER_SANITIZE_STRING));
       $system_device->setProcessor(filter_input(INPUT_POST, 'processor', FILTER_SANITIZE_STRING));
       $system_device->setRAM(filter_input(INPUT_POST, 'ram', FILTER_SANITIZE_STRING));
       $system_device->setMac(filter_input(INPUT_POST, 'mac', FILTER_SANITIZE_STRING));
@@ -142,6 +142,7 @@ EOF;
       $system_device->setPrimaryIP(filter_input(INPUT_POST, 'primary_ip', FILTER_SANITIZE_STRING));
       $system_device->setSecondaryIP(filter_input(INPUT_POST, 'secondary_ip', FILTER_SANITIZE_STRING));
       $system_device->setManufacturer(filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING));
+      $system_device->setVlan(filter_input(INPUT_POST, 'vlan', FILTER_SANITIZE_NUMBER_INT));
       $system_device->setPurchaseDate(filter_input(INPUT_POST, 'purchase_date', FILTER_SANITIZE_STRING));
       $system_device->setProfile(filter_input(INPUT_POST, 'profile', FILTER_SANITIZE_STRING));
       $system_device->setProfileName(filter_input(INPUT_POST, 'profile_name', FILTER_SANITIZE_STRING));
@@ -163,18 +164,24 @@ EOF;
         if(empty($system_id)){
             throw new Exception("System ID invalid.");
         }
+        // get the common device attributes
         $db = \Database::getDB();
         $query = "SELECT * FROM systems_device WHERE id='$system_id'";
         $pdo = $db->query($query);
         $result = $pdo->fetch(\PDO::FETCH_ASSOC);
         $device_type_id = $result['device_type_id'];
-        
         $device_details = $result;
+        // get the device specific attributes
         $table = SystemDevice::getSystemType($device_type_id);
         $device_table = $db->addTable($table);
         $device_table->addFieldConditional('device_id', $system_id);
         $device_result = $db->select();
         $device_result = $device_result['0'];
+        // set the specific device id so we can use it to save the device specific info later.
+        $specific_device_id = $device_result['id']; 
+        unset($device_result['id']);
+        $device_result['specific-device-id'] = $specific_device_id;
+        
         //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
         $device_details = array_merge($device_details, $device_result);
         $device_details['device-type-id'] = $device_type_id;

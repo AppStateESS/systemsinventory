@@ -4,6 +4,7 @@
 <!-- END message -->
 <div class="systems-pc-section systems-section">
         <input id="device-id" name="device_id" type="hidden">
+        <input id="specific-device-id" name="specific_device_id" type="hidden">
         <input id="device-type-id" name="device_type" type="hidden">
         <div class="row">
             <div class="col-sm-6">
@@ -37,8 +38,8 @@
                         <input id="os" name="os" type="text" class="form-control"  disabled />
 		    </div>
                     <div class="form-group">
-                        <label for="vlan">VLAN</label>
-                        <input id="vlan" name="vlan" type="text" class="form-control"  disabled />
+                        <label for="manufacturer">Manufacturer</label>
+                        <input id="manufacturer" name="manufacturer" type="text" class="form-control"  disabled />
                     </div>
                     <div>
                         <label for="server">Is Server?</label>
@@ -95,6 +96,16 @@
                     <div class="form-group">
                         <label for="server-type">Server Type</label>
                         <input id="server-type" name="server_type" type="text" class="form-control"  disabled placeholder="2u, 4u, tower, etc..."/>
+                    </div>
+                    <div>
+                            <label for="vlan">VLAN</label>
+                            <select id="vlan" name="vlan" disabled >
+                                <option value="0">Select VLAN</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Closed</option>
+                                <option value="3">Public</option>
+                                <option value="4">VOIP</option>
+                            </select>
                     </div>
                     <div>
                         <label for="touch_screen">Touch Screen?</label>
