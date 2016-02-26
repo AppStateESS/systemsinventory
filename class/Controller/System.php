@@ -5,6 +5,8 @@ namespace systemsinventory\Controller;
 use systemsinventory\Factory\PC as PCFactory;
 use systemsinventory\Factory\IPAD as IPADFactory;
 use systemsinventory\Factory\Printer as PrinterFactory;
+use systemsinventory\Factory\Camera as CameraFactory;
+use systemsinventory\Factory\DigitalSign as DigitalSignFactory;
 use systemsinventory\Factory\SystemDevice as SDFactory;
 use systemsinventory\Resource;
 
@@ -80,6 +82,16 @@ class System extends \Http\Controller {
             case PRINTER:
                 $printerfactory = new PrinterFactory;
                 $printerfactory->postNewPrinter($request, $device_id);
+                break;
+            case CAMERA:
+                $camerafactory = new CameraFactory;
+                $camerafactory->postNewCamera($request, $device_id);
+                break;
+            case DIGITAL_SIGN:
+                $digitalsignfactory = new DigitalSignFactory;
+                $digitalsignfactory->postNewDigitalSign($request, $device_id);
+                break;
+            case TIME_CLOCK:
                 break;
             default:
                 break;

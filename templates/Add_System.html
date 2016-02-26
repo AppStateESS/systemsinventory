@@ -1,4 +1,3 @@
-
 <!-- BEGIN message -->
 <div class="alert alert-success" style="<?=$display?>"><?=$message?></div>
 <!-- END message -->
@@ -7,8 +6,8 @@
     <li role="presentation" class="ipad-tab systems-tab"><a style="cursor:pointer">iPad</a></li>
     <li role="presentation" class="printer-tab systems-tab"><a style="cursor:pointer">Printer</a></li>
     <li role="presentation" class="camera-tab systems-tab"><a style="cursor:pointer">Camera</a></li>
-    <li role="presentation" class="sign-tab systems-tab"><a style="cursor:pointer">Digital Sign</a></li>
-    <li role="presentation" class="clock-tab systems-tab"><a style="cursor:pointer">Time Clock</a></li>
+    <li role="presentation" class="digital-sign-tab systems-tab"><a style="cursor:pointer">Digital Sign</a></li>
+    <li role="presentation" class="time-clock-tab systems-tab"><a style="cursor:pointer">Time Clock</a></li>
 </ul>
 <div class="systems-pc-section systems-section">
     <form action="<?=$form_action?>" method="post" class="phpws-form">
@@ -424,46 +423,251 @@
         <input class="btn btn-primary" type="submit" value="Save Systems" />
     </form>
 </div>
-
-<script type="text/javascript">
-  
-  
-    var length = 1;
-$("#mac").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac').val($('#mac').val() + ':');
-            }    
-            $("#mac").val($("#mac").val().slice(0, 16));
-        });    
-    });  
-
- var length = 1;
-$("#mac2").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac2').val($('#mac2').val() + ':');
-            }    
-            $("#mac2").val($("#mac2").val().slice(0, 16));
-        });    
-    });  
-    
-     var length = 1;
-$("#ipad-mac").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#ipad-mac').val($('#ipad-mac').val() + ':');
-            }    
-            $("#ipad-mac").val($("#ipad-mac").val().slice(0, 16));
-        });    
-    });  
-</script>
+<div class="camera-section systems-section">
+    <form action="<?=$form_action?>" method="post" class="phpws-form">
+        <input name="device_type" type="hidden" value=<?=CAMERA?> />
+        <div class="row">   
+            <legend>Camera Information</legend>            
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required name="model" id="model" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="megapixels">Megapixels</label>
+                        <input id="megapixels" name="megapixels" type="text" class="form-control"  value="" />
+                    </div>
+                     <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" value="" />
+                    </div>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="sd_support">SD Card Support?</label>
+                            <input id="sd-support" name="sd_support" type="checkbox"/>
+                        </div>
+                        <div>
+                            <label for="hi_def">HD Camera?</label>
+                            <input id="hi-def" name="hi_def" type="checkbox"/>
+                        </div>
+                         <div>
+                            <label for="exterior">Exterior Camera?</label>
+                            <input id="exterior" name="exterior" type="checkbox"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="covert">Covert Camera?</label>
+                            <input id="covert" name="covert" type="checkbox"/>
+                        </div>
+                         <div>
+                            <label for="is_on">Is Camera On?</label>
+                            <input id="is-on" name="is_on" type="checkbox"/>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
+        </div>	  
+        <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
+</div>
+<div class="digital-sign-section systems-section">
+    <form action="<?=$form_action?>" method="post" class="phpws-form">
+        <input name="device_type" type="hidden" value=<?=DIGITAL_SIGN?> />
+        <div class="row">
+            <legend>System Information</legend>            
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required name="model" id="model" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="processor">Processor</label>
+                        <input id="processor" type="text" name="processor" class="form-control" placeholder="Intel core i5 ect..." value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ram">RAM</label>
+                        <input id="ram" name="ram" type="text" class="form-control" placeholder="Amount of RAM in GB" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="hd">Hard Drive</label>
+                        <input id="hd" name="hd" type="text" class="form-control" value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label>
+                        <input id="manufacturer" name="manufacturer" type="text" class="form-control"  value="" />
+                    </div>    
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="mac" required name="mac" type="text" class="form-control" placeholder="XX:XX:XX:XX:XX:XX" value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="ip">Primary IP Address</label>
+                        <input id="primary-ip" name="primary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="screen_size">Screen Size</label>
+                        <input id="screen-size" name="screen_size" type="text" class="form-control"  value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="designer">Designer</label>
+                        <input id="designer" name="designer" type="text" class="form-control"  value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="vlan">VLAN</label>
+                        <select name="vlan">
+                            <option value="0">Select VLAN</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Closed</option>
+                            <option value="3">Public</option>
+                            <option value="4">VOIP</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hi_def">Hi-def?</label>
+                        <input id="hi-def" name="hi_def" type="checkbox"/>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
+        </div>	  
+            <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
+</div>
+<div class="time-clock-section systems-section">
+    <form action="<?=$form_action?>" method="post" class="phpws-form">
+        <input name="device_type" type="hidden" value=<?=TIME_CLOCK?> />
+        <div class="row">
+            <legend>System Information</legend>            
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="physical_id">Physical ID <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input name="physical_id" required id="physical-id" type="text" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required name="model" id="model" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label>
+                        <input id="manufacturer" name="manufacturer" type="text" class="form-control"  value="" />
+                    </div>    
+                    <div class="form-group">
+                        <label for="department">Department</label>
+                        <select name="department">
+                            <?=$departments?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select name="location">
+                            <?=$locations?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vlan">VLAN</label>
+                        <select name="vlan">
+                            <option value="0">Select VLAN</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Closed</option>
+                            <option value="3">Public</option>
+                            <option value="4">VOIP</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="col-sm-6">
+                <fieldset>
+                    <div class="form-group">
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="mac" required name="mac" type="text" class="form-control" placeholder="XX:XX:XX:XX:XX:XX" value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="ip">Primary IP Address</label>
+                        <input id="primary-ip" name="primary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                    </div>                    
+                    <div class="form-group">
+                        <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
+                        <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="room_number">Room Number</label>
+                        <input id="room-number" type="text" name="room_number" class="form-control" value="" />
+                    </div>
+                    
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="system_notes">Notes</label>
+            <textarea id="system-notes" name="system_notes" class="form-control"></textarea>
+        </div>	  
+            <input class="btn btn-primary" type="submit" value="Save Systems" />
+    </form>
+</div>

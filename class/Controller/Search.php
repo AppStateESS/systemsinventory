@@ -34,7 +34,7 @@ class Search extends \Http\Controller
       if(!empty($_SESSION['system_search_vars']))
       $search_vars = $_SESSION['system_search_vars'];
       $conditional = NULL;
-      
+            
       if($search_vars['system_type']){
           $conditional = new \Database\Conditional($db, 'device_type_id', $search_vars['system_type'], '=');
       }
@@ -122,6 +122,9 @@ class Search extends \Http\Controller
     }
     
     public function post(\Request $request){
+        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
+      \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
+        
       $factory = new Factory;
       $search_vars = $request->getVars();
       $_SESSION['system_search_vars'] = $search_vars['vars'];

@@ -13,8 +13,8 @@ class Search extends \ResourceFactory
   public static function form(\Request $request, $command=null)
     {
         javascript('jquery');
-        \Form::requiredScript();
-
+        \Form::requiredScript();     
+    
 	if(empty($command))
 	  $command = 'run_search';
 	$system_types = \systemsinventory\Factory\SystemDevice::getSystemTypes();

@@ -25,8 +25,8 @@ class SystemDevice extends \ResourceFactory
 
       javascript('jquery');
       \Form::requiredScript();
-      
-      if (!in_array($active_tab, array('systems-pc', 'ipad', 'printer'))) {
+     
+      if (!in_array($active_tab, array('systems-pc', 'ipad', 'printer','camera','digital-sign','time-clock'))) {
 	$active_tab = 'systems-pc';
       }
       
@@ -127,26 +127,38 @@ EOF;
           $system_device->setId ($vars['device_id']);
       $system_device->setDeviceType($device_type);
       $system_device->setPhysicalID(filter_input(INPUT_POST, 'physical_id'));
-      $system_device->setName(filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_STRING), filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_STRING));
-      $system_device->setUserName(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
-      $system_device->setPhone(filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING));
+      if(!empty($vars['first_name']))
+          $system_device->setName(filter_input(INPUT_POST, 'first_name', FILTER_SANITIZE_STRING), filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_STRING));
+      if(!empty($vars['username']))
+          $system_device->setUserName(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING));
+      if(!empty($vars['phone']))
+          $system_device->setPhone(filter_input(INPUT_POST, 'phone', FILTER_SANITIZE_STRING));
       $system_device->setLocation(filter_input(INPUT_POST, 'location', FILTER_SANITIZE_NUMBER_INT));
-      $system_device->setRoomNumber(filter_input(INPUT_POST, 'room_number', FILTER_SANITIZE_STRING));
+      if(!empty($vars['room_number']))
+          $system_device->setRoomNumber(filter_input(INPUT_POST, 'room_number', FILTER_SANITIZE_STRING));
       $system_device->setDepartment(filter_input(INPUT_POST, 'department', FILTER_SANITIZE_NUMBER_INT));
-      $system_device->setModel(filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING));
-      $system_device->setHD(filter_input(INPUT_POST, 'hd', FILTER_SANITIZE_STRING));
-      $system_device->setProcessor(filter_input(INPUT_POST, 'processor', FILTER_SANITIZE_STRING));
-      $system_device->setRAM(filter_input(INPUT_POST, 'ram', FILTER_SANITIZE_STRING));
-      $system_device->setMac(filter_input(INPUT_POST, 'mac', FILTER_SANITIZE_STRING));
-      $system_device->setMac2(filter_input(INPUT_POST, 'mac2', FILTER_SANITIZE_STRING));
-      $system_device->setPrimaryIP(filter_input(INPUT_POST, 'primary_ip', FILTER_SANITIZE_STRING));
-      $system_device->setSecondaryIP(filter_input(INPUT_POST, 'secondary_ip', FILTER_SANITIZE_STRING));
-      $system_device->setManufacturer(filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING));
+      if(!empty($vars['model']))
+          $system_device->setModel(filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING));
+      if(!empty($vars['hd']))
+          $system_device->setHD(filter_input(INPUT_POST, 'hd', FILTER_SANITIZE_STRING));
+      if(!empty($vars['processor']))
+          $system_device->setProcessor(filter_input(INPUT_POST, 'processor', FILTER_SANITIZE_STRING));
+      if(!empty($vars['ram']))
+          $system_device->setRAM(filter_input(INPUT_POST, 'ram', FILTER_SANITIZE_STRING));
+      if(!empty($vars['mac']))
+          $system_device->setMac(filter_input(INPUT_POST, 'mac', FILTER_SANITIZE_STRING));
+      if(!empty($vars['mac2']))
+          $system_device->setMac2(filter_input(INPUT_POST, 'mac2', FILTER_SANITIZE_STRING));
+      if(!empty($vars['primary_ip']))
+          $system_device->setPrimaryIP(filter_input(INPUT_POST, 'primary_ip', FILTER_SANITIZE_STRING));
+      if(!empty($vars['secondary_ip']))
+          $system_device->setSecondaryIP(filter_input(INPUT_POST, 'secondary_ip', FILTER_SANITIZE_STRING));
+      if(!empty($vars['manufacturer']))
+          $system_device->setManufacturer(filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING));
       $system_device->setVlan(filter_input(INPUT_POST, 'vlan', FILTER_SANITIZE_NUMBER_INT));
       $system_device->setPurchaseDate(filter_input(INPUT_POST, 'purchase_date', FILTER_SANITIZE_STRING));
       $system_device->setProfile(filter_input(INPUT_POST, 'profile', FILTER_SANITIZE_STRING));
       $system_device->setProfileName(filter_input(INPUT_POST, 'profile_name', FILTER_SANITIZE_STRING));
-      $system_device->setSysPeriod(filter_input(INPUT_POST, 'sys_period', FILTER_SANITIZE_STRING));
       $system_device->setNotes(filter_input(INPUT_POST, 'system_notes', FILTER_SANITIZE_STRING));
 
       self::saveResource($system_device);

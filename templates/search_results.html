@@ -56,8 +56,8 @@ var runOnLoad = function()
             }
             if(index == "hd_size")
                 $("#hd").val(d);
-
-        $("#"+element_id).val(d);
+            if(d != undefined || d != null)
+                $("#"+element_id).val(d);
         });
         if(device_type_id == 2)
             $("#server").prop("checked",true);
@@ -90,16 +90,9 @@ var runOnLoad = function()
                 break;
             
         }
-        // Need to move this section to pc/server specific function
-        
-
+    
     }
 };
-
-$(document).ready(function () {
-    $('.pager-column').css('cursor', 'pointer');
-    Pagers.callback = runOnLoad;
-});
 
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
@@ -127,6 +120,39 @@ $(document).ready(function () {
     $("#edit-device-button1").css("display","none");
     $("#save-device-button").css("display","block");
     }
+    
+$(document).ready(function () {
+    $('.pager-column').css('cursor', 'pointer');
+    Pagers.callback = runOnLoad;
+    
+     // format mac addresses
+     var length = 1;
+$("#mac").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#mac').val($('#mac').val() + ':');
+            }    
+            $("#mac").val($("#mac").val().slice(0, 16));
+        });    
+    });  
+
+ var length = 1;
+$("#mac2").focusin(function (evt) {
+        $(this).keypress(function () {
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $('#mac2').val($('#mac2').val() + ':');
+            }    
+            $("#mac2").val($("#mac2").val().slice(0, 16));
+        });    
+    });  
+});
+
     
 </script>
 
