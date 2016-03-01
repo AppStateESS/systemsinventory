@@ -95,7 +95,7 @@ CREATE TABLE systems_digital_sign (
        device_id integer REFERENCES systems_device(id),
        screen_size character varying,
        hi_def smallint,
-       designer character varying,
+       screen_manufacturer character varying,
        PRIMARY KEY (id)
 );
 

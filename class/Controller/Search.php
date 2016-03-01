@@ -122,8 +122,8 @@ class Search extends \Http\Controller
     }
     
     public function post(\Request $request){
-        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
-      \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
+      //  $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
+      //\Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
         
       $factory = new Factory;
       $search_vars = $request->getVars();

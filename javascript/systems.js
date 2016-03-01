@@ -41,10 +41,30 @@ $(window).load(function() {
             }    
             $("#ipad-mac").val($("#ipad-mac").val().slice(0, 16));
         });    
-    });  
+    });   
+
+
     
 });
 
+ function toggleNetwork(checked){
+        if(checked) {           
+        $('#printer-username').prop("disabled", true);
+        $("#printer-username").removeAttr('required');
+        $("#printer-username-required").css("display", "none");
+        $("#printer-first-name").prop("disabled", true);
+        $("#printer-last-name").prop("disabled", true);
+        $("#printer-phone").prop("disabled", true);
+    }else{
+        $("#printer-username").prop("disabled", false);
+        $("#printer-username").attr("required","");
+        $("#printer-username-required").css("display", "inline");
+        $("#printer-first-name").prop("disabled", false);
+        $("#printer-last-name").prop("disabled", false);
+        $("#printer-phone").prop("disabled", false);
+    }
+}
+    
 function SystemsTab() {
     var $this = this;
     this.active = active_tab;

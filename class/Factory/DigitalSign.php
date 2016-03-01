@@ -15,7 +15,7 @@ class DigitalSign extends SystemDevice
         $digital_sign->setId ($vars['specific_device_id']);
     $digital_sign->setDeviceID($device_id);
     $digital_sign->setScreenSize(filter_input(INPUT_POST, 'screen_size', FILTER_SANITIZE_STRING));
-    $digital_sign->setDesigner(filter_input(INPUT_POST, 'designer', FILTER_SANITIZE_STRING));
+    $digital_sign->setScreenManufacturer(filter_input(INPUT_POST, 'screen_manufacturer', FILTER_SANITIZE_STRING));
     if(isset($vars['hi_def']))
       $digital_sign->setHiDef(true);
 

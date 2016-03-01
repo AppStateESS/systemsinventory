@@ -12,7 +12,7 @@ class DigitalSign extends \Resource
 
   protected $device_id;
   protected $screen_size;
-  protected $designer;
+  protected $screen_manufacturer;
   protected $hi_def;
   protected $table = 'systems_digital_sign';
 
@@ -22,8 +22,8 @@ class DigitalSign extends \Resource
       $this->device_id = new \Variable\Integer(0,'device_id');
       $this->screen_size = new \Variable\TextOnly(null,'screen_size');
       $this->screen_size->allowNull(true);
-      $this->designer = new \Variable\TextOnly(null,'designer');
-      $this->designer->allowNull(true);
+      $this->screen_manufacturer = new \Variable\TextOnly(null,'screen_manufacturer');
+      $this->screen_manufacturer->allowNull(true);
       $this->hi_def = new \Variable\Bool(false,'hi_def');
     }
 
@@ -35,8 +35,8 @@ class DigitalSign extends \Resource
       $this->screen_size->set($screen_size);
     }
 
-    public function setDesigner($designer){
-      $this->designer->set($designer);
+    public function setScreenManufacturer($screen_man){
+      $this->screen_manufacturer->set($screen_man);
     }
 
     public function setHiDef($hd){

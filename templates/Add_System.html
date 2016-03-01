@@ -1,3 +1,4 @@
+
 <!-- BEGIN message -->
 <div class="alert alert-success" style="<?=$display?>"><?=$message?></div>
 <!-- END message -->
@@ -331,6 +332,18 @@
                         <label for="toner_cartridge">Toner</label>
                         <input id="toner" name="toner_cartridge" type="text" class="form-control"  value="" />
                     </div>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="color">Color?</label>
+                            <input id="color" name="color" type="checkbox"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-6" style="margin-left:-15px;">
+                        <div>
+                            <label for="duplex">Duplex?</label>
+                            <input id="duplex" name="duplex" type="checkbox"/>
+                        </div>
+                    </div>
                 </fieldset>
             </div>
             <div class="col-sm-6">
@@ -338,55 +351,38 @@
                     <div class="form-group">
                         <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
                         <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
-                    </div>
+                    </div>                                   
+                    <div class="form-group">
+                        <label for="ip">IP Address</label>
+                        <input id="primary-ip" name="primary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                    </div>     
                     <div class="form-group">
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
                         <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
-                    </div>
-                    <div class="col-sm-6" style="margin-left:-15px;">
-                        <div>
-                            <label for="color">Color?</label>
-                            <input id="color" name="color" type="checkbox"/>
-                        </div>
-                        <div>
-                            <label for="duplex">Duplex?</label>
-                            <input id="duplex" name="duplex" type="checkbox"/>
-                        </div>
-                    </div>
-                    <div class="col-sm-6" style="margin-left:-15px;">
-                        <div>
-                            <label for="network">Network?</label>
-                            <input id="network" name="network" type="checkbox"/>
-                        </div>
-                    </div>
+                    </div>                
+                    <div>
+                        <label for="network">Network?</label>
+                        <input id="network" name="network" type="checkbox" onclick="toggleNetwork(this.checked)"/>
+                    </div>                    
                 </fieldset>
             </div>
         </div>
         <br />
         <div class="row">
-            <legend>User and Location Information</legend>
-            <div class="form-group">
-                <label for="system_usage">System Usage</label>
-                <select name="system-usage">
-                    <option value="0">Select System Usage</option>
-                    <option value="1">Staff</option>
-                    <option value="2">Student</option>
-                    <option value="3">Public</option>
-                </select>
-            </div>
+            <legend>User and Location Information</legend>            
             <div class="col-sm-6">
                 <fieldset>
                     <div class="form-group">
-                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input name="username" required id="username" type="text" class="form-control"  value="" />
+                        <label for="username">Username</label> <i id="printer-username-required" title="Required input" class="required fa fa-asterisk"></i>
+                        <input name="username" id="printer-username" type="text" class="form-control" required='' value="" />
                     </div>
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input name="first_name" id="first-name" type="text" class="form-control" value="" />
+                        <input name="first_name" id="printer-first-name" type="text" class="form-control" value="" />
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input name="last_name" id="last_name" type="text" class="form-control" value="" />
+                        <input name="last_name" id="printer-last-name" type="text" class="form-control" value=""/>
                     </div>
                                         
                 </fieldset>
@@ -399,7 +395,7 @@
                     </div>
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input id="phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
+                        <input id="printer-phone" name="phone" type="tel" class="form-control" placeholder="XXX-XXX-XXXX" value="" />
                     </div>
                     <div class="form-group">
                         <label for="department">Department</label>
@@ -532,7 +528,7 @@
                         <input id="hd" name="hd" type="text" class="form-control" value="" />
                     </div>                    
                     <div class="form-group">
-                        <label for="manufacturer">Manufacturer</label>
+                        <label for="manufacturer">Player Manufacturer</label>
                         <input id="manufacturer" name="manufacturer" type="text" class="form-control"  value="" />
                     </div>    
                     <div class="form-group">
@@ -562,15 +558,16 @@
                     <div class="form-group">
                         <label for="screen_size">Screen Size</label>
                         <input id="screen-size" name="screen_size" type="text" class="form-control"  value="" />
-                    </div>                    
+                    </div> 
+                    <div class="form-group">
+                        <label for="screen_manufacturer">Screen Manufacturer</label>
+                        <input id="screen-manufacturer" name="screen_manufacturer" type="text" class="form-control"  value=""/>
+                    </div>
                     <div class="form-group">
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
                         <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
                     </div>
-                    <div class="form-group">
-                        <label for="designer">Designer</label>
-                        <input id="designer" name="designer" type="text" class="form-control"  value=""/>
-                    </div>
+                    
                     <div class="form-group">
                         <label for="room_number">Room Number</label>
                         <input id="room-number" type="text" name="room_number" class="form-control" value="" />

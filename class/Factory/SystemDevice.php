@@ -185,17 +185,18 @@ EOF;
         $device_details = $result;
         // get the device specific attributes
         $table = SystemDevice::getSystemType($device_type_id);
-        $device_table = $db->addTable($table);
-        $device_table->addFieldConditional('device_id', $system_id);
-        $device_result = $db->select();
-        $device_result = $device_result['0'];
-        // set the specific device id so we can use it to save the device specific info later.
-        $specific_device_id = $device_result['id']; 
-        unset($device_result['id']);
-        $device_result['specific-device-id'] = $specific_device_id;
-        
-        //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
-        $device_details = array_merge($device_details, $device_result);
+        if(!empty($table)){
+            $device_table = $db->addTable($table);
+            $device_table->addFieldConditional('device_id', $system_id);
+            $device_result = $db->select();
+            $device_result = $device_result['0'];
+            // set the specific device id so we can use it to save the device specific info later.
+            $specific_device_id = $device_result['id']; 
+            unset($device_result['id']);
+            $device_result['specific-device-id'] = $specific_device_id;
+            //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
+            $device_details = array_merge($device_details, $device_result);
+        }
         $device_details['device-type-id'] = $device_type_id;
         $purchase_date = $device_details['purchase_date'];
         $device_details["purchase_date"] = date('Y-m-d', $purchase_date);
@@ -269,7 +270,7 @@ EOF;
                 $table = 'systems_digital_sign';
                 break;
             case '7':
-                $table = 'systems_timeclock';
+                $table = NULL;
                 break;
             default:
                 $table = 'systems_pc';
