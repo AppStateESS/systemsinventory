@@ -160,18 +160,22 @@
                 </select>
             </div>
             <div class="col-sm-6">
-                <fieldset>
-                    <div class="form-group">
-                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input name="username" required id="username" type="text" class="form-control"  value="" />
-                    </div>
+                <fieldset> 
+                    <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <div class="form-group input-group"><!-- for search button to work use this <div class="input-group form-group"> -->
+                            <div id="pc-button-group" class="input-group-btn">
+                            <input name="username" required id="pc-username" type="text" class="form-control"  placeholder="Search Username" autocomplete="off" />
+                                <ul class="dropdown-menu" id="pc-username-dropdown">
+                                </ul>
+                            </div>
+                        </div>
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input name="first_name" id="first-name" type="text" class="form-control" value="" />
+                        <input name="first_name" id="pc-first-name" type="text" class="form-control" value="" />
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input name="last_name" id="last-name" type="text" class="form-control" value="" />
+                        <input name="last_name" id="pc-last-name" type="text" class="form-control" value="" />
                     </div>
                     
                 </fieldset>
@@ -208,6 +212,7 @@
             <input class="btn btn-primary" type="submit" value="Save Systems" />
     </form>
 </div>
+
 <div class="ipad-section systems-section">
     <form action="<?=$form_action?>" method="post" class="phpws-form">
         <input name="device_type" type="hidden" value=<?=IPAD?> />
@@ -260,17 +265,21 @@
             </div>
             <div class="col-sm-6">
                 <fieldset>
-                    <div class="form-group">
-                        <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input name="username" required id="username" type="text" class="form-control"  value="" />
+                    <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                    <div class="form-group input-group">
+                        <div id="ipad-button-group" class="input-group-btn">
+                            <input name="username" required id="ipad-username" type="text" class="form-control"  placeholder="Search Username" autocomplete="off" />
+                            <ul class="dropdown-menu" id="ipad-username-dropdown">
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input name="first_name" id="first-name" type="text" class="form-control" value="" />
+                        <input name="first_name" id="ipad-first-name" type="text" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input name="last_name" id="last_name" type="text" class="form-control" value="" />
+                        <input name="last_name" id="ipad-last-name" type="text" class="form-control"/>
                     </div>
                                       
                 </fieldset>
@@ -372,17 +381,21 @@
             <legend>User and Location Information</legend>            
             <div class="col-sm-6">
                 <fieldset>
-                    <div class="form-group">
-                        <label for="username">Username</label> <i id="printer-username-required" title="Required input" class="required fa fa-asterisk"></i>
-                        <input name="username" id="printer-username" type="text" class="form-control" required='' value="" />
+                    <label for="username">Username</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                    <div class="form-group input-group">
+                        <div id="printer-button-group" class="input-group-btn">
+                            <input name="username" required id="printer-username" type="text" class="form-control"  placeholder="Search Username" autocomplete="off" />
+                            <ul class="dropdown-menu" id="printer-username-dropdown">
+                            </ul>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="first_name">First Name</label>
-                        <input name="first_name" id="printer-first-name" type="text" class="form-control" value="" />
+                        <input name="first_name" id="printer-first-name" type="text" class="form-control"/>
                     </div>
                     <div class="form-group">
                         <label for="last_name">Last Name</label>
-                        <input name="last_name" id="printer-last-name" type="text" class="form-control" value=""/>
+                        <input name="last_name" id="printer-last-name" type="text" class="form-control"/>
                     </div>
                                         
                 </fieldset>
@@ -668,3 +681,4 @@
             <input class="btn btn-primary" type="submit" value="Save Systems" />
     </form>
 </div>
+

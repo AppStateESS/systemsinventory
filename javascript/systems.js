@@ -42,10 +42,71 @@ $(window).load(function() {
             $("#ipad-mac").val($("#ipad-mac").val().slice(0, 16));
         });    
     });   
-
-
-    
+/** Can use this keyup search if I can get all users into database or get api to do wildcard search */
+$("input#pc-username").on("keyup", function( event ){
+    var element_id = 'pc';
+    var length = this.value.length;
+    var input_val = $(this).val();
+    $("#pc-username-dropdown").empty();
+    searchInputAction(length,input_val,element_id);
 });
+
+$("input#ipad-username").on("keyup", function( event ){
+    var element_id = 'ipad';
+    var length = this.value.length;
+    var input_val = $(this).val();
+    $("#ipad-username-dropdown").empty();
+    searchInputAction(length,input_val,element_id);
+});
+
+$("input#printer-username").on("keyup", function( event ){
+    var element_id = 'printer';
+    var length = this.value.length;
+    var input_val = $(this).val();
+    $("#printer-username-dropdown").empty();
+    searchInputAction(length,input_val,element_id);
+});
+   
+});
+
+function searchInputAction(length,input_val,element_id){
+    if(length >= 4) {
+        $("#"+element_id+"-button-group").addClass("open");
+        $.getJSON('systemsinventory/system/searchUser/',{
+            'username': input_val}, function(jsondata) {
+            var user_list = "";
+            if(jsondata != null){
+                user_list = '<ul class="dropdown-menu" id="'+element_id+'-username-dropdown">';
+                $.each(jsondata, function(index, d){
+                    var username = d['userName'];
+                    user_list += "<li style='cursor:pointer;' id='"+element_id+"' onclick='systemGetUser(this,\""+element_id+"\")'>"+username+"</li>";
+                    //alert("username"+index+" = "+d['userName']);
+                });
+            }else{
+                user_list = '<ul class="dropdown-menu" id="'+element_id+'-username-dropdown"><li>No user found!<li></ul>';
+            }
+            $("#"+element_id+"-username-dropdown").replaceWith(user_list);
+            
+        });
+    }else{
+        $("#"+element_id+"-button-group").removeClass("open");
+    }    
+}
+
+function systemGetUser(el,element_id){
+    $.getJSON('systemsinventory/system/getUser/',{
+        'username': $(el).text()}, function(jsondata) {
+        if(jsondata != null){
+            $("#"+element_id+"-username").val(jsondata['userName']);
+            $("#"+element_id+"-first-name").val(jsondata['firstName']);
+            $("#"+element_id+"-last-name").val(jsondata['lastName']);
+        }else{
+            // throw error
+            alert("Something went wrong! Contact your systems administrator.");
+        }
+        $("#"+element_id+"-button-group").removeClass("open");
+    });
+}
 
  function toggleNetwork(checked){
         if(checked) {           
@@ -110,6 +171,10 @@ function SystemsTab() {
         this.resetSections();
         $(class_tab_section).show();
         $(class_tab).addClass('active');
+        
+        if(this.active == 'systems-pc' || this.active == 'systems-ipad'){
+            $(".systems-user-section").show();
+        }
     };
 }
 

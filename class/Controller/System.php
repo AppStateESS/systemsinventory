@@ -112,7 +112,10 @@ class System extends \Http\Controller {
 
     protected function getJsonView($data, \Request $request) {
         $vars = $request->getRequestVars();
-        $device_id = $vars['device_id'];
+        if(isset($vars['device_id']))
+            $device_id = $vars['device_id'];
+        if(isset($vars['username']))
+            $username = $vars['username'];
         if(!empty($vars['device_type_id']))
             $device_type_id = $vars['device_type_id'];
         $command = '';
@@ -122,14 +125,16 @@ class System extends \Http\Controller {
         $system_details = '';
         switch ($command) {
             case 'getDetails':
-                $system_result = SDFactory::getSystemDetails($device_id);
+                $result = SDFactory::getSystemDetails($device_id);
                 break;
-            case 'save':
-                $system_result = SDFactory::postDevice($request);
-                $this->postSpecificDevice($request, $device_type_id, $device_id);
+            case 'searchUser':
+                $result = SDFactory::searchUserByUsername($username);
+                break;
+            case 'getUser':
+                $result = SDFactory::getUserByUsername($username);
                 break;
         }
-        $view = new \View\JsonView($system_result);
+        $view = new \View\JsonView($result);
         return $view;
     }
     

@@ -217,6 +217,48 @@ EOF;
         return $device_details;
     }
     
+    public static function getUserByUsername($username){
+       include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, FACULTY_API_URL."/$username");
+        $faculty_result = curl_exec($curl);
+        $faculty_result = json_decode($faculty_result,true);
+        curl_setopt($curl, CURLOPT_URL, STUDENT_API_URL."/$username");
+        $student_result = curl_exec($curl);
+        $student_result = json_decode($student_result, true);
+        $result = NULL;
+        curl_close($curl);
+        if(!empty($faculty_result))
+            return $faculty_result;
+        else
+            return $student_result;
+    }
+    
+    public static function searchUserByUsername($username){
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, FACULTY_API_URL."?USERNAME=$username");
+        $faculty_result = curl_exec($curl);
+        $faculty_result = json_decode($faculty_result,true);
+        curl_setopt($curl, CURLOPT_URL, STUDENT_API_URL."?USERNAME=$username");
+        $student_result = curl_exec($curl);
+        $student_result = json_decode($student_result, true);
+        $result = NULL;
+        if(!empty($faculty_result))
+            $result = $faculty_result;
+        if(!empty($student_result)){
+            if(!empty($result))
+                $result = array_merge($result,$student_result);
+            else
+                $result = $student_result;
+                
+        }
+        curl_close($curl);
+        return $result;
+    }
+    
     public static function getDeviceAttributes($type_id){
         $systems_pc = array("device_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"touch_screen" => "Touch Screen","smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
         $systems_server = array("device_id" => NULL, "os" => "OS","primary_monitor" => "Primary Monitor","secondary_monitor" => "Secondary Monitor","video_card" => "Video Card","server_type" => NULL,"battery_backup" => NULL,"redundant_backup" => NULL,"touch_screen" => "Touch Screen","smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor","system_usage" => NULL,"rotation" => "Rotation","stand" => "Stand","check_in" => "Check In");
