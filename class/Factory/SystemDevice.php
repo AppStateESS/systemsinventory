@@ -256,7 +256,6 @@ EOF;
                 
         }
         curl_close($curl);
-        $result = array_slice($result, 0,20);
         return $result;
     }
     

@@ -76,7 +76,7 @@ function searchInputAction(length,input_val,element_id){
             'username': input_val}, function(jsondata) {
             var user_list = "";
             if(jsondata != null){
-                user_list = '<ul class="dropdown-menu" id="'+element_id+'-username-dropdown">';
+                user_list = '<ul class="dropdown-menu" id="'+element_id+'-username-dropdown" style="height:auto;max-height:200px;overflow-x: hidden;">';
                 $.each(jsondata, function(index, d){
                     var username = d['userName'];
                     user_list += "<li style='cursor:pointer;' id='"+element_id+"' onclick='systemGetUser(this,\""+element_id+"\")'>"+username+"</li>";
