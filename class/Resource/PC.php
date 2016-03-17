@@ -17,7 +17,7 @@ class PC extends \Resource
   protected $os;
   protected $server_type;
   protected $system_usage;
-  protected $batter_backup;
+  protected $battery_backup;
   protected $redundant_backup;
   protected $rotation;
   protected $stand; 

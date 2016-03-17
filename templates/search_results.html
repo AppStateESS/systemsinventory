@@ -3,11 +3,15 @@ var runOnLoad = function()
 {
     $('.pager-row').click(function() {
         $("#edit-device-button").css("display","block");
+        $("#delete-device-button").css("display","block");
         $("#edit-device-button1").css("display","block");
         $("#save-device-button").css("display","none");
         $("#device-save-result").css("display", "none");
+        $("#device-deleted").css("display","none");
+        
         $.getJSON('systemsinventory/system/getDetails/',{
-            'device_id': $(this).data('rowId')}, function(jsondata) {
+            'device_id': $(this).data('rowId'),
+            'row_index': $(this).index() }, function(jsondata) {
             // display data
             var device_type_id = jsondata['device_type_id'];
             var user_data = true;
@@ -114,6 +118,25 @@ var runOnLoad = function()
     }
 };
 
+function deleteDevice(){
+    var result = confirm("Are you sure you want to delete this system?");
+    if(result){
+        var device_id = $("#device-id").val();
+        var row_index = $("#row-index").val();
+        var device_type_id = $("#device-type-id").val();
+        var specific_device_id = $("#specific-device-id").val();
+        row_index++;
+        $.getJSON('systemsinventory/system/delete/',{
+            'device_id': device_id, 'device_type_id': device_type_id, 'specific_device_id': specific_device_id}, function(jsondata) {
+            
+        });
+        
+        $("table tr:eq("+row_index+")").remove();
+        $("#device-modal").modal('hide');
+        $("#device-deleted").css("display","block");
+    }
+}
+
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","apple-id","purchase-date"];
@@ -153,6 +176,7 @@ var runOnLoad = function()
         
     $("#edit-device-button").css("display","none");
     $("#edit-device-button1").css("display","none");
+    $("#delete-device-button").css("display","none");
     $("#save-device-button").css("display","block");
     }
     
@@ -190,8 +214,9 @@ $(document).ready(function () {
 
     
 </script>
-
 <div class="pager-listing" id="device-list" data-rpp="25">
+    <div id="device-deleted" class="alert alert-danger" style="display:none;">Device Deleted!</div>
+
     <div style="text-align:right" class="pager-search"></div>
    
     <table class="table table-striped">
@@ -235,7 +260,10 @@ $(document).ready(function () {
                 <form action="/" method="post" id="edit-device-form" class="phpws-form">
                 <div id="system-body"></div>
                 <div id="user-body"></div>
+                <div class="btn-group">
                 <input id="edit-device-button1" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit" />
+                <input id="delete-device-button" class="btn btn-danger" onclick="deleteDevice()" type="button" value="Delete" />
+                </div>
                 <input id="save-device-button" style="display:none;" class="btn btn-primary" type="submit" value="Save" />
                 </form>
             </div>

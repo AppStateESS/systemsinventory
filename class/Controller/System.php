@@ -114,6 +114,12 @@ class System extends \Http\Controller {
         $vars = $request->getRequestVars();
         if(isset($vars['device_id']))
             $device_id = $vars['device_id'];
+        if(isset($vars['row_index']))
+            $row_index = $vars['row_index'];
+        if(isset($vars['specific_device_id']))
+            $specific_device_id = $vars['specific_device_id'];
+         if(isset($vars['device_type_id']))
+            $specific_device_id = $vars['device_type_id'];
         if(isset($vars['username']))
             $username = $vars['username'];
         if(!empty($vars['device_type_id']))
@@ -125,7 +131,7 @@ class System extends \Http\Controller {
         $system_details = '';
         switch ($command) {
             case 'getDetails':
-                $result = SDFactory::getSystemDetails($device_id);
+                $result = SDFactory::getSystemDetails($device_id,$row_index);
                 break;
             case 'searchUser':
                 $result = SDFactory::searchUserByUsername($username);
@@ -133,6 +139,10 @@ class System extends \Http\Controller {
             case 'getUser':
                 $result = SDFactory::getUserByUsername($username);
                 break;
+            case 'delete':
+                $result = SDFactory::deleteDevice($device_id, $specific_device_id, $device_type_id);
+                break;
+                
         }
         $view = new \View\JsonView($result);
         return $view;

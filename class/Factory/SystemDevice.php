@@ -3,6 +3,12 @@
 namespace systemsinventory\Factory;
 
 use systemsinventory\Resource\SystemDevice as Resource;
+use systemsinventory\Resource\PC as PCResource;
+use systemsinventory\Resource\Camera as CameraResource;
+use systemsinventory\Resource\DigitalSign as DigitalSignResource;
+use systemsinventory\Resource\IPAD as IPADResource;
+use systemsinventory\Resource\Printer as PrinterResource;
+
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
@@ -170,7 +176,7 @@ EOF;
         return $vars;
     }
     
-    public static function getSystemDetails($system_id){
+    public static function getSystemDetails($system_id,$row_index){
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $device_details = array();
         if(empty($system_id)){
@@ -213,8 +219,47 @@ EOF;
         }
         $device_details['departments'] = $dep_optons;
         $device_details['testarray'] = array("test1"=>"test1","test2"=>"test2","test3"=>"test3");
+        $device_details['row_index'] = $row_index;
                 
         return $device_details;
+    }
+    
+    public static function deleteDevice($device_id, $specific_device_id, $device_type_id){
+        $systems_device = new Resource;
+        $systems_device->setId($device_id);
+        if (!parent::loadByID($systems_device)) {
+            throw new \Exception('Cannot load resource. System id not found:' . $device_id);
+        }
+        
+        switch($device_type_id){
+            case '1':
+            case '2':
+                $specific_device = new PCResource;
+                break;
+            case '3':
+                $specific_device = new IPADResource;
+                break;
+            case '4':
+                $specific_device = new PrinterResource;
+                break;
+            case '5':
+                $specific_device = new CameraResource;
+                break;
+            case '6':
+                $specific_device = new DigitalSignResource;
+                break;
+        }
+            
+        $specific_device->setId($specific_device_id);
+        if (!parent::loadByID($specific_device)) {
+            throw new \Exception('Cannot load specific resource. System id not found:' . $specific_device_id);
+        }
+        if(!SystemDevice::deleteResource($specific_device)){
+            throw new \Exception('Cannot delete specific resource. Query failed');
+        }
+        if(!SystemDevice::deleteResource($systems_device)){
+            throw new \Exception('Cannot delete resource. Query failed');
+        }
     }
     
     public static function getUserByUsername($username){
