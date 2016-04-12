@@ -11,7 +11,7 @@ class Printer extends SystemDevice
     $printer = new Resource;
     $vars = $request->getRequestVars();
     
-    if(isset($vars['specific_device_id']))
+    if(!empty($vars['specific_device_id']))
         $printer->setId ($vars['specific_device_id']);
     $printer->setDeviceID($device_id);
     $printer->setTonerCartridge(filter_input(INPUT_POST, 'toner_cartridge', FILTER_SANITIZE_STRING));

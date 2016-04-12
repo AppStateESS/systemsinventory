@@ -73,9 +73,14 @@ class Search extends \ResourceFactory
       else
 	$where .= " AND purchase_date BETWEEN $from_date AND $to_date";      
     }
-    if(!empty($where))
-      $query .= $where;
-
+    if(!empty($where)){
+        $where .= " AND profile=0";
+    }else{
+        $where = " WHERE profile=0";
+    }
+    
+    $query .= $where;
+    
     $result = $db->query($query);
     return $result;
   }

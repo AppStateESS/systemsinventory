@@ -40,9 +40,13 @@ class SystemDevice extends \Resource
     {
       parent::__construct();
       $this->location_id = new \Variable\Integer(0, 'location');
+      $this->location_id->allowNull(true);
       $this->room_number = new \Variable\TextOnly(null, 'room_number');
+      $this->room_number->allowNull(true);
       $this->department_id = new \Variable\Integer(0, 'department');
+      $this->department_id->allowNull(true);
       $this->physical_id = new \Variable\TextOnly(null,'physical_id');
+      $this->physical_id->allowNull(true);
       $this->device_type_id = new \Variable\Integer(0, 'device_type');
       $this->model = new \Variable\TextOnly(null, 'model');
       $this->model->allowNull(true);
@@ -156,7 +160,8 @@ class SystemDevice extends \Resource
     }
     
     public function setPurchaseDate($purchase_date){
-      $this->purchase_date->set(strtotime($purchase_date));
+        if(!empty($purchase_date))
+            $this->purchase_date->set(strtotime($purchase_date));
     }
 
     public function setProfile($profile){

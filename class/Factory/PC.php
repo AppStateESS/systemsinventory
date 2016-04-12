@@ -11,7 +11,7 @@ class PC extends SystemDevice
     $pc = new Resource;
     $vars = $request->getRequestVars();
     
-    if(isset($vars['specific_device_id']))
+    if(!empty($vars['specific_device_id']))
         $pc->setId ($vars['specific_device_id']);
     $pc->setDeviceID($device_id);
     $pc->setPrimaryMonitor(filter_input(INPUT_POST, 'primary_monitor', FILTER_SANITIZE_STRING));

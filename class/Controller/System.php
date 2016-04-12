@@ -25,14 +25,10 @@ class System extends \Http\Controller {
     }
 
     protected function getHtmlView($data, \Request $request) {
-        $command = 'add';
-        if (!empty($data['command']))
-            $command = $data['command'];
+        if (empty($data['command']))
+            $data['command'] = 'add';
         
-        if($command == 'edit')
-            $content = SDFactory::editForm($request, $command);
-        else
-            $content = SDFactory::form($request, 'system-pc', $command);
+        $content = SDFactory::form($request, 'system-pc', $data);
         
         $view = new \View\HtmlView($content);
         return $view;
@@ -43,7 +39,9 @@ class System extends \Http\Controller {
         $sdfactory = new SDFactory;
         $vars = $request->getRequestVars();
         $isJSON = false;
-        if(isset($vars['device_id']))
+        $data['command'] = $request->shiftCommand();
+        
+        if(!empty($vars['device_id']) && empty($vars['profile_name']))
             $isJSON = true;        
         $device_type = PC;
         
@@ -56,7 +54,7 @@ class System extends \Http\Controller {
         
         $this->postSpecificDevice($request, $device_type, $device_id);
         
-        $data['command'] = 'success';
+        $data['action'] = 'success';
         if($isJSON){
             $view = new \View\JsonView(array('success'=> TRUE));
         }else{
@@ -112,18 +110,6 @@ class System extends \Http\Controller {
 
     protected function getJsonView($data, \Request $request) {
         $vars = $request->getRequestVars();
-        if(isset($vars['device_id']))
-            $device_id = $vars['device_id'];
-        if(isset($vars['row_index']))
-            $row_index = $vars['row_index'];
-        if(isset($vars['specific_device_id']))
-            $specific_device_id = $vars['specific_device_id'];
-         if(isset($vars['device_type_id']))
-            $specific_device_id = $vars['device_type_id'];
-        if(isset($vars['username']))
-            $username = $vars['username'];
-        if(!empty($vars['device_type_id']))
-            $device_type_id = $vars['device_type_id'];
         $command = '';
         if(!empty($data['command']))
             $command = $data['command'];
@@ -131,18 +117,25 @@ class System extends \Http\Controller {
         $system_details = '';
         switch ($command) {
             case 'getDetails':
-                $result = SDFactory::getSystemDetails($device_id,$row_index);
+                $result = SDFactory::getSystemDetails($vars['device_id'],$vars['row_index']);
                 break;
             case 'searchUser':
-                $result = SDFactory::searchUserByUsername($username);
+                $result = SDFactory::searchUserByUsername($vars['username']);
                 break;
             case 'getUser':
-                $result = SDFactory::getUserByUsername($username);
+                $result = SDFactory::getUserByUsername($vars['username']);
+                break;
+            case 'getProfile':
+                $result = SDFactory::getProfile($vars['profile_id']);
+                break;
+            case 'searchPhysicalID':
+                $result = SDFactory::searchPhysicalID($vars['physical_id']);
                 break;
             case 'delete':
-                $result = SDFactory::deleteDevice($device_id, $specific_device_id, $device_type_id);
+                $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
                 break;
-                
+            default:
+                throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
         }
         $view = new \View\JsonView($result);
         return $view;

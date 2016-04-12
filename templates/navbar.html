@@ -21,8 +21,12 @@
       <!-- BEGIN admin_links -->
       <?php if ($is_deity): ?>
       <li class="dropdown">
-        <a href="systemsinventory/settings" class=""><i class="fa fa-cog"></i> Settings</a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>
+        <ul class="dropdown-menu">
+            <li><a href="systemsinventory/system/editProfiles">Edit Profiles</a></li>
+        </ul>
       </li>
+      
       <?php endif; ?>
       <!-- END admin_links -->
       <li>

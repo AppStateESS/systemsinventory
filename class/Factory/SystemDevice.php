@@ -16,26 +16,33 @@ use systemsinventory\Resource\Printer as PrinterResource;
 class SystemDevice extends \ResourceFactory
 {
 
-  public static function form(\Request $request, $active_tab, $command)
+  public static function form(\Request $request, $active_tab, $data)
     {
       include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
       $vars = array();
       $req_vars = $request->getRequestVars();
       $vars['title'] = '';
       $system_id = NULL;
-      if(!empty($req_vars['system_id']) && $command == 'edit'){
-          $system_id = $req_vars['system_id'];
-          $vars['title'] = "Edit ";
+      $command = $data['command'];
+      $action = NULL;
+      if(!empty($data['action']))
+          $action = $data['action'];
+      
+      if($command == "editProfiles"){
+          $message = "Profile Saved!";
+          $template_name = 'Edit_Profile.html';
+      }else{
+          $message = "System Saved!";
+          $template_name = 'Add_System.html';
       }
-      $vars = SystemDevice::initSystem($vars, $system_id);
-
+      
       javascript('jquery');
       \Form::requiredScript();
      
       if (!in_array($active_tab, array('systems-pc', 'ipad', 'printer','camera','digital-sign','time-clock'))) {
 	$active_tab = 'systems-pc';
       }
-      
+
       $js_string = <<<EOF
 	  <script type='text/javascript'>var active_tab = '$active_tab';</script> 
 EOF;
@@ -44,8 +51,8 @@ EOF;
       \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
 
 
-      if($command == 'success'){
-	$vars['message'] = "Device Saved!";
+      if($action == 'success'){
+	$vars['message'] = $message;
 	$vars['display'] = 'display: block;';
       }else{
 	$vars['message'] = '';
@@ -64,54 +71,20 @@ EOF;
           $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
       }
       $vars['departments'] = $dep_optons;
-      $command = 'add';
-      
+      $system_profiles = SystemDevice::getSystemProfiles();
+      $profile_optons = $printer_profile_options = '<option value="1">Select Profile</opton>';
+      foreach($system_profiles as $val){
+          if($val['device_type_id'] == PC){
+              $profile_optons .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
+          }else{
+              $printer_profile_options .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
+          }
+      }
+      $vars['profiles'] = $profile_optons;
+      $vars['printer_profiles'] = $printer_profile_options;
       $vars['form_action'] = "./systemsinventory/system/".$command;
       $template = new \Template($vars);
-      $template->setModuleTemplate('systemsinventory', 'Add_System.html');
-      return $template->get();
-    }
-    
-    public static function editForm(\Request $request, $command)
-    {
-      include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-      $vars = array();
-      $req_vars = $request->getRequestVars();
-      $vars['title'] = 'Edit ';
-      $system_id = NULL;
-      if(!empty($req_vars['system_id'])){
-          $system_id = $req_vars['system_id'];
-      }else{
-          throw new Exception("Invalid system id in system edit.");
-      }
-      
-      $vars = SystemDevice::initSystem($vars, $system_id);
-
-      if($command == 'success'){
-	$vars['message'] = "Device Saved!";
-	$vars['display'] = 'display: block;';
-      }else{
-	$vars['message'] = '';
-	$vars['display'] = 'display: none;';
-      }
-      
-      $system_locations = SystemDevice::getSystemLocations();
-      $location_options = '<option value="1">Select Location</opton>';
-      foreach($system_locations as $key=>$val){
-          $location_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
-      }
-      $vars['locations'] = $location_options;
-      $system_dep = SystemDevice::getSystemDepartments();
-      $dep_optons = '<option value="1">Select Department</opton>';
-      foreach($system_dep as $val){
-          $dep_optons .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
-      }
-      $vars['departments'] = $dep_optons;
-      $command = 'add';
-      
-      $vars['form_action'] = "./systemsinventory/system/".$command;
-      $template = new \Template($vars);
-      $template->setModuleTemplate('systemsinventory', 'Add_System.html');
+      $template->setModuleTemplate('systemsinventory', $template_name);
       return $template->get();
     }
 
@@ -163,8 +136,10 @@ EOF;
           $system_device->setManufacturer(filter_input(INPUT_POST, 'manufacturer', FILTER_SANITIZE_STRING));
       $system_device->setVlan(filter_input(INPUT_POST, 'vlan', FILTER_SANITIZE_NUMBER_INT));
       $system_device->setPurchaseDate(filter_input(INPUT_POST, 'purchase_date', FILTER_SANITIZE_STRING));
-      $system_device->setProfile(filter_input(INPUT_POST, 'profile', FILTER_SANITIZE_STRING));
-      $system_device->setProfileName(filter_input(INPUT_POST, 'profile_name', FILTER_SANITIZE_STRING));
+      if(!empty($vars['profile_name'])){
+          $system_device->setProfile(TRUE);
+          $system_device->setProfileName(filter_input(INPUT_POST, 'profile_name', FILTER_SANITIZE_STRING));
+      }
       $system_device->setNotes(filter_input(INPUT_POST, 'system_notes', FILTER_SANITIZE_STRING));
 
       self::saveResource($system_device);
@@ -222,6 +197,44 @@ EOF;
         $device_details['row_index'] = $row_index;
                 
         return $device_details;
+    }
+    
+    public static function getProfile($profile_id){
+        if(empty($profile_id)){
+            throw new Exception("System profile id empty.");
+        }
+        $db = \Database::getDB();
+        $system_table = $db->addTable("systems_device");
+        $system_table->addFieldConditional('id', $profile_id);
+        $result = $db->select();
+        $profile_result = $result['0'];
+        $device_type_id = $profile_result['device_type_id'];
+        $profile_result['device-type-id'] = $device_type_id;
+        $device_id = $profile_result['id'];
+        $table = SystemDevice::getSystemType($device_type_id);
+        if(!empty($table)){
+            $device_table = $db->addTable($table);
+            $device_table->addFieldConditional('device_id', $device_id);
+            $result = $db->select();
+            $result = $result['0'];
+            $specific_device_id = $result['id'];
+            unset($result['id']);
+            $profile_result = array_merge($profile_result, $result);
+            $profile_result['specific-device-id'] = $specific_device_id;
+        }
+        return $profile_result;
+    }
+    
+    public static function searchPhysicalID($physical_id){
+        $db = \Database::getDB();
+        $system_table = $db->addTable("systems_device");
+        $system_table->addFieldConditional('physical_id', $physical_id);
+        $search_result = $db->select();
+        $result = array('exists'=>false);
+        $search_result = $search_result['0'];
+        if(!empty($search_result['id']))
+            $result['exists'] = true;
+        return $result;
     }
     
     public static function deleteDevice($device_id, $specific_device_id, $device_type_id){
@@ -415,6 +428,19 @@ EOF;
       $tbl = $db->addTable('systems_department');
       $tbl->addField('id');
       $tbl->addField('description');
+      $result = $db->select();
+      if(empty($result))
+          return 0; //should be exception
+      return $result;
+  }
+  
+  public static function getSystemProfiles(){
+      $db = \Database::getDB();
+      $tbl = $db->addTable('systems_device');
+      $tbl->addFieldConditional('profile', 1);
+      $tbl->addField('id');
+      $tbl->addField('profile_name');
+      $tbl->addField('device_type_id');
       $result = $db->select();
       if(empty($result))
           return 0; //should be exception

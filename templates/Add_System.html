@@ -1,6 +1,7 @@
 
 <!-- BEGIN message -->
 <div class="alert alert-success" style="<?=$display?>"><?=$message?></div>
+<div class="alert alert-danger" id="add-system-error" style="display:none;"></div>
 <!-- END message -->
 <ul class="nav nav-tabs" style="margin-top:1em">
     <li role="presentation" class="systems-pc-tab systems-tab"><a style="cursor:pointer">PC/Server</a></li>
@@ -16,8 +17,8 @@
             <legend>System Information</legend>
             <div class="form-group">
                 <label for="system_profile">System Profile</label>
-                <select name="system-profile">
-                    <option value="not-selected">Select System Profile</option>
+                <select id="system-profile" name="system-profile">
+                    <?=$profiles?>
                 </select>
             </div>
             <div class="col-sm-6">
@@ -323,8 +324,8 @@
             <legend>Printer Information</legend>
             <div class="form-group">
                 <label for="system_profile">System Profile</label>
-                <select name="system-profile">
-                    <option value="not-selected">Select Printer Profile</option>
+                <select id="printer-profile" name="system-profile">
+                    <?=$printer_profiles?>
                 </select>
             </div>
             <div class="col-sm-6">
@@ -335,22 +336,22 @@
                     </div>
                     <div class="form-group">
                         <label for="model">Model <i title="Required input" class="required fa fa-asterisk"></i></label>
-                        <input required name="model" id="model" type="text" class="form-control"  value="" />
+                        <input required name="model" id="printer-model" type="text" class="form-control"  value="" />
                     </div>
                     <div class="form-group">
                         <label for="toner_cartridge">Toner</label>
-                        <input id="toner" name="toner_cartridge" type="text" class="form-control"  value="" />
+                        <input id="printer-toner-cartridge" name="toner_cartridge" type="text" class="form-control"  value="" />
                     </div>
                     <div class="col-sm-6" style="margin-left:-15px;">
                         <div>
                             <label for="color">Color?</label>
-                            <input id="color" name="color" type="checkbox"/>
+                            <input id="printer-color" name="color" type="checkbox"/>
                         </div>
                     </div>
                     <div class="col-sm-6" style="margin-left:-15px;">
                         <div>
                             <label for="duplex">Duplex?</label>
-                            <input id="duplex" name="duplex" type="checkbox"/>
+                            <input id="printer-duplex" name="duplex" type="checkbox"/>
                         </div>
                     </div>
                 </fieldset>
@@ -359,7 +360,7 @@
                 <fieldset>
                     <div class="form-group">
                         <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
+                        <input id="printer-manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
                     </div>                                   
                     <div class="form-group">
                         <label for="ip">IP Address</label>
@@ -371,7 +372,7 @@
                     </div>                
                     <div>
                         <label for="network">Network?</label>
-                        <input id="network" name="network" type="checkbox" onclick="toggleNetwork(this.checked)"/>
+                        <input id="printer-network" name="network" type="checkbox" onclick="toggleNetwork(this.checked)"/>
                     </div>                    
                 </fieldset>
             </div>
