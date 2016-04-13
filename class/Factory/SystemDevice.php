@@ -73,11 +73,13 @@ EOF;
       $vars['departments'] = $dep_optons;
       $system_profiles = SystemDevice::getSystemProfiles();
       $profile_optons = $printer_profile_options = '<option value="1">Select Profile</opton>';
-      foreach($system_profiles as $val){
-          if($val['device_type_id'] == PC){
-              $profile_optons .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
-          }else{
-              $printer_profile_options .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
+      if(!empty($system_frofiles)){
+          foreach($system_profiles as $val){
+              if($val['device_type_id'] == PC){
+                  $profile_optons .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
+              }else{
+                  $printer_profile_options .= '<option value="'.$val['id'].'">'.$val['profile_name'].'</option>';
+              }
           }
       }
       $vars['profiles'] = $profile_optons;
