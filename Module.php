@@ -21,14 +21,12 @@ class Module extends \Module implements \SettingDefaults
       
         if (\Current_User::allow('sysinventory')) {
 
-            switch ($cmd) {
-                case 'search':
-		  $search = new \systemsinventory\Controller\Search($this);
-                    return $search;
-                    
+            switch ($cmd) {                
                 case 'system':
-                    $system = new \systemsinventory\Controller\System($this);
-                    return $system;
+                    if(\Current_User::allow('systemsinventory', 'edit')){
+                            $system = new \systemsinventory\Controller\System($this);
+                            return $system;
+                    }
 
                 default:
                     $search = new \systemsinventory\Controller\Search($this);

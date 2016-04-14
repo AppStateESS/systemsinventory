@@ -102,6 +102,16 @@ class System extends \Http\Controller {
         $nav_vars['is_deity'] = \Current_user::isDeity();
         $nav_vars['logout_uri'] = $auth->logout_link;
         $nav_vars['username'] = \Current_User::getDisplayName();
+        if(\Current_User::allow('systemsinventory', 'edit'))
+                $nav_vars['add'] = '<a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a>';
+        if(\Current_User::allow('systemsinventory', 'view'))
+                $nav_vars['search'] = '<a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a>';
+        if(\Current_User::allow('systemsinventory', 'reports'))
+                $nav_vars['reports'] = '<a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a>';
+        if(\Current_User::allow('systemsinventory', 'settings'))
+                $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
+
+
         $nav_bar = new \Template($nav_vars);
         $nav_bar->setModuleTemplate('systemsinventory', 'navbar.html');
         $content = $nav_bar->get();

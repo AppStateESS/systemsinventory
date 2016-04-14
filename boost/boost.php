@@ -5,7 +5,7 @@
  */
 
 $proper_name  = 'Systems Inventory';
-$version      = '1.0.0';
+$version      = '1.0.1';
 $version_http = null;
 $import_sql   = true;
 $about        = false;

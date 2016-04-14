@@ -6,14 +6,14 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">Systems Inventory</a>
+    <a class="navbar-brand" href="./systemsinventory">Systems Inventory</a>
   </div>
 <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse">
     <ul class="nav navbar-nav">
-      <li><a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a></li>
-      <li><a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a></li>
-      <li><a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a></li>
+      <li><?php if(isset($add))echo $add;?></li>
+      <li><?php if(isset($search))echo $search;?></li>
+      <li><?php if(isset($reports))echo $reports;?></li>
     </ul>
 
 
@@ -21,7 +21,7 @@
       <!-- BEGIN admin_links -->
       <?php if ($is_deity): ?>
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>
+        <?php if(isset($settings))echo $settings;?>
         <ul class="dropdown-menu">
             <li><a href="systemsinventory/system/editProfiles">Edit Profiles</a></li>
         </ul>
