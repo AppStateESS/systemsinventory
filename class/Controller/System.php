@@ -28,7 +28,10 @@ class System extends \Http\Controller {
         if (empty($data['command']))
             $data['command'] = 'add';
         
-        $content = SDFactory::form($request, 'system-pc', $data);
+        if($data['command'] == 'editPermissions')
+            $content = SDFactory::UserPermissionsView($data, $request);
+        else
+            $content = SDFactory::form($request, 'system-pc', $data);
         
         $view = new \View\HtmlView($content);
         return $view;
@@ -143,7 +146,7 @@ class System extends \Http\Controller {
                 break;
             case 'delete':
                 $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
-                break;
+                break;            
             default:
                 throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
         }

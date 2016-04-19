@@ -111,8 +111,8 @@ CREATE TABLE systems_printer (
 
 CREATE TABLE systems_permission (
        id serial,
-       name varchar(32) not null,
-       full_name text,
+       user_id integer,
+       departments text,
        PRIMARY KEY (id)
 );
 

@@ -1,0 +1,51 @@
+<script type='text/javascript' src='//localhost/systems/mod/systemsinventory/javascript/bootstrap-multiselect.js'></script>
+<link rel='stylesheet' href='//localhost/systems/mod/systemsinventory/css/bootstrap-multiselect.css'/>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#users-multiselect').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            nonSelectedText: 'Select Users',
+            buttonWidth: '175px',
+            maxHeight: 200
+        });
+        
+        $('#departments-multiselect').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: true,
+            nonSelectedText: 'Select Departments',
+            buttonWidth: '175px',
+            maxHeight: 200
+        });
+    });
+</script>
+<div id="quick-add-permissions" class="alert alert-info">
+    <h4>Quick Edit</h4>
+<form action="./systemsinventory/settings/editPermissions" id="add-permissions-form" method="post">
+    <select id="users-multiselect" name="users_multiselect[]" multiple="multiple"><?=$users?></select>
+    <select id="departments-multiselect" name="department_multiselect[]" multiple="multiple"><?=$departments?></select>
+    <button type="submit" class="btn btn-primary">Save Permissions</button>
+</form>
+</div>
+<div class="pager-listing" id="user-permissions-list" data-rpp="10">
+    <div style="text-align:right" class="pager-search"></div>
+    <table class="table table-striped">
+        <thead class="pager-head">
+            <tr>
+                <th class="pager-header display_name"></th>
+                <th class="pager-header username"></th>
+                <th class="pager-header permissions"></th>
+            </tr>
+        </thead>
+        <tbody class="pager-body">
+            <tr class="pager-row">
+                <td class="pager-column display_name"></td>
+                <td class="pager-column username"></td>
+                <td class="pager-column permissions"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page-list pagination pagination-centered"></div>
+    <div class="page-limit"></div>
+</div>
+

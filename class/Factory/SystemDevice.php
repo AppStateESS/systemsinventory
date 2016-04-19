@@ -276,7 +276,7 @@ EOF;
             throw new \Exception('Cannot delete resource. Query failed');
         }
     }
-    
+        
     public static function getUserByUsername($username){
        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
         $curl = curl_init();
@@ -352,7 +352,7 @@ EOF;
         }
         return $attr;
     }
-    
+         
     public static function getSystemType($type_id){
         switch($type_id){
             case '1':
@@ -379,8 +379,8 @@ EOF;
         }
         return $table;
     }
-    
-     public static function getLocationByID($location_id){
+     
+  public static function getLocationByID($location_id){
         $db = \Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('description');
