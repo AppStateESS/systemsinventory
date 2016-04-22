@@ -25,9 +25,13 @@ class Settings extends \Http\Controller {
     }
 
     protected function getHtmlView($data, \Request $request) {
+        $vars = $request->getRequestVars();
         if (empty($data['command']))
             $data['command'] = 'editPermissions';
         
+        if(isset($vars['action']) && $vars['action'] == 'delete'){
+            SettingsFactory::deletePermissions($vars['user_id']);
+        }
         $content = SettingsFactory::UserPermissionsView($data, $request);
         
         $view = new \View\HtmlView($content);
@@ -74,6 +78,6 @@ class Settings extends \Http\Controller {
         return $view;
     }
     
-    
+   
 
 }

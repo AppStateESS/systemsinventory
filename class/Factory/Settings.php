@@ -30,7 +30,7 @@ class Settings extends \ResourceFactory
         \Pager::prepare();
         $template = new \Template;
         $template = new \Template($vars);
-        $template->setModuleTemplate('systemsinventory', 'User_List.html');
+        $template->setModuleTemplate('systemsinventory', 'Edit_Settings.html');
         return $template->get();
     }
     
@@ -56,13 +56,17 @@ class Settings extends \ResourceFactory
             $result = $db->select();
             if(!empty($result)){
                 $permitted_dept = explode(':',$result['0']['departments']);
+                foreach($permitted_dept as $dept){
+                    if(!empty($permissions))
+                        $permissions .= ', ';
+                    $permissions .= $departments[$dept];
+                }
+            }else{
+                $permissions = "All Departments!";
             }
-            foreach($permitted_dept as $dept){
-                if(!empty($permissions))
-                    $permissions .= ', ';
-                $permissions .= $departments[$dept];
-            }
-            $rows[] = array('display_name'=>$user['display_name'],'username'=>$user['username'],'permissions'=>$permissions);
+            $action = '<a style="cursor:pointer" onclick="return confirm(\'Are you sure you want to delete this users permissions?\')" href="./systemsinventory/settings/editPermissions/?action=delete&user_id='.$user_id.'")>
+                <span class="glyphicon glyphicon-trash" title="Delete Restrictions"></span></a>';
+            $rows[] = array('display_name'=>$user['display_name'],'username'=>$user['username'],'permissions'=>$permissions,'action'=>$action);
         }
         $pager = new \Pager;
         $pager->setId('user-permissions-list');
@@ -81,20 +85,28 @@ class Settings extends \ResourceFactory
       $tbl->addField('user_id');
       $tbl->addField('id');
       foreach($users as $user){
-          $user_id = $user;
-          $tbl->addFieldConditional('user_id', $user_id, '=');
+          $db->clearConditional();
+          $tbl->addFieldConditional('user_id', $user, '=');
           $result = $db->select();
           $resource = new Resource;
           $resource->setDepartments($departments);
-          $resource->setUserID($user_id);
+          $resource->setUserID($user);
           if(!empty($result)){
               $id = $result['0']['id'];
               $resource->setId($id);
           }
           $resource->save();
-      }
+      }   
       
   }
+  
+  public static function deletePermissions($user_id){
+          $db = \Database::getDB();
+          $tbl = $db->addTable('systems_permission');
+          $tbl->addFieldConditional('user_id', $user_id,'=');
+          return $db->delete();
+          
+      }
   
   private static function getPHPWSUsers(){
       $db = \Database::getDB();
