@@ -3,29 +3,27 @@
 /**
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
+
 namespace systemsinventory;
 
-class Module extends \Module implements \SettingDefaults
-{
+class Module extends \Module implements \SettingDefaults {
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
         $this->setTitle('sysinventory');
         $this->setProperName('Systems Inventory');
     }
-    
-    public function getController(\Request $request)
-    {
+
+    public function getController(\Request $request) {
         $cmd = $request->shiftCommand();
-      
+
         if (\Current_User::allow('sysinventory')) {
 
-            switch ($cmd) {                
+            switch ($cmd) {
                 case 'system':
-                    if(\Current_User::allow('systemsinventory', 'edit')){
-                            $system = new \systemsinventory\Controller\System($this);
-                            return $system;
+                    if (\Current_User::allow('systemsinventory', 'edit')) {
+                        $system = new \systemsinventory\Controller\System($this);
+                        return $system;
                     }
                 case 'settings':
                     $settings = new \systemsinventory\Controller\Settings($this);
@@ -37,17 +35,21 @@ class Module extends \Module implements \SettingDefaults
         } else {
             \Current_User::requireLogin();
         }
-      
     }
 
-    public function runTime(\Request $request)
-    {
-      if(\Current_User::allow('sysinventory'))
-	\systemsinventory\Controller\System::loadAdminBar();
+    public function runTime(\Request $request) {
+        if (\Current_User::allow('sysinventory'))
+            \systemsinventory\Controller\System::loadAdminBar();
+
+        if (\PHPWS_Core::atHome() && \Current_User::isLogged()) {
+            $path = $_SERVER['SCRIPT_NAME'] . '?module=systemsinventory';
+            header('HTTP/1.1 303 See Other');
+            header("Location: $path");
+            exit();
+        }
     }
 
-    public function getSettingDefaults()
-    {
+    public function getSettingDefaults() {
         // ContactInfo
         $settings['building'] = null;
         $settings['room_number'] = null;
@@ -79,5 +81,5 @@ class Module extends \Module implements \SettingDefaults
     }
 
 }
- 
+
 ?>
