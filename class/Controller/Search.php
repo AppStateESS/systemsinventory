@@ -122,19 +122,21 @@ class Search extends \Http\Controller
     }
     
     public function post(\Request $request){
-      //  $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
-      //\Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
+        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
+        $source_http = PHPWS_SOURCE_HTTP;
+        \Layout::addJSHeader("<script type='text/javascript'>var source_http = '$source_http';</script>");
+        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
         
-      $factory = new Factory;
-      $search_vars = $request->getVars();
-      $_SESSION['system_search_vars'] = $search_vars['vars'];
-      \Pager::prepare();
-      $template = new \Template;
-      $template->setModuleTemplate('systemsinventory', 'search_results.html');
-
-      $view = new \View\HtmlView($template->get());
-      $response = new \Response($view);
-      return $response;
+        $factory = new Factory;
+        $search_vars = $request->getVars();
+        $_SESSION['system_search_vars'] = $search_vars['vars'];
+        \Pager::prepare();
+        $template = new \Template;
+        $template->setModuleTemplate('systemsinventory', 'search_results.html');
+        
+        $view = new \View\HtmlView($template->get());
+        $response = new \Response($view);
+        return $response;
     }
     
 }

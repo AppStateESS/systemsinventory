@@ -2,13 +2,18 @@ var runOnLoad = function()
 {
     $('.pager-row').click(function() {
         $("#edit-device-button").css("display","block");
+        $("#delete-device-button").css("display","block");
         $("#edit-device-button1").css("display","block");
         $("#save-device-button").css("display","none");
         $("#device-save-result").css("display", "none");
+        $("#device-deleted").css("display","none");
+        
         $.getJSON('systemsinventory/system/getDetails/',{
-            'device_id': $(this).data('rowId')}, function(jsondata) {
+            'device_id': $(this).data('rowId'),
+            'row_index': $(this).index() }, function(jsondata) {
             // display data
             var device_type_id = jsondata['device_type_id'];
+            var user_data = true;
             switch(device_type_id){
                 case 3:
                     device_template = "Edit_Ipad.html";
@@ -18,22 +23,31 @@ var runOnLoad = function()
                     break;
                 case 5:
                     device_template = "Edit_Camera.html";
+                    user_data = false;
                     break;    
                 case 6:
-                    device_template = "Edit_DigitalSign.html";
+                    device_template = "Edit_Digital_Sign.html";
+                    user_data = false;
                     break;    
                 case 7:
-                    device_template = "Edit_TimeClock.html";
+                    device_template = "Edit_Time_Clock.html";
+                    user_data = false;
                     break;    
                 default:
                     var device_template = "Edit_PC.html";
                     break;
                             
             }
-            $("#system-body").load("./mod/systemsinventory/templates/"+device_template);
-            $("#user-body").load("./mod/systemsinventory/templates/Edit_User.html", function(){
-                loadSystemDetails(jsondata,device_type_id);
-            });
+            if(user_data){
+                $("#system-body").load(source_http + "mod/systemsinventory/templates/"+device_template);
+                $("#user-body").load(source_http + "mod/systemsinventory/templates/Edit_User.html", function(){
+                    loadSystemDetails(jsondata,device_type_id);
+                });
+            }else{
+                $("#system-body").load(source_http + "mod/systemsinventory/templates/"+device_template, function(){
+                    loadSystemDetails(jsondata,device_type_id);
+                });
+            }
             $("#device-modal").modal('show');
 
         });
@@ -55,6 +69,10 @@ var runOnLoad = function()
             }
             if(index == "hd_size")
                 $("#hd").val(d);
+            
+            if(index == "id")
+                $("#device-id").val(d);
+
             if(d != undefined || d != null)
                 $("#"+element_id).val(d);
         });
@@ -80,8 +98,14 @@ var runOnLoad = function()
                 $("#network").prop("checked",jsondata['network']);
                 break;
             case 5:
+                 $("#sd-support").prop("checked",jsondata['sd_support']);
+                $("#hi-def").prop("checked",jsondata['hi_def']);
+                $("#exterior").prop("checked",jsondata['exterior']);
+                $("#covert").prop("checked",jsondata['covert']);
+                $("#is-on").prop("checked",jsondata['is_on']);
                 break;    
             case 6:
+                $("#hi-def").prop("checked",jsondata['hi_def']);
                 break;    
             case 7:
                 break;    
@@ -93,10 +117,32 @@ var runOnLoad = function()
     }
 };
 
+function deleteDevice(){
+    var result = confirm("Are you sure you want to delete this system?");
+    if(result){
+        var device_id = $("#device-id").val();
+        var row_index = $("#row-index").val();
+        var device_type_id = $("#device-type-id").val();
+        var specific_device_id = $("#specific-device-id").val();
+        row_index++;
+        $.getJSON('systemsinventory/system/delete/',{
+            'device_id': device_id, 'device_type_id': device_type_id, 'specific_device_id': specific_device_id}, function(jsondata) {
+            
+        });
+        
+        $("table tr:eq("+row_index+")").remove();
+        $("#device-modal").modal('hide');
+        $("#device-deleted").css("display","block");
+    }
+}
+
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","apple-id","purchase-date"];
        var printer_attributes = ["physical-id","model","toner","manufacturer","purchase-date","color","duplex","network"];
+       var camera_attributes = ["physical-id","model","megapixels","manufacturer","purchase-date","room-number","department","location","notes","sd-support","exterior","covert","is-on"];
+       var digital_sign_attributes = ["physical-id","model","processor","ram","hd","manufacturer","mac","primary-ip","screen-size","screen-manufacturer","purchase-date","room-number","department","location","vlan","hi-def","notes"];
+       var time_clock_attributes = ["physical-id","model","manufacturer","purchase-date","room-number","department","location","vlan","notes"];
        var user_attributes = ["system-usage","username","first-name","last-name","department","location","room-number","phone","notes"];
        
        $.each(pc_attributes, function(index, d){
@@ -111,44 +157,26 @@ var runOnLoad = function()
         $("#"+d).prop("disabled", false);
     });
     
-    $.each(user_attributes, function(index, d){
+    $.each(camera_attributes, function(index, d){
         $("#"+d).prop("disabled", false);
     });
     
+    $.each(digital_sign_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $.each(time_clock_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+    
+    $.each(user_attributes, function(index, d){
+        $("#"+d).prop("disabled", false);
+    });
+        
     $("#edit-device-button").css("display","none");
     $("#edit-device-button1").css("display","none");
+    $("#delete-device-button").css("display","none");
     $("#save-device-button").css("display","block");
     }
     
-$(document).ready(function () {
-    $('.pager-column').css('cursor', 'pointer');
-    Pagers.callback = runOnLoad;
-    
-     // format mac addresses
-     var length = 1;
-$("#mac").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac').val($('#mac').val() + ':');
-            }    
-            $("#mac").val($("#mac").val().slice(0, 16));
-        });    
-    });  
-
- var length = 1;
-$("#mac2").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac2').val($('#mac2').val() + ':');
-            }    
-            $("#mac2").val($("#mac2").val().slice(0, 16));
-        });    
-    });  
-});
 

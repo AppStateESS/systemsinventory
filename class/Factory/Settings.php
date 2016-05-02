@@ -15,6 +15,9 @@ class Settings extends \ResourceFactory
         $departments = SystemDevice::getSystemDepartments();
         $dep_options = '';
  
+        $vars['js'] = "<script type='text/javascript' src='".PHPWS_SOURCE_HTTP."mod/systemsinventory/javascript/bootstrap-multiselect.js'></script>";
+        $vars['css'] = "<link rel='stylesheet' href='".PHPWS_SOURCE_HTTP."mod/systemsinventory/css/bootstrap-multiselect.css'/>";
+
         foreach($departments as $val){
             if($val['id'] != 1)
                 $dep_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
