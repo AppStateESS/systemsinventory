@@ -40,8 +40,8 @@ var runOnLoad = function()
                             
             }
             if(user_data){
-                $("#system-body").load("./mod/systemsinventory/templates/"+device_template);
-                $("#user-body").load("./mod/systemsinventory/templates/Edit_User.html", function(){
+                $("#system-body").load("{source_http}mod/systemsinventory/templates/"+device_template);
+                $("#user-body").load("{source_http}mod/systemsinventory/templates/Edit_User.html", function(){
                     loadSystemDetails(jsondata,device_type_id);
                 });
             }else{
