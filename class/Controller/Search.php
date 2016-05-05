@@ -57,6 +57,13 @@ class Search extends \Http\Controller {
             else
                 $conditional = new \Database\Conditional($db, $conditional, $cond, 'AND');
         }
+        if ($search_vars['location']) {
+            $tmp_cond = new \Database\Conditional($db, 'location_id', $search_vars['location'], '=');
+            if (empty($conditional))
+                $conditional = $tmp_cond;
+            else
+                $conditional = new \Database\Conditional($db, $conditional, $tmp_cond, 'AND');
+        }
         if (!empty($search_vars['physical_id'])) {
             $tmp_cond = new \Database\Conditional($db, 'physical_id', $search_vars['physical_id'], 'like');
             if (empty($conditional))
