@@ -17,6 +17,8 @@ class Search extends \ResourceFactory
     
 	if(empty($command))
 	  $command = 'run_search';
+        
+        $vars['system_locations'] = $location_options;
 	$system_types = \systemsinventory\Factory\SystemDevice::getSystemTypes();
 	$type_options = '<option value="0">All</opton>';
 	foreach($system_types as $val){

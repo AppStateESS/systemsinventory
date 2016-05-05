@@ -21,13 +21,13 @@ class Module extends \Module implements \SettingDefaults {
 
             switch ($cmd) {
                 case 'system':
-                    if (\Current_User::allow('systemsinventory', 'edit')) {
                         $system = new \systemsinventory\Controller\System($this);
-                        return $system;
-                    }
+                        return $system;                    
                 case 'settings':
-                    $settings = new \systemsinventory\Controller\Settings($this);
-                    return $settings;
+                    if (\Current_User::allow('systemsinventory', 'settings')) {
+                        $settings = new \systemsinventory\Controller\Settings($this);
+                        return $settings;
+                    }
                 default:
                     $search = new \systemsinventory\Controller\Search($this);
                     return $search;

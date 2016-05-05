@@ -14,24 +14,31 @@ var runOnLoad = function()
             // display data
             var device_type_id = jsondata['device_type_id'];
             var user_data = true;
+            var modal_title = 'PC/Server Details';
+
             switch(device_type_id){
                 case 3:
                     device_template = "Edit_Ipad.html";
+                    var modal_title = 'Ipad Details';
                     break;
                 case 4:
                     device_template = "Edit_Printer.html";
+                    var modal_title = 'Printer Details';
                     break;
                 case 5:
                     device_template = "Edit_Camera.html";
                     user_data = false;
+                    var modal_title = 'Camera Details';
                     break;    
                 case 6:
                     device_template = "Edit_Digital_Sign.html";
                     user_data = false;
+                    var modal_title = 'Digital Sign Details';
                     break;    
                 case 7:
                     device_template = "Edit_Time_Clock.html";
                     user_data = false;
+                    var modal_title = 'Time Clock Details';
                     break;    
                 default:
                     var device_template = "Edit_PC.html";
@@ -41,10 +48,12 @@ var runOnLoad = function()
             if(user_data){
                 $("#system-body").load(source_http + "mod/systemsinventory/templates/"+device_template);
                 $("#user-body").load(source_http + "mod/systemsinventory/templates/Edit_User.html", function(){
+                    $("h4.modal-title").text(modal_title);
                     loadSystemDetails(jsondata,device_type_id);
                 });
             }else{
                 $("#system-body").load(source_http + "mod/systemsinventory/templates/"+device_template, function(){
+                    $("h4.modal-title").text(modal_title);
                     loadSystemDetails(jsondata,device_type_id);
                 });
             }
@@ -139,7 +148,7 @@ function deleteDevice(){
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","apple-id","purchase-date"];
-       var printer_attributes = ["physical-id","model","toner","manufacturer","purchase-date","color","duplex","network"];
+       var printer_attributes = ["physical-id","model","toner-cartridge","manufacturer","purchase-date","color","duplex","network"];
        var camera_attributes = ["physical-id","model","megapixels","manufacturer","purchase-date","room-number","department","location","notes","sd-support","exterior","covert","is-on"];
        var digital_sign_attributes = ["physical-id","model","processor","ram","hd","manufacturer","mac","primary-ip","screen-size","screen-manufacturer","purchase-date","room-number","department","location","vlan","hi-def","notes"];
        var time_clock_attributes = ["physical-id","model","manufacturer","purchase-date","room-number","department","location","vlan","notes"];

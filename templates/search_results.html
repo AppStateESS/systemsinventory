@@ -70,8 +70,10 @@ $(document).ready(function () {
         <div class="modal-content" id="system-device-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title" >System Details</h4>    
+                <h4 class="modal-title" id="modal-title"></h4>    
+               <?php if (\Current_User::allow('systemsinventory', 'edit')): ?>
                 <input id="edit-device-button" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit"/>
+                <?php endif; ?>
                 <div id="device-save-result" class="alert alert-success" style="display:none;"></div>
             </div>
             <div class="modal-body">
@@ -79,10 +81,12 @@ $(document).ready(function () {
                 <div id="system-body"></div>
                 <div id="user-body"></div>
                 <div class="btn-group">
+               <?php if (\Current_User::allow('systemsinventory', 'edit')): ?>
                 <input id="edit-device-button1" class="btn btn-primary" onclick="enableFormFields()" type="button" value="Edit" />
                 <input id="delete-device-button" class="btn btn-danger" onclick="deleteDevice()" type="button" value="Delete" />
                 </div>
                 <input id="save-device-button" style="display:none;" class="btn btn-primary" type="submit" value="Save" />
+                <?php endif; ?>
                 </form>
             </div>
             <div class="modal-footer">

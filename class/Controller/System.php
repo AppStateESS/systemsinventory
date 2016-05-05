@@ -27,12 +27,15 @@ class System extends \Http\Controller {
     protected function getHtmlView($data, \Request $request) {
         if (empty($data['command']))
             $data['command'] = 'add';
-        
-        if($data['command'] == 'editPermissions')
-            $content = SDFactory::UserPermissionsView($data, $request);
-        else
-            $content = SDFactory::form($request, 'system-pc', $data);
-        
+
+        if (\Current_User::allow('systemsinventory', 'edit')) {
+            if ($data['command'] == 'editPermissions')
+                $content = SDFactory::UserPermissionsView($data, $request);
+            else
+                $content = SDFactory::form($request, 'system-pc', $data);
+        }else {
+            $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
+        }
         $view = new \View\HtmlView($content);
         return $view;
     }
@@ -43,31 +46,31 @@ class System extends \Http\Controller {
         $vars = $request->getRequestVars();
         $isJSON = false;
         $data['command'] = $request->shiftCommand();
-        
-        if(!empty($vars['device_id']) && empty($vars['profile_name']))
-            $isJSON = true;        
+
+        if (!empty($vars['device_id']) && empty($vars['profile_name']))
+            $isJSON = true;
         $device_type = PC;
-        
-        if(isset($vars['server'])){
+
+        if (isset($vars['server'])) {
             $device_type = SERVER;
-        }elseif(isset($vars['device_type'])){
+        } elseif (isset($vars['device_type'])) {
             $device_type = $vars['device_type'];
         }
         $device_id = $sdfactory->postDevice($request);
-        
+
         $this->postSpecificDevice($request, $device_type, $device_id);
-        
+
         $data['action'] = 'success';
-        if($isJSON){
-            $view = new \View\JsonView(array('success'=> TRUE));
-        }else{
+        if ($isJSON) {
+            $view = new \View\JsonView(array('success' => TRUE));
+        } else {
             $view = $this->getHtmlView($data, $request);
         }
         $response = new \Response($view);
         return $response;
     }
 
-    public function postSpecificDevice(\Request $request, $device_type, $device_id){
+    public function postSpecificDevice(\Request $request, $device_type, $device_id) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
 
         switch ($device_type) {
@@ -98,21 +101,21 @@ class System extends \Http\Controller {
                 break;
         }
     }
-    
+
     public static function loadAdminBar() {
         $auth = \Current_User::getAuthorization();
 
         $nav_vars['is_deity'] = \Current_user::isDeity();
         $nav_vars['logout_uri'] = $auth->logout_link;
         $nav_vars['username'] = \Current_User::getDisplayName();
-        if(\Current_User::allow('systemsinventory', 'edit'))
-                $nav_vars['add'] = '<a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a>';
-        if(\Current_User::allow('systemsinventory', 'view'))
-                $nav_vars['search'] = '<a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a>';
-        if(\Current_User::allow('systemsinventory', 'reports'))
-                $nav_vars['reports'] = '<a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a>';
-        if(\Current_User::allow('systemsinventory', 'settings'))
-                $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
+        if (\Current_User::allow('systemsinventory', 'edit'))
+            $nav_vars['add'] = '<a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a>';
+        if (\Current_User::allow('systemsinventory', 'view'))
+            $nav_vars['search'] = '<a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a>';
+        if (\Current_User::allow('systemsinventory', 'reports'))
+            $nav_vars['reports'] = '<a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a>';
+        if (\Current_User::allow('systemsinventory', 'settings'))
+            $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
 
 
         $nav_bar = new \Template($nav_vars);
@@ -124,36 +127,38 @@ class System extends \Http\Controller {
     protected function getJsonView($data, \Request $request) {
         $vars = $request->getRequestVars();
         $command = '';
-        if(!empty($data['command']))
+        if (!empty($data['command']))
             $command = $data['command'];
-        
-        $system_details = '';
-        switch ($command) {
-            case 'getDetails':
-                $result = SDFactory::getSystemDetails($vars['device_id'],$vars['row_index']);
-                break;
-            case 'searchUser':
-                $result = SDFactory::searchUserByUsername($vars['username']);
-                break;
-            case 'getUser':
-                $result = SDFactory::getUserByUsername($vars['username']);
-                break;
-            case 'getProfile':
-                $result = SDFactory::getProfile($vars['profile_id']);
-                break;
-            case 'searchPhysicalID':
-                $result = SDFactory::searchPhysicalID($vars['physical_id']);
-                break;
-            case 'delete':
-                $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
-                break;            
-            default:
-                throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
+
+        if ($command == 'getDetails' && \Current_User::allow('systemsinventory', 'view')) {
+            $result = SDFactory::getSystemDetails($vars['device_id'], $vars['row_index']);
+        } else if (\Current_User::allow('systemsinventory', 'edit')) {
+            $system_details = '';
+            switch ($command) {
+                case 'searchUser':
+                    $result = SDFactory::searchUserByUsername($vars['username']);
+                    break;
+                case 'getUser':
+                    $result = SDFactory::getUserByUsername($vars['username']);
+                    break;
+                case 'getProfile':
+                    $result = SDFactory::getProfile($vars['profile_id']);
+                    break;
+                case 'searchPhysicalID':
+                    $result = SDFactory::searchPhysicalID($vars['physical_id']);
+                    break;
+                case 'delete':
+                    $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
+                    break;
+                default:
+                    throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
+            }
+        } else {
+            $result = array('Error');
         }
+        
         $view = new \View\JsonView($result);
         return $view;
     }
-    
-    
 
 }
