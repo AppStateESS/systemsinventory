@@ -9,7 +9,9 @@ CREATE TABLE systems_location (
 CREATE TABLE systems_department (
        id serial,
        description character varying,
+       display_name character varying,
        parent integer default NULL,
+       active smallint default 1,
        PRIMARY KEY (id)
 );
 
@@ -118,70 +120,70 @@ CREATE TABLE systems_permission (
 
 CREATE TRIGGER versioning_trigger BEFORE INSERT OR UPDATE OR DELETE ON systems_device FOR EACH ROW EXECUTE PROCEDURE versioning('sys_period', 'systems_device_history', true);
 
-insert into systems_location ("description") values ('NONE');
-insert into systems_location ("description") values ('App Heights');
-insert into systems_location ("description") values ('Appalachian Hall');
-insert into systems_location ("description") values ('Appalachian Panhellenic Hall');
-insert into systems_location ("description") values ('B.B. Dougherty');
-insert into systems_location ("description") values ('Belk Hall');
-insert into systems_location ("description") values ('Bowie Hall');
-insert into systems_location ("description") values ('Camp Broadstone');
-insert into systems_location ("description") values ('Cannon Hall');
-insert into systems_location ("description") values ('Coltrane Hall');
-insert into systems_location ("description") values ('Cone Hall');
-insert into systems_location ("description") values ('Doughton Hall');
-insert into systems_location ("description") values ('East Hall');
-insert into systems_location ("description") values ('Eggers Hall');
-insert into systems_location ("description") values ('Frank Hall');
-insert into systems_location ("description") values ('Gardner Hall');
-insert into systems_location ("description") values ('Housing Warehouse');
-insert into systems_location ("description") values ('Hoey Hall');
-insert into systems_location ("description") values ('JET');
-insert into systems_location ("description") values ('Justice Hall');
-insert into systems_location ("description") values ('Legends');
-insert into systems_location ("description") values ('Living Learning Center');
-insert into systems_location ("description") values ('Lovell Hall');
-insert into systems_location ("description") values ('Mountaineer Hall');
-insert into systems_location ("description") values ('Newland Hall');
-insert into systems_location ("description") values ('State Farm');
-insert into systems_location ("description") values ('SRC');
-insert into systems_location ("description") values ('Student Support');
-insert into systems_location ("description") values ('Student Union');
-insert into systems_location ("description") values ('Summit Hall');
-insert into systems_location ("description") values ('Quin');
-insert into systems_location ("description") values ('White Hall');
-insert into systems_location ("description") values ('Winkler Hall');
+insert into systems_location ("display_name") values ('NONE');
+insert into systems_location ("display_name") values ('App Heights');
+insert into systems_location ("display_name") values ('Appalachian Hall');
+insert into systems_location ("display_name") values ('Appalachian Panhellenic Hall');
+insert into systems_location ("display_name") values ('B.B. Dougherty');
+insert into systems_location ("display_name") values ('Belk Hall');
+insert into systems_location ("display_name") values ('Bowie Hall');
+insert into systems_location ("display_name") values ('Camp Broadstone');
+insert into systems_location ("display_name") values ('Cannon Hall');
+insert into systems_location ("display_name") values ('Coltrane Hall');
+insert into systems_location ("display_name") values ('Cone Hall');
+insert into systems_location ("display_name") values ('Doughton Hall');
+insert into systems_location ("display_name") values ('East Hall');
+insert into systems_location ("display_name") values ('Eggers Hall');
+insert into systems_location ("display_name") values ('Frank Hall');
+insert into systems_location ("display_name") values ('Gardner Hall');
+insert into systems_location ("display_name") values ('Housing Warehouse');
+insert into systems_location ("display_name") values ('Hoey Hall');
+insert into systems_location ("display_name") values ('JET');
+insert into systems_location ("display_name") values ('Justice Hall');
+insert into systems_location ("display_name") values ('Legends');
+insert into systems_location ("display_name") values ('Living Learning Center');
+insert into systems_location ("display_name") values ('Lovell Hall');
+insert into systems_location ("display_name") values ('Mountaineer Hall');
+insert into systems_location ("display_name") values ('Newland Hall');
+insert into systems_location ("display_name") values ('State Farm');
+insert into systems_location ("display_name") values ('SRC');
+insert into systems_location ("display_name") values ('Student Support');
+insert into systems_location ("display_name") values ('Student Union');
+insert into systems_location ("display_name") values ('Summit Hall');
+insert into systems_location ("display_name") values ('Quin');
+insert into systems_location ("display_name") values ('White Hall');
+insert into systems_location ("display_name") values ('Winkler Hall');
 
-insert into systems_department ("description") values ('NONE');
-insert into systems_department ("description") values ('Career Development');
-insert into systems_department ("description","parent") values ('Peer Career',lastval()-1);
-insert into systems_department ("description") values ('CSIL');
-insert into systems_department ("description","parent") values ('BSA',lastval()-1);
-insert into systems_department ("description","parent") values ('Club Hub',lastval()-2);
-insert into systems_department ("description","parent") values ('Greek Office',lastval()-3);
-insert into systems_department ("description","parent") values ('Student Government',lastval()-4);
-insert into systems_department ("description","parent") values ('Student Publication',lastval()-5);
-insert into systems_department ("description") values ('Counseling Services');
-insert into systems_department ("description") values ('Child Development');
-insert into systems_department ("description") values ('Dean of Students');
-insert into systems_department ("description","parent") values ('Parent and Family Services',lastval()-1);
-insert into systems_department ("description") values ('ESS');
-insert into systems_department ("description") values ('Health Services');
-insert into systems_department ("description") values ('Multicultural Student Development');
-insert into systems_department ("description","parent") values ('LGBT',lastval()-1);
-insert into systems_department ("description","parent") values ('Multicultural Center',lastval()-2);
-insert into systems_department ("description","parent") values ('Womans Center',lastval()-3);
-insert into systems_department ("description") values ('Student Conduct');
-insert into systems_department ("description") values ('Student Development Admin');
-insert into systems_department ("description") values ('Student Programs');
-insert into systems_department ("description","parent") values ('ACT',lastval()-1);
-insert into systems_department ("description","parent") values ('APPS',lastval()-2);
-insert into systems_department ("description","parent") values ('Legends',lastval()-3);
-insert into systems_department ("description","parent") values ('White Water',lastval()-4);
-insert into systems_department ("description") values ('University Housing');
-insert into systems_department ("description") values ('University Recreation');
-insert into systems_department ("description","parent") values ('Outdoor Programs',lastval()-1);
-insert into systems_department ("description") values ('Wellness Center');
+insert into systems_department ("display_name") values ('NONE');
+insert into systems_department ("display_name") values ('Career Development');
+insert into systems_department ("display_name","parent") values ('Peer Career',lastval()-1);
+insert into systems_department ("display_name") values ('CSIL');
+insert into systems_department ("display_name","parent") values ('BSA',lastval()-1);
+insert into systems_department ("display_name","parent") values ('Club Hub',lastval()-2);
+insert into systems_department ("display_name","parent") values ('Greek Office',lastval()-3);
+insert into systems_department ("display_name","parent") values ('Student Government',lastval()-4);
+insert into systems_department ("display_name","parent") values ('Student Publication',lastval()-5);
+insert into systems_department ("display_name") values ('Counseling Services');
+insert into systems_department ("display_name") values ('Child Development');
+insert into systems_department ("display_name") values ('Dean of Students');
+insert into systems_department ("display_name","parent") values ('Parent and Family Services',lastval()-1);
+insert into systems_department ("display_name") values ('ESS');
+insert into systems_department ("display_name") values ('Health Services');
+insert into systems_department ("display_name") values ('Multicultural Student Development');
+insert into systems_department ("display_name","parent") values ('LGBT',lastval()-1);
+insert into systems_department ("display_name","parent") values ('Multicultural Center',lastval()-2);
+insert into systems_department ("display_name","parent") values ('Womans Center',lastval()-3);
+insert into systems_department ("display_name") values ('Student Conduct');
+insert into systems_department ("display_name") values ('Student Development Admin');
+insert into systems_department ("display_name") values ('Student Programs');
+insert into systems_department ("display_name","parent") values ('ACT',lastval()-1);
+insert into systems_department ("display_name","parent") values ('APPS',lastval()-2);
+insert into systems_department ("display_name","parent") values ('Legends',lastval()-3);
+insert into systems_department ("display_name","parent") values ('White Water',lastval()-4);
+insert into systems_department ("display_name") values ('University Housing');
+insert into systems_department ("display_name") values ('University Recreation');
+insert into systems_department ("display_name","parent") values ('Outdoor Programs',lastval()-1);
+insert into systems_department ("display_name") values ('Wellness Center');
 
 Insert into systems_device_type ("id","description") values (1,'pc');
 insert into systems_device_type ("id","description") values (2,'server');
