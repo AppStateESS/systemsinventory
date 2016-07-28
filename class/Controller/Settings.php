@@ -29,11 +29,18 @@ class Settings extends \Http\Controller {
         if (empty($data['command']))
             $data['command'] = 'editPermissions';
         
-        if(isset($vars['action']) && $vars['action'] == 'delete'){
-            SettingsFactory::deletePermissions($vars['user_id']);
+        switch($data['command'])
+        {
+            case 'editPermissions':
+                if(isset($vars['action']) && $vars['action'] == 'delete'){
+                    SettingsFactory::deletePermissions($vars['user_id']);
+                }
+                $content = SettingsFactory::UserPermissionsView($data, $request);
+                break;
+            case 'editDepartments':
+                $content = SettingsFactory::editDepartmentsView($data, $request);
+                break;
         }
-        $content = SettingsFactory::UserPermissionsView($data, $request);
-        
         $view = new \View\HtmlView($content);
         return $view;
     }
@@ -42,10 +49,15 @@ class Settings extends \Http\Controller {
         $settingsFactory = new SettingsFactory;
         $vars = $request->getRequestVars();
         $data['command'] = $command = $request->shiftCommand();
+        $isJson = false;
         
         switch ($command) {
             case 'editPermissions':
                 $result = $settingsFactory->savePermissions($request);
+                break;
+            case 'editDepartments':
+                $result = $settingsFactory->saveDepartment($request);
+                $isJson = true;
                 break;
             default:
                 throw new Exception("Invalid command received in system settings. Command = $command");
@@ -55,9 +67,37 @@ class Settings extends \Http\Controller {
 //        $this->postSpecificDevice($request, $device_type, $device_id);
 //        
 //        $data['action'] = 'success';
-        $view = $this->getHtmlView($data, $request);
+        if($isJson){
+            $view = new \View\JsonView(array('success' => TRUE));
+        }else{
+            $view = $this->getHtmlView($data, $request);
+        }
         $response = new \Response($view);
         return $response;
+    }
+    
+    public static function formatDepartmentList($row){
+        $db = \Database::getDB();
+        $tbl = $db->addTable('systems_department');
+        $tbl->addField('display_name');
+        $tbl->addField('parent_department');
+        $tbl->addField('description');
+        $tbl->addField('active');
+        $tbl->addField('id');
+        $row['action'] = '<button id="edit-department" type="button" class="btn btn-sm btn-default" onclick="editDepartment('.$row['id'].')" >Edit</button>';
+        if($row['active'])
+            $row['dept_active'] = 'Yes';
+        else
+            $row['dept_active'] = 'No';
+        if($row['parent_department']){
+            $dept_id = $row['parent_department'];
+            $tbl->addFieldConditional('id', $dept_id, '=');
+            $dep_result = $db->select();
+            if($dep_result){
+                $row['parent_department'] = $dep_result[0]['display_name'];
+            }
+        }
+        return $row;
     }
     
     protected function getJsonView($data, \Request $request) {
@@ -71,9 +111,17 @@ class Settings extends \Http\Controller {
             case 'editPermissions':
                 $result = SettingsFactory::userPermissionsList($data, $request);
                 break;
+            case 'editDepartments':
+                $result = SettingsFactory::departmentsList($data, $request);
+                break;
+            case 'getDepartments':
+                $result = SettingsFactory::getDepartmentByID($vars['department_id']);
+
+                break;
             default:
                 throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
         }
+
         $view = new \View\JsonView($result);
         return $view;
     }

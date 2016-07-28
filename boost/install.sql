@@ -10,7 +10,7 @@ CREATE TABLE systems_department (
        id serial,
        description character varying,
        display_name character varying,
-       parent integer default NULL,
+       parent_department integer default NULL,
        active smallint default 1,
        PRIMARY KEY (id)
 );
@@ -155,35 +155,35 @@ insert into systems_location ("display_name") values ('White Hall');
 insert into systems_location ("display_name") values ('Winkler Hall');
 
 insert into systems_department ("display_name") values ('NONE');
-insert into systems_department ("display_name") values ('Career Development');
-insert into systems_department ("display_name","parent") values ('Peer Career',lastval()-1);
-insert into systems_department ("display_name") values ('CSIL');
-insert into systems_department ("display_name","parent") values ('BSA',lastval()-1);
-insert into systems_department ("display_name","parent") values ('Club Hub',lastval()-2);
-insert into systems_department ("display_name","parent") values ('Greek Office',lastval()-3);
-insert into systems_department ("display_name","parent") values ('Student Government',lastval()-4);
-insert into systems_department ("display_name","parent") values ('Student Publication',lastval()-5);
-insert into systems_department ("display_name") values ('Counseling Services');
-insert into systems_department ("display_name") values ('Child Development');
-insert into systems_department ("display_name") values ('Dean of Students');
-insert into systems_department ("display_name","parent") values ('Parent and Family Services',lastval()-1);
-insert into systems_department ("display_name") values ('ESS');
-insert into systems_department ("display_name") values ('Health Services');
-insert into systems_department ("display_name") values ('Multicultural Student Development');
-insert into systems_department ("display_name","parent") values ('LGBT',lastval()-1);
-insert into systems_department ("display_name","parent") values ('Multicultural Center',lastval()-2);
-insert into systems_department ("display_name","parent") values ('Womans Center',lastval()-3);
-insert into systems_department ("display_name") values ('Student Conduct');
-insert into systems_department ("display_name") values ('Student Development Admin');
-insert into systems_department ("display_name") values ('Student Programs');
-insert into systems_department ("display_name","parent") values ('ACT',lastval()-1);
-insert into systems_department ("display_name","parent") values ('APPS',lastval()-2);
-insert into systems_department ("display_name","parent") values ('Legends',lastval()-3);
-insert into systems_department ("display_name","parent") values ('White Water',lastval()-4);
-insert into systems_department ("display_name") values ('University Housing');
-insert into systems_department ("display_name") values ('University Recreation');
-insert into systems_department ("display_name","parent") values ('Outdoor Programs',lastval()-1);
-insert into systems_department ("display_name") values ('Wellness Center');
+insert into systems_department ("display_name","parent_department") values ('Career Development',1;
+insert into systems_department ("display_name","parent_department") values ('Peer Career',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('CSIL',1);
+insert into systems_department ("display_name","parent_department") values ('BSA',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('Club Hub',lastval()-2);
+insert into systems_department ("display_name","parent_department") values ('Greek Office',lastval()-3);
+insert into systems_department ("display_name","parent_department") values ('Student Government',lastval()-4);
+insert into systems_department ("display_name","parent_department") values ('Student Publication',lastval()-5);
+insert into systems_department ("display_name","parent_department") values ('Counseling Services',1);
+insert into systems_department ("display_name","parent_department") values ('Child Development',1);
+insert into systems_department ("display_name","parent_department") values ('Dean of Students',1);
+insert into systems_department ("display_name","parent_department") values ('Parent and Family Services',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('ESS',1);
+insert into systems_department ("display_name","parent_department") values ('Health Services',1);
+insert into systems_department ("display_name","parent_department") values ('Multicultural Student Development',1);
+insert into systems_department ("display_name","parent_department") values ('LGBT',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('Multicultural Center',lastval()-2);
+insert into systems_department ("display_name","parent_department") values ('Womans Center',lastval()-3);
+insert into systems_department ("display_name","parent_department") values ('Student Conduct',1);
+insert into systems_department ("display_name","parent_department") values ('Student Development Admin',1);
+insert into systems_department ("display_name","parent_department") values ('Student Programs',1);
+insert into systems_department ("display_name","parent_department") values ('ACT',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('APPS',lastval()-2);
+insert into systems_department ("display_name","parent_department") values ('Legends',lastval()-3);
+insert into systems_department ("display_name","parent_department") values ('White Water',lastval()-4);
+insert into systems_department ("display_name","parent_department") values ('University Housing',1);
+insert into systems_department ("display_name","parent_department") values ('University Recreation',1);
+insert into systems_department ("display_name","parent_department") values ('Outdoor Programs',lastval()-1);
+insert into systems_department ("display_name","parent_department") values ('Wellness Center',1);
 
 Insert into systems_device_type ("id","description") values (1,'pc');
 insert into systems_device_type ("id","description") values (2,'server');

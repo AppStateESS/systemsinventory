@@ -66,7 +66,7 @@ EOF;
         $system_dep = SystemDevice::getSystemDepartments();
         $dep_optons = '<option value="1">Select Department</opton>';
         foreach ($system_dep as $val) {
-            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['description'] . '</option>';
+            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
         }
         $vars['departments'] = $dep_optons;
         $system_profiles = SystemDevice::getSystemProfiles();
@@ -190,7 +190,7 @@ EOF;
         $system_dep = SystemDevice::getSystemDepartments();
         $dep_optons = '<option value="1">Select Department</opton>';
         foreach ($system_dep as $val) {
-            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['description'] . '</option>';
+            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
         }
         $device_details['departments'] = $dep_optons;
         $device_details['testarray'] = array("test1" => "test1", "test2" => "test2", "test3" => "test3");
@@ -433,7 +433,10 @@ EOF;
         $db = \Database::getDB();
         $tbl = $db->addTable('systems_department');
         $tbl->addField('id');
-        $tbl->addField('description');
+        $tbl->addField('display_name');
+        $tbl->addFieldConditional('active', '1');
+        $tbl->addFieldConditional('id', '1','!=');
+        $tbl->addOrderBy('display_name');
         if (!empty($permission_result)) {           
             $dep = $permission_result[0]['departments'];
             $deps = explode(':', $dep);

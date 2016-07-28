@@ -1,0 +1,89 @@
+<h3>Systems Inventory Departments</h3>
+<br />
+<?=$add?>
+<div class="pager-listing" id="department-list" data-rpp="10">
+    <div style="text-align:right" class="pager-search"></div>
+    <table class="table table-striped">
+        <thead class="pager-head">
+            <tr>
+                <th class="pager-header display_name"></th>
+                <th class="pager-header description"></th>
+                <th class="pager-header parent_department"></th>
+                <th class="pager-header dept_active"></th>
+                <th class="pager-header action"></th>
+            </tr>
+        </thead>
+        <tbody class="pager-body">
+            <tr class="pager-row">
+                <td class="pager-column display_name"></td>
+                <td class="pager-column description"></td>
+                <td class="pager-column parent_department"></td>
+                <td class="pager-column dept_active"></td>
+                <td class="pager-column action"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page-list pagination pagination-centered"></div>
+    <div class="page-limit"></div>
+</div>
+
+<div class="modal fade" id="edit-department-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="clearModal()">&times;</button>
+                <h4 class="edit-department-modal-title">Add Department</h4>
+                <div id="department-save-result" class="alert alert-success" style="display:none;"></div>
+            </div>
+            <div class="modal-body">
+                <div class="warning alert alert-danger" style="display:none;"></div>
+                <form id="department-edit-form" action="/" method="post">
+                    <input id="department-id" name="department_id" type="hidden" value="0">
+                    <div class="form-group">
+                        <label for="display-name">Display Name</label>
+                        <input type="text" name="display_name" value="" id="display-name" class="form-control" required=""/>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" name="description" value="" id="description" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="parent-department">Parent Department</label>
+                        <select id="parent-department" name="parent_department"><?=$departments?></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept-active">Is Active</label>
+                        <input type="radio" name="dept_active" id="dept-active" value="1">Yes
+                        <input type="radio" name="dept_active" id="dept-noactive" value="0">No
+                    </div>
+                <button type="submit" id="form-link-save" class="btn btn-primary" ><?php echo t('Save')?></button>
+
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $('#department-edit-form').submit( function(event) {
+        event.preventDefault();
+        var posting = $.post('systemsinventory/settings/editDepartments/', $('form#department-edit-form').serialize(), null ,'json');
+        //var jsondata = posting["responseText"];
+        //$( "#device-save-result" ).empty().append( posting['success'] );
+        posting.done(function( data ) {
+            //var content = $( data ).find( "#content" );
+            var result = jQuery.parseJSON(posting['responseText']);
+            if(result.success)
+                $( "#department-save-result" ).empty().append( "Department Saved Successfully" );
+            else
+                $( "#department-save-result" ).empty().append( "There was a problem saving the department!" );
+            
+            $("#department-save-result").css("display", "block");
+            $('#edit-department-modal').animate({scrollTop:0}, 'fast');
+        });
+        
+    }); 
+    </script>
