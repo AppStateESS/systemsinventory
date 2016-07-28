@@ -52,7 +52,7 @@ class Settings extends \ResourceFactory
         }
         $vars['departments'] = $dep_options;
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_dept.js';
-        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
+        \Layout::addLink("<script type='text/javascript' src='$script'></script>");
         $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-department-modal"><i class="fa fa-plus">&nbsp;</i>Add Department</a>';
         \Pager::prepare();
         $template = new \Template;

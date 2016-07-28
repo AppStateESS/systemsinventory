@@ -1,3 +1,8 @@
+$(document).ready(function () {
+ 
+    });
+
+
 var runOnLoad = function()
 {
     $('.pager-row').click(function() {

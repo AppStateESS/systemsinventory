@@ -3,8 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+$(document).ready(function() {
+    $('#department-edit-form').submit( function(event) {
+        event.preventDefault();
+        var posting = $.post('systemsinventory/settings/editDepartments/', $('form#department-edit-form').serialize(), null ,'json');
+        //var jsondata = posting["responseText"];
+        //$( "#device-save-result" ).empty().append( posting['success'] );
+        posting.done(function( data ) {
+            //var content = $( data ).find( "#content" );
+            var result = jQuery.parseJSON(posting['responseText']);
+            if(result.success)
+                $( "#department-save-result" ).empty().append( "Department Saved Successfully" );
+            else
+                $( "#department-save-result" ).empty().append( "There was a problem saving the department!" );
+            
+            $("#department-save-result").css("display", "block");
+            $('#edit-department-modal').animate({scrollTop:0}, 'fast');
+        });
+        
+    }); 
     
-function editDepartment(dept_id)
+   
+});
+
+ function editDepartment(dept_id)
 {
         $.getJSON('systemsinventory/settings/getDepartments/',{
             'department_id': dept_id }, function(jsondata) {
