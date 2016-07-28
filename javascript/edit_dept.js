@@ -22,8 +22,6 @@ $(document).ready(function() {
         });
         
     }); 
-    
-   
 });
 
  function editDepartment(dept_id)

@@ -1,55 +1,26 @@
 <script type="text/javascript">
-        
-    $(document).ready(function () {
-        $('.pager-column').css('cursor', 'pointer');
-        Pagers.callback = runOnLoad
+      $(document).ready(function () {  
+          $('.pager-column').css('cursor', 'pointer');
+          Pagers.callback = runOnLoad
+          
+        $('#edit-device-form').submit( function(event) {
+            event.preventDefault();
+            var posting = $.post('systemsinventory/system/save/', $('form#edit-device-form').serialize(), null ,'json');
+            
+        posting.done(function( data ) {
+            var result = jQuery.parseJSON(posting['responseText']);
+            if(result.success)
+                $( "#device-save-result" ).empty().append( "Device Saved Successfully" );
+            else
+                $( "#device-save-result" ).empty().append( "There was a problem saving device!" );
+            
+        $("#device-save-result").css("display", "block");
+        $('#device-modal').animate({scrollTop:0}, 'fast');
+        Pagers.reload('device-list');
+    });
     
-    // format mac addresses
-     var length = 1;
-     $("#mac").focusin(function (evt) {
-         $(this).keypress(function () {
-             var content = $(this).val();
-             var content1 = content.replace(/\:/g, '');
-             length = content1.length;
-             if(((length % 2) == 0) && length < 17 && length > 1){
-                 $('#mac').val($('#mac').val() + ':');
-             }    
-             $("#mac").val($("#mac").val().slice(0, 16));
-         });    
-     });  
-     
-     var length = 1;
-     $("#mac2").focusin(function (evt) {
-         $(this).keypress(function () {
-             var content = $(this).val();
-             var content1 = content.replace(/\:/g, '');
-             length = content1.length;
-             if(((length % 2) == 0) && length < 17 && length > 1){
-                 $('#mac2').val($('#mac2').val() + ':');
-             }    
-             $("#mac2").val($("#mac2").val().slice(0, 16));
-         });    
-     }); 
-     
-   $('#edit-device-form').submit( function(event) {
-     event.preventDefault();
-     var posting = $.post('systemsinventory/system/save/', $('form#edit-device-form').serialize(), null ,'json');
-     
-     posting.done(function( data ) {
-         var result = jQuery.parseJSON(posting['responseText']);
-         if(result.success)
-             $( "#device-save-result" ).empty().append( "Device Saved Successfully" );
-         else
-             $( "#device-save-result" ).empty().append( "There was a problem saving device!" );
-
-         $("#device-save-result").css("display", "block");
-         $('#device-modal').animate({scrollTop:0}, 'fast');
-     });
-     
-    });   
-     
- });
-    
+    }); 
+});
 </script>
 <div class="pager-listing" id="device-list" data-rpp="25">
     <div id="device-deleted" class="alert alert-danger" style="display:none;">Device Deleted!</div>

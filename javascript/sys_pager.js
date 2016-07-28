@@ -1,6 +1,3 @@
-$(document).ready(function () {
- 
-    });
 
 
 var runOnLoad = function()
@@ -20,7 +17,7 @@ var runOnLoad = function()
             var device_type_id = jsondata['device_type_id'];
             var user_data = true;
             var modal_title = 'PC/Server Details';
-
+            
             switch(device_type_id){
                 case 3:
                     device_template = "Edit_Ipad.html";
@@ -63,9 +60,41 @@ var runOnLoad = function()
                 });
             }
             $("#device-modal").modal('show');
-
+            
         });
+        
+         
+        
+        // format mac addresses
+        var length = 1;
+        $("#mac").focusin(function (evt) {
+            $(this).keypress(function () {
+                var content = $(this).val();
+                var content1 = content.replace(/\:/g, '');
+                length = content1.length;
+                if(((length % 2) == 0) && length < 17 && length > 1){
+                    $('#mac').val($('#mac').val() + ':');
+                }    
+                $("#mac").val($("#mac").val().slice(0, 16));
+            });    
+        });  
+        
+        var length = 1;
+        $("#mac2").focusin(function (evt) {
+            $(this).keypress(function () {
+                var content = $(this).val();
+                var content1 = content.replace(/\:/g, '');
+                length = content1.length;
+                if(((length % 2) == 0) && length < 17 && length > 1){
+                    $('#mac2').val($('#mac2').val() + ':');
+                }    
+                $("#mac2").val($("#mac2").val().slice(0, 16));
+            });    
+        }); 
+        
+        
     });
+}
     
     function loadSystemDetails(jsondata,device_type_id){
         $.each(jsondata, function(index, d){
@@ -129,7 +158,6 @@ var runOnLoad = function()
         }
     
     }
-};
 
 function deleteDevice(){
     var result = confirm("Are you sure you want to delete this system?");
@@ -191,6 +219,6 @@ function deleteDevice(){
     $("#edit-device-button1").css("display","none");
     $("#delete-device-button").css("display","none");
     $("#save-device-button").css("display","block");
-    }
+}
     
 
