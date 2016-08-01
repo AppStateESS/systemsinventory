@@ -1,27 +1,3 @@
-<script type="text/javascript">
-      $(document).ready(function () {  
-          $('.pager-column').css('cursor', 'pointer');
-          Pagers.callback = runOnLoad
-          
-        $('#edit-device-form').submit( function(event) {
-            event.preventDefault();
-            var posting = $.post('systemsinventory/system/save/', $('form#edit-device-form').serialize(), null ,'json');
-            
-        posting.done(function( data ) {
-            var result = jQuery.parseJSON(posting['responseText']);
-            if(result.success)
-                $( "#device-save-result" ).empty().append( "Device Saved Successfully" );
-            else
-                $( "#device-save-result" ).empty().append( "There was a problem saving device!" );
-            
-        $("#device-save-result").css("display", "block");
-        $('#device-modal').animate({scrollTop:0}, 'fast');
-        Pagers.reload('device-list');
-    });
-    
-    }); 
-});
-</script>
 <div class="pager-listing" id="device-list" data-rpp="25">
     <div id="device-deleted" class="alert alert-danger" style="display:none;">Device Deleted!</div>
 
@@ -85,3 +61,29 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+      $(document).ready(function () {  
+          $('.pager-column').css('cursor', 'pointer');
+          Pagers.callback = runOnLoad
+          
+        $('#edit-device-form').submit( function(event) {
+            event.preventDefault();
+            var posting = $.post('systemsinventory/system/save/', $('form#edit-device-form').serialize(), null ,'json');
+            
+        posting.done(function( data ) {
+            var result = jQuery.parseJSON(posting['responseText']);
+            if(result.success)
+                $( "#device-save-result" ).empty().append( "Device Saved Successfully" );
+            else
+                $( "#device-save-result" ).empty().append( "There was a problem saving device!" );
+            
+        $("#device-save-result").css("display", "block");
+        $('#device-modal').animate({scrollTop:0}, 'fast');
+        Pagers.reload('device-list');
+    });
+    
+    });
+ 
+});
+</script>

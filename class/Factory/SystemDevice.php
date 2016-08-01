@@ -231,7 +231,8 @@ EOF;
         $system_table->addFieldConditional('physical_id', $physical_id);
         $search_result = $db->select();
         $result = array('exists' => false);
-        $search_result = $search_result['0'];
+        if($search_result)
+            $search_result = $search_result['0'];
         if (!empty($search_result['id']))
             $result['exists'] = true;
         return $result;
