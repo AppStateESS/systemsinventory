@@ -4,7 +4,7 @@ namespace systemsinventory\Factory;
 
 use systemsinventory\Resource\Settings as Resource;
 use systemsinventory\Resource\Department as DeptResource;
-
+use systemsinventory\Resource\Location as LocResource;
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
@@ -36,6 +36,49 @@ class Settings extends \ResourceFactory
         $template = new \Template($vars);
         $template->setModuleTemplate('systemsinventory', 'Edit_Permissions.html');
         return $template->get();
+    }
+    
+    public static function editLocationsView($data, $request){
+        $vars = array();
+        $locations = SystemDevice::getSystemLocations();
+        $loc_options = '';
+        
+        $loc_options .= '<option value="1">NONE</option>';
+ 
+        foreach($locations as $val){
+            if($val['id'] != 1){
+                $loc_options .= '<option value="'.$val['id'].'">'.$val['display_name'].'</option>';
+            }
+        }
+        $vars['locations'] = $loc_options;
+        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_loc.js';
+        \Layout::addLink("<script type='text/javascript' src='$script'></script>");
+        $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-location-modal"><i class="fa fa-plus">&nbsp;</i>Add Location</a>';
+        \Pager::prepare();
+        $template = new \Template;
+        $template = new \Template($vars);
+        $template->setModuleTemplate('systemsinventory', 'Edit_Locations.html');
+        return $template->get();
+        
+    }
+    public static function locationsList($data, $request){
+        $rows = array();
+        $no_location = 1;
+        $db = \Database::getDB();
+        $tbl = $db->addTable('systems_location');
+        $tbl->addField('display_name');
+        $tbl->addField('description');
+        $tbl->addField('active');
+        $tbl->addField('id');
+        $tbl->addFieldConditional('id', '1', '!=');
+        $tbl->addOrderBy('display_name');
+        $pager = new \DatabasePager($db);
+        $pager->setCallback(array('\systemsinventory\Controller\Settings','formatLocationList'));
+        $pager->setId('location-list');
+        $pager->setRowIdColumn('id');
+        $pager->setHeaders(array('display_name'=>'Name','description'=>'Description','location_active'=>'Is Active'));
+        $data = $pager->getJson();
+        return $data;
     }
     
     public static function editDepartmentsView($data, $request){
@@ -124,6 +167,22 @@ class Settings extends \ResourceFactory
         return $data;
     }
   
+    public function saveLocation(\Request $request){
+        $resource = new LocResource;
+        $vars = $request->getRequestVars();
+        $location_id = $vars['location_id'];
+        
+        if(isset($vars['description']))
+            $resource->setDescription($vars['description']);
+        $resource->setDisplayName($vars['display_name']);
+        if(isset($vars['location_active']))
+            $resource->setActive($vars['location_active']);
+        if($location_id){
+            $resource->setId($location_id);
+        }
+        $resource->save();
+    }
+    
     public function saveDepartment(\Request $request) {
         $resource = new DeptResource;
         $vars = $request->getRequestVars();
@@ -164,6 +223,21 @@ class Settings extends \ResourceFactory
           $resource->save();
       }   
       
+  }
+  
+  public static function getLocationByID($location_id){
+      $db = \Database::getDB();
+      $tbl = $db->addTable('systems_location');
+      $tbl->addField('id');
+      $tbl->addField('display_name');
+      $tbl->addField('description');
+      $tbl->addField('active');
+      $tbl->addFieldConditional('id', $location_id, '=');
+      $result = $db->select();
+      if(!empty($result))
+          return $result[0];
+      else 
+          return FALSE;
   }
   
   public static function getDepartmentByID($dept_id){

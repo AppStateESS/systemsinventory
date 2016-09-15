@@ -3,6 +3,8 @@ BEGIN;
 CREATE TABLE systems_location (
        id serial,
        description character varying,
+       display_name character varying,
+       active smallint default 1,
        PRIMARY KEY (id)
 );
 

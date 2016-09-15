@@ -24,6 +24,9 @@ function systemsinventory_update($content, $currentVersion){
         case version_compare($currentVersion,'1.0.2','<'):
             runDbMigration('update_1_0_2.sql');
             
+        case version_compare($currentVersion,'1.0.3','<'):
+            runDbMigration('update_1_0_3.sql');
+            
     }
    
     return TRUE;

@@ -40,6 +40,9 @@ class Settings extends \Http\Controller {
             case 'editDepartments':
                 $content = SettingsFactory::editDepartmentsView($data, $request);
                 break;
+            case 'editLocations':
+                $content = SettingsFactory::editLocationsView($data, $request);
+                break;
         }
         $view = new \View\HtmlView($content);
         return $view;
@@ -57,6 +60,10 @@ class Settings extends \Http\Controller {
                 break;
             case 'editDepartments':
                 $result = $settingsFactory->saveDepartment($request);
+                $isJson = true;
+                break;
+            case 'editLocations':
+                $result = $settingsFactory->saveLocation($request);
                 $isJson = true;
                 break;
             default:
@@ -99,6 +106,15 @@ class Settings extends \Http\Controller {
         }
         return $row;
     }
+
+    public static function formatLocationList($row){
+        $row['action'] = '<button id="edit-location" type="button" class="btn btn-sm btn-default" onclick="editLocation('.$row['id'].')" >Edit</button>';
+        if($row['active'])
+            $row['location_active'] = 'Yes';
+        else
+            $row['location_active'] = 'No';
+        return $row;
+    }
     
     protected function getJsonView($data, \Request $request) {
         $vars = $request->getRequestVars();
@@ -114,9 +130,14 @@ class Settings extends \Http\Controller {
             case 'editDepartments':
                 $result = SettingsFactory::departmentsList($data, $request);
                 break;
+            case 'editLocations':
+                $result = SettingsFactory::locationsList($data, $request);
+                break;
             case 'getDepartments':
                 $result = SettingsFactory::getDepartmentByID($vars['department_id']);
-
+                break;
+            case 'getLocation':
+                $result = SettingsFactory::getLocationByID($vars['location_id']);
                 break;
             default:
                 throw new Exception("Invalid command received in system controller getJsonView. Command = $command");

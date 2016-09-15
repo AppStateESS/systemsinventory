@@ -49,7 +49,10 @@ function clearModal(){
     $('#description').val('');
     $('#parent-department').val('');
     $('#dept-active').prop('checked',true);
-    $('#dept-noactive').prop('checked',false);  
+    $('#dept-noactive').prop('checked',false); 
+    $("#department-save-result").empty();
+    $("#department-save-result").css("display", "none");
+    resetTitle();
     Pagers.reload('department-list');
 }
 
