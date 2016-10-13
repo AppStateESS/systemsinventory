@@ -80,9 +80,13 @@ function formatMAC(elementname){
             var content1 = content.replace(/\:/g, '');
             length = content1.length;
             if(((length % 2) == 0) && length < 17 && length > 1){
-                $(elementname).val($(elementname).val().toUpperCase() + ':');
+                $(elementname).val($(elementname).val() + ':');
             }    
             $(elementname).val($(elementname).val().slice(0, 16));
+            $(elementname).val($(elementname).val().toUpperCase());
+        });
+        $(elementname).focusout(function(){
+            $(elementname).val($(elementname).val().toUpperCase());
         });
 }
 
