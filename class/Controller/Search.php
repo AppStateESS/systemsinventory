@@ -28,7 +28,6 @@ class Search extends \Http\Controller {
     protected function getJsonView($data, \Request $request) {
         $db = \Database::newDB();
         $sd = $db->addTable('systems_device');
-        $system_dep = \systemsinventory\Factory\SystemDevice::getSystemDepartments();
         $conditional = $this->createSearchConditional($db);
         if (!empty($conditional))
             $db->addConditional($conditional);
@@ -50,10 +49,12 @@ class Search extends \Http\Controller {
     }
 
     private function createSearchConditional($db) {
+        $conditional = NULL;
         if (empty($_SESSION['system_search_vars'])) {
             $conditional = NULL;
         } else {
             $search_vars = $_SESSION['system_search_vars'];
+            $system_dep = \systemsinventory\Factory\SystemDevice::getSystemDepartments();
 
             if ($search_vars['system_type']) {
                 $conditional = new \Database\Conditional($db, 'device_type_id', $search_vars['system_type'], '=');

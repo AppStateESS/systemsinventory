@@ -60,7 +60,7 @@ EOF;
         $system_locations = SystemDevice::getSystemLocations();
         $location_options = '<option value="1">Select Location</opton>';
         foreach ($system_locations as $key => $val) {
-            $location_options .= '<option value="' . $val['id'] . '">' . $val['description'] . '</option>';
+            $location_options .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
         }
         $vars['locations'] = $location_options;
         $system_dep = SystemDevice::getSystemDepartments();
@@ -184,7 +184,7 @@ EOF;
         $system_locations = SystemDevice::getSystemLocations();
         $location_options = '<option value="1">Select Location</opton>';
         foreach ($system_locations as $key => $val) {
-            $location_options .= '<option value="' . $val['id'] . '">' . $val['description'] . '</option>';
+            $location_options .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
         }
         $device_details['locations'] = $location_options;
         $system_dep = SystemDevice::getSystemDepartments();
@@ -405,7 +405,7 @@ EOF;
         $db = \Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('id');
-        $tbl->addField('description');
+        $tbl->addField('display_name');
         $result = $db->select();
         if (empty($result))
             return 0; //should be exception

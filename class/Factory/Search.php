@@ -20,7 +20,7 @@ class Search extends \ResourceFactory
         $system_locations = \systemsinventory\Factory\SystemDevice::getSystemLocations();
         $location_options = '<option value="0">All</opton>';
         foreach($system_locations as $val){
-            $location_options .= '<option value="'.$val['id'].'">'.$val['description'].'</option>';
+            $location_options .= '<option value="'.$val['id'].'">'.$val['display_name'].'</option>';
 	}
         $vars['locations'] = $location_options;
 	$system_types = \systemsinventory\Factory\SystemDevice::getSystemTypes();
