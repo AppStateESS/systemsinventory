@@ -7,9 +7,9 @@
 $(document).ready(function () {  
               
     // format mac addresses
-        var length = 1;
         $("#mac").focusin(function (evt) {
             $(this).keypress(function () {
+                var length = 1;
                 var content = $(this).val();
                 var content1 = content.replace(/\:/g, '');
                 length = content1.length;

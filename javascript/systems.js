@@ -21,44 +21,11 @@ $(window).load(function() {
 
    });
    
-    var length = 1;
-    $("#mac").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac').val($('#mac').val() + ':');
-            }    
-            $("#mac").val($("#mac").val().slice(0, 16));
-        });    
-    });  
-    
-    var length = 1;
-    $("#mac2").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#mac2').val($('#mac2').val() + ':');
-            }    
-            $("#mac2").val($("#mac2").val().slice(0, 16));
-        });    
-    });  
+            
+    formatMAC("#mac");
+    formatMAC("#mac2");
+    formatMAC("#ipad-mac");
         
-    var length = 1;
-    $("#ipad-mac").focusin(function (evt) {
-        $(this).keypress(function () {
-            var content = $(this).val();
-            var content1 = content.replace(/\:/g, '');
-            length = content1.length;
-            if(((length % 2) == 0) && length < 17 && length > 1){
-                $('#ipad-mac').val($('#ipad-mac').val() + ':');
-            }    
-            $("#ipad-mac").val($("#ipad-mac").val().slice(0, 16));
-        });    
-    });   
 /** Can use this keyup search if I can get all users into database or get api to do wildcard search */
 $("input#pc-username").on("keyup", function( event ){
     var element_id = 'pc';
@@ -105,6 +72,19 @@ $("input#printer-username").on("keyup", function( event ){
     });
  });
 });
+
+function formatMAC(elementname){
+    $(elementname).keypress(function () {
+            var length = 1;
+            var content = $(this).val();
+            var content1 = content.replace(/\:/g, '');
+            length = content1.length;
+            if(((length % 2) == 0) && length < 17 && length > 1){
+                $(elementname).val($(elementname).val().toUpperCase() + ':');
+            }    
+            $(elementname).val($(elementname).val().slice(0, 16));
+        });
+}
 
 function loadProfile(jsondata){
     device_type_id = jsondata['device_type_id'];
@@ -270,14 +250,4 @@ function SystemsTab() {
     };
 }
 
-function formatMAC(e) {
-    var r = /([a-f0-9]{2})([a-f0-9]{2})/i,
-        str = e.target.value.replace(/[^a-f0-9]/ig, "");
-    
-    while (r.test(str)) {
-        str = str.replace(r, '$1' + ':' + '$2');
-    }
-
-    e.target.value = str.slice(0, 17);
-};
 

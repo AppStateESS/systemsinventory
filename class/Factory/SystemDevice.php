@@ -280,6 +280,7 @@ EOF;
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
         curl_setopt($curl, CURLOPT_URL, FACULTY_API_URL . "/$username");
         $faculty_result = curl_exec($curl);
         $faculty_result = json_decode($faculty_result, true);
