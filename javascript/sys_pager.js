@@ -148,7 +148,7 @@ function deleteDevice(){
 
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
-       var ipad_attributes = ["physical-id","hd","generation","mac","apple-id","purchase-date"];
+       var ipad_attributes = ["physical-id","hd","generation","mac","primary-ip","apple-id","purchase-date"];
        var printer_attributes = ["physical-id","model","toner-cartridge","manufacturer","purchase-date","color","duplex","network"];
        var camera_attributes = ["physical-id","model","megapixels","manufacturer","purchase-date","room-number","department","location","notes","sd-support","exterior","covert","is-on"];
        var digital_sign_attributes = ["physical-id","model","processor","ram","hd","manufacturer","mac","primary-ip","screen-size","screen-manufacturer","purchase-date","room-number","department","location","vlan","hi-def","notes"];
