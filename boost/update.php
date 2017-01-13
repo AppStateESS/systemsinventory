@@ -1,11 +1,5 @@
 <?php
 
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 function runDbMigration($fileName)
 {
     $db = new PHPWS_DB();
@@ -14,7 +8,6 @@ function runDbMigration($fileName)
         throw new \Exception($result->toString());
     }
 }
-
 function systemsinventory_update($content, $currentVersion){
     switch($currentVersion){
         case version_compare($currentVersion,'1.0.0','<'):
@@ -26,6 +19,9 @@ function systemsinventory_update($content, $currentVersion){
             
         case version_compare($currentVersion,'1.0.3','<'):
             runDbMigration('update_1_0_3.sql');
+            
+        case version_compare($currentVersion,'1.0.4','<'):
+            runDbMigration('update_1_0_4.sql');
             
     }
    

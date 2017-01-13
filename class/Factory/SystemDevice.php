@@ -276,6 +276,52 @@ EOF;
         }
     }
 
+    public static function markDeviceInventoried($device_id){
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/log_types.php");
+        $timestamp = time();
+        $log_type = INVENTORY_AUDIT;
+        $username = \Current_User::getUsername();
+        $db = \Database::getDB();
+        $query = "INSERT INTO systems_log (username, device_id, log_type, timestamp) VALUES('$username', '$device_id', '$log_type', '$timestamp')";
+        $result = $db->query($query);
+        if (empty($result))
+            return 0; //should be exception
+        return array("success"=>"1","timestamp"=>date("F j, Y, g:i a", $timestamp),"username"=>$username);
+    }
+    
+    public static function getDeviceAudits($device_id){
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/log_types.php");
+        $current_time = time();
+        $one_year = 31536000;        
+        $db = \Database::getDB();
+        $tbl = $db->addTable('systems_log');
+        $tbl->addField('username');
+        $tbl->addField('timestamp');
+        $condition0 = new \Database\Conditional($db, 'device_id', $device_id, '=');
+        $condition1 = new \Database\Conditional($db, 'log_type', INVENTORY_AUDIT, '=');
+        $conditional = new \Database\Conditional($db, $condition0, $condition1, 'AND');
+        $db->addConditional($conditional);
+        $tbl->addOrderBy("timestamp", "DESC");
+        $result = $db->select();
+
+        if (empty($result)){
+            return;
+        }else{
+            if(($current_time - $result[0]['timestamp']) > $one_year){
+                $overdue = 1;
+            }else{
+                $overdue = 0;
+            }
+                
+            foreach($result as $key=>$value){
+                $result[$key]["timestamp"] = date("F j, Y, g:i a", $value['timestamp']);
+            }            
+            $result['audit_overdue'] = $overdue;
+        }
+        
+        return $result;
+    }
+    
     public static function getUserByUsername($username) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
         $curl = curl_init();

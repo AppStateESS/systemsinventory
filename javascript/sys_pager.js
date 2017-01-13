@@ -8,7 +8,16 @@ var runOnLoad = function()
         $("#save-device-button").css("display","none");
         $("#device-save-result").css("display", "none");
         $("#device-deleted").css("display","none");
+        $('#device-last-audit').removeClass('text-primary');
+        $('#device-last-audit').addClass('text-danger');
+        $('#device-last-audit').empty().append("This device has never been audited.");
         
+        $.getJSON('systemsinventory/system/getDeviceAudits/',{
+            'device_id': $(this).data('rowId') }, function(jsondata) {
+            if(jsondata != null){
+               printLastAudit(jsondata); 
+           }
+           });
         $.getJSON('systemsinventory/system/getDetails/',{
             'device_id': $(this).data('rowId'),
             'row_index': $(this).index() }, function(jsondata) {
@@ -58,11 +67,25 @@ var runOnLoad = function()
                     loadSystemDetails(jsondata,device_type_id);
                 });
             }
+                        
             $("#device-modal").modal('show');
             
         });
     });
 }
+    function printLastAudit(jsondata){
+        var username = jsondata['0']['username'];
+        var date = jsondata['0']['timestamp'];
+        if(jsondata['audit_overdue']){
+            $('#device-last-audit').removeClass('text-primary');
+            $('#device-last-audit').addClass('text-danger');
+        }else{
+            $('#device-last-audit').removeClass('text-danger');
+            $('#device-last-audit').addClass('text-primary');  
+        }
+        
+        $('#device-last-audit').empty().append("Device last inventoried on "+date+" by "+username);
+    }
     
     function loadSystemDetails(jsondata,device_type_id){
         $.each(jsondata, function(index, d){
@@ -146,6 +169,22 @@ function deleteDevice(){
     }
 }
 
+function inventoryDevice(){
+    var device_id = $("#device-id").val();
+    $.getJSON('systemsinventory/system/inventory/',{
+        'device_id': device_id}, function(jsondata) {
+        //var result = $.parseJSON(jsondata);
+        if(jsondata['success']){
+            var username = jsondata['username'];
+            var date = jsondata['timestamp'];
+            $('#device-last-audit').removeClass('text-danger');
+            $('#device-last-audit').addClass('text-primary');
+            $('#device-last-audit').empty().append("Device last inventoried on "+date+" by "+username);
+        }
+    });
+    
+}
+
  function enableFormFields(){
        var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","primary-ip","apple-id","purchase-date"];
@@ -183,7 +222,8 @@ function deleteDevice(){
         $("#"+d).prop("disabled", false);
     });
         
-    $("#edit-device-button").css("display","none");
+    //$("#edit-device-button").css("display","none");
+    $("#edit-device-button").prop('disabled',true);
     $("#edit-device-button1").css("display","none");
     $("#delete-device-button").css("display","none");
     $("#save-device-button").css("display","block");

@@ -150,6 +150,12 @@ class System extends \Http\Controller {
                 case 'delete':
                     $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
                     break;
+                case 'inventory':
+                    $result = SDFactory::markDeviceInventoried($vars['device_id']);
+                    break;
+                case 'getDeviceAudits':
+                    $result = SDFactory::getDeviceAudits($vars['device_id']);
+                    break;
                 default:
                     throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
             }
