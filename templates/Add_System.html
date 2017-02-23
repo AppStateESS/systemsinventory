@@ -247,7 +247,7 @@
                     </div>
                     <div class="form-group">
                         <label for="apple_id">Apple ID</label>
-                        <input id="apple-id" name="apple_id" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                        <input id="apple-id" name="apple_id" type="text" class="form-control" value="" />
                     </div>
                     <div class="form-group">
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
@@ -453,8 +453,12 @@
                         <input required name="model" id="model" type="text" class="form-control"  value="" />
                     </div>
                     <div class="form-group">
-                        <label for="megapixels">Megapixels</label>
+                        <label for="megapixels">Resolution</label>
                         <input id="megapixels" name="megapixels" type="text" class="form-control"  value="" />
+                    </div>
+                    <div class="form-group">
+                        <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
                     </div>
                      <div class="form-group">
                         <label for="department">Department</label>
@@ -473,15 +477,19 @@
             <div class="col-sm-6">
                 <fieldset>
                     <div class="form-group">
-                        <label for="manufacturer">Manufacturer</label> <i title="Required input" class="required fa fa-asterisk"></i>
-                        <input id="manufacturer" required name="manufacturer" type="text" class="form-control"  value="" />
+                        <label for="mac">MAC Address</label> <i title="Required input" class="required fa fa-asterisk"></i>
+                        <input id="camera-mac" required name="mac" type="text" class="form-control"  placeholder="XX:XX:XX:XX:XX:XX" value="" />
                     </div>
+                    <div class="form-group">
+                        <label for="ip">IP Address</label>
+                        <input id="primary-ip" name="primary_ip" type="text" class="form-control"  placeholder="XXX.XXX.XXX.XXX" value="" />
+                    </div> 
                     <div class="form-group">
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
                         <input required id="purchase-date" name="purchase_date" type="date" class="form-control" value="" />
                     </div>
                     <div class="form-group">
-                        <label for="room_number">Room Number</label>
+                        <label for="room_number">Location in Building</label>
                         <input id="room-number" type="text" name="room_number" class="form-control" value="" />
                     </div>
                     <div class="col-sm-6" style="margin-left:-15px;">
@@ -504,7 +512,7 @@
                             <input id="covert" name="covert" type="checkbox"/>
                         </div>
                          <div>
-                            <label for="is_on">Is Camera On?</label>
+                            <label for="is_on">Camera Status(up or Down)?</label>
                             <input id="is-on" name="is_on" type="checkbox"/>
                         </div>
                     </div>
@@ -587,7 +595,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="room_number">Room Number</label>
+                        <label for="room_number">Location in Building</label>
                         <input id="room-number" type="text" name="room_number" class="form-control" value="" />
                     </div>
                     <div class="form-group">

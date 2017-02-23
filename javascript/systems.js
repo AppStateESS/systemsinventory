@@ -25,6 +25,7 @@ $(window).load(function() {
     formatMAC("#mac");
     formatMAC("#mac2");
     formatMAC("#ipad-mac");
+    formatMAC("#camera-mac")
         
 /** Can use this keyup search if I can get all users into database or get api to do wildcard search */
 $("input#pc-username").on("keyup", function( event ){
