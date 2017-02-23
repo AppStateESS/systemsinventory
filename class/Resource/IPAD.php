@@ -12,6 +12,7 @@ class IPAD extends \Resource
   protected $device_id;
   protected $generation;
   protected $apple_id;
+  protected $protective_case;
   protected $table = 'systems_ipad';
 
     public function __construct()
@@ -22,6 +23,7 @@ class IPAD extends \Resource
       $this->generation->allowNull(true);
       $this->apple_id = new \Variable\TextOnly(null, 'apple_id');
       $this->apple_id->allowNull(true);
+      $this->protective_case = new \Variable\Bool(false,'case');
     }
 
     public function setDeviceID($device_id){
@@ -34,5 +36,9 @@ class IPAD extends \Resource
     
     public function setAppleID($apple_id){
         $this->apple_id->set($apple_id);
+    }
+    
+    public function setCase($case){
+        $this->protective_case->set($case);
     }
 }

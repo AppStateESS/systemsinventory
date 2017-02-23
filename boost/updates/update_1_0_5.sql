@@ -1,0 +1,1 @@
+ALTER TABLE systems_ipad ADD COLUMN protective_case SMALLINT default 0;

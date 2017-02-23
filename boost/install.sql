@@ -91,6 +91,7 @@ CREATE TABLE systems_ipad (
        device_id integer REFERENCES systems_device(id),
        generation character varying,
        apple_id character varying,
+       protective_case smallint default 0,
        PRIMARY KEY (id)
 );
 

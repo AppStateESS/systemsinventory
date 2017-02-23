@@ -16,6 +16,9 @@ class IPAD extends SystemDevice
     $ipad->setDeviceID($device_id);
     $ipad->setGeneration(filter_input(INPUT_POST, 'generation', FILTER_SANITIZE_STRING));
     $ipad->setAppleID(filter_input(INPUT_POST, 'apple_id', FILTER_SANITIZE_STRING));
+    if(isset($vars['case'])){
+        $ipad->setCase(TRUE);
+    }
 
     self::saveResource($ipad);
 
