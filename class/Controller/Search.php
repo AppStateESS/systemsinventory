@@ -31,6 +31,7 @@ class Search extends \Http\Controller {
         $conditional = $this->createSearchConditional($db);
         if (!empty($conditional))
             $db->addConditional($conditional);
+        $result = $db->select();
         $dbpager = new \DatabasePager($db);
         $dbpager->setHeaders(array('physical_id' => 'Physical ID', 'department_id' => 'Department', 'location_id' => 'Location', 'model' => 'Model', 'room_number' => 'Room Number', 'username' => 'Username', 'purchase_date' => 'Purchase Date'));
         $tbl_headers['physical_id'] = $sd->getField('physical_id');
