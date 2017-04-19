@@ -9,7 +9,7 @@ use systemsinventory\Resource\Location as LocResource;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
  */
-class Settings extends \ResourceFactory
+class Settings extends \phpws2\ResourceFactory
 {
     public static function userPermissionsView($data, $request){
 
@@ -31,9 +31,9 @@ class Settings extends \ResourceFactory
         }
         $vars['users'] = $user_options;
         
-        \Pager::prepare();
-        $template = new \Template;
-        $template = new \Template($vars);
+        \phpws2\Pager::prepare();
+        $template = new \phpws2\Template;
+        $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('systemsinventory', 'Edit_Permissions.html');
         return $template->get();
     }
@@ -97,9 +97,9 @@ class Settings extends \ResourceFactory
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_dept.js';
         \Layout::addLink("<script type='text/javascript' src='$script'></script>");
         $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-department-modal"><i class="fa fa-plus">&nbsp;</i>Add Department</a>';
-        \Pager::prepare();
-        $template = new \Template;
-        $template = new \Template($vars);
+        \phpws2\Pager::prepare();
+        $template = new \phpws2\Template;
+        $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('systemsinventory', 'Edit_Departments.html');
         return $template->get();
     }
@@ -107,7 +107,7 @@ class Settings extends \ResourceFactory
     public static function departmentsList($data, $request){
         $rows = array();
         $no_department = 1;
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_department');
         $tbl->addField('display_name');
         $tbl->addField('parent_department');
@@ -116,7 +116,7 @@ class Settings extends \ResourceFactory
         $tbl->addField('id');
         $tbl->addFieldConditional('id', '1', '!=');
         $tbl->addOrderBy('display_name');
-        $pager = new \DatabasePager($db);
+        $pager = new \phpws2\DatabasePager($db);
         $pager->setCallback(array('\systemsinventory\Controller\Settings','formatDepartmentList'));
         $pager->setId('department-list');
         $pager->setRowIdColumn('id');
@@ -133,7 +133,7 @@ class Settings extends \ResourceFactory
             $departments[$dept['id']] = $dept['display_name'];
         }
         $rows = array();
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_permission');
         $tbl->addField('user_id');
         $tbl->addField('departments');
@@ -159,7 +159,7 @@ class Settings extends \ResourceFactory
                 <span class="glyphicon glyphicon-trash" title="Delete Restrictions"></span></a>';
             $rows[] = array('display_name'=>$user['display_name'],'username'=>$user['username'],'permissions'=>$permissions,'action'=>$action);
         }
-        $pager = new \Pager;
+        $pager = new \phpws2\Pager;
         $pager->setId('user-permission-list');
         $pager->setHeaders(array('display_name'=>'Name','username'=>'Username','permissions'=>'Current Permissions'));
         $pager->setRows($rows);
@@ -201,11 +201,11 @@ class Settings extends \ResourceFactory
         $resource->save();
    }
     
-  public function savePermissions(\Request $request){
+  public function savePermissions(\Canopy\Request $request){
       $vars = $request->getRequestVars();
       $users = $vars['users_multiselect'];
       $departments = implode(':',$vars['department_multiselect']);
-      $db = \Database::getDB();
+      $db = \phpws2\Database::getDB();
       $tbl = $db->addTable('systems_permission');
       $tbl->addField('user_id');
       $tbl->addField('id');
@@ -241,7 +241,7 @@ class Settings extends \ResourceFactory
   }
   
   public static function getDepartmentByID($dept_id){
-      $db = \Database::getDB();
+      $db = \phpws2\Database::getDB();
       $tbl = $db->addTable('systems_department');
       $tbl->addField('id');
       $tbl->addField('parent_department');
@@ -257,7 +257,7 @@ class Settings extends \ResourceFactory
   }
   
   public static function deletePermissions($user_id){
-          $db = \Database::getDB();
+          $db = \phpws2\Database::getDB();
           $tbl = $db->addTable('systems_permission');
           $tbl->addFieldConditional('user_id', $user_id,'=');
           return $db->delete();
@@ -265,7 +265,7 @@ class Settings extends \ResourceFactory
       }
   
   private static function getPHPWSUsers(){
-      $db = \Database::getDB();
+      $db = \phpws2\Database::getDB();
       $tbl = $db->addTable('users');
       $tbl->addField('id');
       $tbl->addField('username');

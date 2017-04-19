@@ -7,7 +7,7 @@ use systemsinventory\Resource\DigitalSign as Resource;
 class DigitalSign extends SystemDevice
 {
 
-  public function postNewDigitalSign(\Request $request, $device_id){
+  public function postNewDigitalSign(\Canopy\Request $request, $device_id){
     $digital_sign = new Resource;
     $vars = $request->getRequestVars();
     

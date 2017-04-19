@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class Department extends \Resource
+class Department extends \phpws2\Resource
 {
 
   protected $display_name;
@@ -19,10 +19,10 @@ class Department extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->display_name = new \Variable\TextOnly(null,'display_name');
-      $this->parent_department = new \Variable\Integer(1,'parent_department');
-      $this->description = new \Variable\TextOnly(null,'description');
-      $this->active = new \Variable\Integer(1,'active');
+      $this->display_name = new \phpws2\Variable\TextOnly(null,'display_name');
+      $this->parent_department = new \phpws2\Variable\IntegerVar(1,'parent_department');
+      $this->description = new \phpws2\Variable\TextOnly(null,'description');
+      $this->active = new \phpws2\Variable\IntegerVar(1,'active');
 
           }
 

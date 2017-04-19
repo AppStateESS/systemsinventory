@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class PC extends \Resource
+class PC extends \phpws2\Resource
 {
 
   protected $device_id;
@@ -30,27 +30,27 @@ class PC extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->device_id = new \Variable\Integer(0,'device_id');
-      $this->primary_monitor = new \Variable\TextOnly(null,'primary_monitor');
+      $this->device_id = new \phpws2\Variable\IntegerVar(0,'device_id');
+      $this->primary_monitor = new \phpws2\Variable\TextOnly(null,'primary_monitor');
       $this->primary_monitor->allowNull(true);
-      $this->secondary_monitor = new \Variable\TextOnly(null,'secondary_monitor');
+      $this->secondary_monitor = new \phpws2\Variable\TextOnly(null,'secondary_monitor');
       $this->secondary_monitor->allowNull(true);
-      $this->video_card = new \Variable\TextOnly(null,'video_card');
+      $this->video_card = new \phpws2\Variable\TextOnly(null,'video_card');
       $this->video_card->allowNull(true);
-      $this->os = new \Variable\TextOnly(null,'os');
+      $this->os = new \phpws2\Variable\TextOnly(null,'os');
       $this->os->allowNull(true);
-      $this->server_type = new \Variable\TextOnly(null,'server_type');
+      $this->server_type = new \phpws2\Variable\TextOnly(null,'server_type');
       $this->server_type->allowNull(true);
-      $this->system_usage = new \Variable\Integer(0,'system_usage');
+      $this->system_usage = new \phpws2\Variable\IntegerVar(0,'system_usage');
       $this->system_usage->allowNull(true);
-      $this->battery_backup = new \Variable\Bool(false,'battery_backup');
-      $this->redundant_backup = new \Variable\Bool(false,'redundant_backup');
-      $this->rotation = new \Variable\Bool(false,'rotation');
-      $this->stand = new \Variable\Bool(false,'stand');
-      $this->touch_screen = new \Variable\Bool(false,'touch_screen');
-      $this->dual_monitor = new \Variable\Bool(false,'dual_monitor');
-      $this->check_in = new \Variable\Bool(false,'check_in');
-      $this->smart_room = new \Variable\Bool(false,'smart_room');
+      $this->battery_backup = new \phpws2\Variable\BooleanVar(false,'battery_backup');
+      $this->redundant_backup = new \phpws2\Variable\BooleanVar(false,'redundant_backup');
+      $this->rotation = new \phpws2\Variable\BooleanVar(false,'rotation');
+      $this->stand = new \phpws2\Variable\BooleanVar(false,'stand');
+      $this->touch_screen = new \phpws2\Variable\BooleanVar(false,'touch_screen');
+      $this->dual_monitor = new \phpws2\Variable\BooleanVar(false,'dual_monitor');
+      $this->check_in = new \phpws2\Variable\BooleanVar(false,'check_in');
+      $this->smart_room = new \phpws2\Variable\BooleanVar(false,'smart_room');
     }
 
     public function setDeviceID($device_id){

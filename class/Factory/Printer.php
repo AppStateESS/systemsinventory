@@ -7,7 +7,7 @@ use systemsinventory\Resource\Printer as Resource;
 class Printer extends SystemDevice
 {
 
-  public function postNewPrinter(\Request $request, $device_id){
+  public function postNewPrinter(\Canopy\Request $request, $device_id){
     $printer = new Resource;
     $vars = $request->getRequestVars();
     

@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class SystemDevice extends \Resource
+class SystemDevice extends \phpws2\Resource
 {
   protected $location_id;
   protected $room_number;
@@ -39,49 +39,49 @@ class SystemDevice extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->location_id = new \Variable\Integer(0, 'location');
+      $this->location_id = new \phpws2\Variable\IntegerVar(0, 'location');
       $this->location_id->allowNull(true);
-      $this->room_number = new \Variable\TextOnly(null, 'room_number');
+      $this->room_number = new \phpws2\Variable\TextOnly(null, 'room_number');
       $this->room_number->allowNull(true);
-      $this->department_id = new \Variable\Integer(0, 'department');
+      $this->department_id = new \phpws2\Variable\IntegerVar(0, 'department');
       $this->department_id->allowNull(true);
-      $this->physical_id = new \Variable\TextOnly(null,'physical_id');
+      $this->physical_id = new \phpws2\Variable\TextOnly(null,'physical_id');
       $this->physical_id->allowNull(true);
-      $this->device_type_id = new \Variable\Integer(0, 'device_type');
-      $this->model = new \Variable\TextOnly(null, 'model');
+      $this->device_type_id = new \phpws2\Variable\IntegerVar(0, 'device_type');
+      $this->model = new \phpws2\Variable\TextOnly(null, 'model');
       $this->model->allowNull(true);
-      $this->hd_size = new \Variable\TextOnly(null, 'hd_size');
+      $this->hd_size = new \phpws2\Variable\TextOnly(null, 'hd_size');
       $this->hd_size->allowNull(true);
-      $this->processor = new \Variable\TextOnly(null, 'processor');
+      $this->processor = new \phpws2\Variable\TextOnly(null, 'processor');
       $this->processor->allowNull(true);
-      $this->ram = new \Variable\TextOnly(null, 'ram');
+      $this->ram = new \phpws2\Variable\TextOnly(null, 'ram');
       $this->ram->allowNull(true);
-      $this->mac = new \Variable\TextOnly(null, 'mac');
+      $this->mac = new \phpws2\Variable\TextOnly(null, 'mac');
       $this->mac->allowNull(true);
-      $this->mac2 = new \Variable\TextOnly(null,'mac2');
+      $this->mac2 = new \phpws2\Variable\TextOnly(null,'mac2');
       $this->mac2->allowNull(true);
-      $this->primary_ip = new \Variable\TextOnly(null, 'primary_ip');
+      $this->primary_ip = new \phpws2\Variable\TextOnly(null, 'primary_ip');
       $this->primary_ip->allowNull(true);
-      $this->secondary_ip = new \Variable\TextOnly(null, 'secondary_ip');
+      $this->secondary_ip = new \phpws2\Variable\TextOnly(null, 'secondary_ip');
       $this->secondary_ip->allowNull(true);
-      $this->manufacturer = new \Variable\TextOnly(null, 'manufacturer');
+      $this->manufacturer = new \phpws2\Variable\TextOnly(null, 'manufacturer');
       $this->manufacturer->allowNull(true);
-      $this->vlan = new \Variable\Integer(0, 'vlan');
+      $this->vlan = new \phpws2\Variable\IntegerVar(0, 'vlan');
       $this->vlan->allowNull(true);
-      $this->first_name = new \Variable\TextOnly(null, 'first_name');
+      $this->first_name = new \phpws2\Variable\TextOnly(null, 'first_name');
       $this->first_name->allowNull(true);
-      $this->last_name = new \Variable\TextOnly(null, 'last_name');
+      $this->last_name = new \phpws2\Variable\TextOnly(null, 'last_name');
       $this->last_name->allowNull(true);
-      $this->username = new \Variable\TextOnly(null, 'username');
+      $this->username = new \phpws2\Variable\TextOnly(null, 'username');
       $this->username->allowNull(true);
-      $this->phone = new \Variable\PhoneNumber(null, 'phone');
+      $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
       $this->phone->allowNull(true);
-      $this->purchase_date = new \Variable\Date(null, 'purchase_date');
+      $this->purchase_date = new \phpws2\Variable\DateVar(null, 'purchase_date');
       $this->purchase_date->allowNull(true);
-      $this->profile = new \Variable\Bool(false, 'profile');
-      $this->profile_name = new \Variable\TextOnly(null, 'profile_name');
+      $this->profile = new \phpws2\Variable\BooleanVar(false, 'profile');
+      $this->profile_name = new \phpws2\Variable\TextOnly(null, 'profile_name');
       $this->profile_name->allowNull(true);
-      $this->notes = new \Variable\TextOnly(null, 'notes');
+      $this->notes = new \phpws2\Variable\TextOnly(null, 'notes');
       $this->notes->allowNull(true);
       
     }

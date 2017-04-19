@@ -14,17 +14,17 @@ use systemsinventory\Factory\Settings as SettingsFactory;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class Settings extends \Http\Controller {
+class Settings extends \phpws2\Http\Controller {
 
-    public function get(\Request $request) {
+    public function get(\Canopy\Request $request) {
         $data = array();
         $data['command'] = $request->shiftCommand();
         $view = $this->getView($data, $request);
-        $response = new \Response($view);
+        $response = new \Canopy\Response($view);
         return $response;
     }
 
-    protected function getHtmlView($data, \Request $request) {
+    protected function getHtmlView($data, \Canopy\Request $request) {
         $vars = $request->getRequestVars();
         if (empty($data['command']))
             $data['command'] = 'editPermissions';
@@ -44,11 +44,11 @@ class Settings extends \Http\Controller {
                 $content = SettingsFactory::editLocationsView($data, $request);
                 break;
         }
-        $view = new \View\HtmlView($content);
+        $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    public function post(\Request $request) {
+    public function post(\Canopy\Request $request) {
         $settingsFactory = new SettingsFactory;
         $vars = $request->getRequestVars();
         $data['command'] = $command = $request->shiftCommand();
@@ -75,16 +75,16 @@ class Settings extends \Http\Controller {
 //        
 //        $data['action'] = 'success';
         if($isJson){
-            $view = new \View\JsonView(array('success' => TRUE));
+            $view = new \phpws2\View\JsonView(array('success' => TRUE));
         }else{
             $view = $this->getHtmlView($data, $request);
         }
-        $response = new \Response($view);
+        $response = new \Canopy\Response($view);
         return $response;
     }
     
     public static function formatDepartmentList($row){
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_department');
         $tbl->addField('display_name');
         $tbl->addField('parent_department');
@@ -116,7 +116,7 @@ class Settings extends \Http\Controller {
         return $row;
     }
     
-    protected function getJsonView($data, \Request $request) {
+    protected function getJsonView($data, \Canopy\Request $request) {
         $vars = $request->getRequestVars();
         $command = '';
         if(!empty($data['command']))
@@ -143,7 +143,7 @@ class Settings extends \Http\Controller {
                 throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
         }
 
-        $view = new \View\JsonView($result);
+        $view = new \phpws2\View\JsonView($result);
         return $view;
     }
     

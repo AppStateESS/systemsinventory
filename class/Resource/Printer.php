@@ -6,7 +6,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class Printer extends \Resource
+class Printer extends \phpws2\Resource
 {
 
   protected $device_id;
@@ -19,11 +19,11 @@ class Printer extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->device_id = new \Variable\Integer(0,'device_id');
-      $this->toner_cartridge = new \Variable\TextOnly(NULL, 'toner_cartridge');
-      $this->color = new \Variable\Bool(false,'color');
-      $this->network = new \Variable\Bool(false,'network');
-      $this->duplex = new \Variable\Bool(false,'duplex');
+      $this->device_id = new \phpws2\Variable\IntegerVar(0,'device_id');
+      $this->toner_cartridge = new \phpws2\Variable\TextOnly(NULL, 'toner_cartridge');
+      $this->color = new \phpws2\Variable\BooleanVar(false,'color');
+      $this->network = new \phpws2\Variable\BooleanVar(false,'network');
+      $this->duplex = new \phpws2\Variable\BooleanVar(false,'duplex');
     }
 
     public function setDeviceID($device_id){

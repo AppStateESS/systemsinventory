@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class Settings extends \Resource
+class Settings extends \phpws2\Resource
 {
 
   protected $user_id;
@@ -17,8 +17,8 @@ class Settings extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->user_id = new \Variable\Integer(0,'user_id');
-      $this->departments = new \Variable\TextOnly(null,'departments');
+      $this->user_id = new \phpws2\Variable\IntegerVar(0,'user_id');
+      $this->departments = new \phpws2\Variable\TextOnly(null,'departments');
           }
 
     public function setUserID($user_id){

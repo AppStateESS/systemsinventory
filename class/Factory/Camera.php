@@ -7,7 +7,7 @@ use systemsinventory\Resource\Camera as Resource;
 class Camera extends SystemDevice
 {
 
-  public function postNewCamera(\Request $request, $device_id){
+  public function postNewCamera(\Canopy\Request $request, $device_id){
     $camera = new Resource;
     $vars = $request->getRequestVars();
     

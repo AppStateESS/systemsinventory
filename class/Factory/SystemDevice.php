@@ -13,9 +13,9 @@ use systemsinventory\Resource\Printer as PrinterResource;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
  */
-class SystemDevice extends \ResourceFactory {
+class SystemDevice extends \phpws2\ResourceFactory {
 
-    public static function form(\Request $request, $active_tab, $data) {
+    public static function form(\Canopy\Request $request, $active_tab, $data) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $vars = array();
         $req_vars = $request->getRequestVars();
@@ -35,7 +35,7 @@ class SystemDevice extends \ResourceFactory {
         }
 
         javascript('jquery');
-        \Form::requiredScript();
+        \phpws2\Form::requiredScript();
 
         if (!in_array($active_tab, array('systems-pc', 'ipad', 'printer', 'camera', 'digital-sign', 'time-clock'))) {
             $active_tab = 'systems-pc';
@@ -83,12 +83,12 @@ EOF;
         $vars['profiles'] = $profile_optons;
         $vars['printer_profiles'] = $printer_profile_options;
         $vars['form_action'] = "./systemsinventory/system/" . $command;
-        $template = new \Template($vars);
+        $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('systemsinventory', $template_name);
         return $template->get();
     }
 
-    public function postDevice(\Request $request) {
+    public function postDevice(\Canopy\Request $request) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $system_device = new Resource;
         $device_type = PC;
@@ -158,7 +158,7 @@ EOF;
             throw new Exception("System ID invalid.");
         }
         // get the common device attributes
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $query = "SELECT * FROM systems_device WHERE id='$system_id'";
         $pdo = $db->query($query);
         $result = $pdo->fetch(\PDO::FETCH_ASSOC);
@@ -203,7 +203,7 @@ EOF;
         if (empty($profile_id)) {
             throw new Exception("System profile id empty.");
         }
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $system_table = $db->addTable("systems_device");
         $system_table->addFieldConditional('id', $profile_id);
         $result = $db->select();
@@ -226,7 +226,7 @@ EOF;
     }
 
     public static function searchPhysicalID($physical_id) {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $system_table = $db->addTable("systems_device");
         $system_table->addFieldConditional('physical_id', $physical_id);
         $search_result = $db->select();
@@ -426,7 +426,7 @@ EOF;
     }
 
     public static function getLocationByID($location_id) {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('description');
         $tbl->addFieldConditional('id', $location_id, '=');
@@ -437,7 +437,7 @@ EOF;
     }
 
     public static function getDepartmentByID($department_id) {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_department');
         $tbl->addField('description');
         $tbl->addFieldConditional('id', $department_id, '=');
@@ -449,7 +449,7 @@ EOF;
     }
 
     public static function getSystemLocations() {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('id');
         $tbl->addField('display_name');
@@ -460,7 +460,7 @@ EOF;
     }
 
     public static function getSystemTypes() {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_device_type');
         $tbl->addField('id');
         $tbl->addField('description');
@@ -472,13 +472,13 @@ EOF;
 
     public static function getSystemDepartments() {
         $user_id = \Current_User::getId();
-        $permission_db = \Database::getDB();
+        $permission_db = \phpws2\Database::getDB();
         $permissions_tbl = $permission_db->addTable('systems_permission');
         $permissions_tbl->addField('departments');
         $permissions_tbl->addField('user_id');
         $permissions_tbl->addFieldConditional('user_id', $user_id);
         $permission_result = $permission_db->select();
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_department');
         $tbl->addField('id');
         $tbl->addField('display_name');
@@ -490,11 +490,11 @@ EOF;
             $deps = explode(':', $dep);
             $cond = NULL;
             foreach($deps as $val){
-                $tmp_cond = new \Database\Conditional($db, 'id', $val, '=');
+                $tmp_cond = new \phpws2\Database\Conditional($db, 'id', $val, '=');
                 if (empty($cond))
                     $cond = $tmp_cond;
                 else
-                    $cond = new \Database\Conditional($db, $cond, $tmp_cond, 'OR');
+                    $cond = new \phpws2\Database\Conditional($db, $cond, $tmp_cond, 'OR');
             }
             $db->addConditional($cond);
         }
@@ -506,7 +506,7 @@ EOF;
     }
 
     public static function getSystemProfiles() {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_device');
         $tbl->addFieldConditional('profile', 1);
         $tbl->addField('id');
@@ -523,7 +523,7 @@ EOF;
         //$contact_info = self::load();
         //$values = self::getValues($contact_info);
 
-        $template = new \Template($values);
+        $template = new \phpws2\Template($values);
         $template->setModuleTemplate('systemsinventory', 'view.html');
         $content = $template->get();
         return $content;

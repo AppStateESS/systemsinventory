@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class DigitalSign extends \Resource
+class DigitalSign extends \phpws2\Resource
 {
 
   protected $device_id;
@@ -19,12 +19,12 @@ class DigitalSign extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->device_id = new \Variable\Integer(0,'device_id');
-      $this->screen_size = new \Variable\TextOnly(null,'screen_size');
+      $this->device_id = new \phpws2\Variable\IntegerVar(0,'device_id');
+      $this->screen_size = new \phpws2\Variable\TextOnly(null,'screen_size');
       $this->screen_size->allowNull(true);
-      $this->screen_manufacturer = new \Variable\TextOnly(null,'screen_manufacturer');
+      $this->screen_manufacturer = new \phpws2\Variable\TextOnly(null,'screen_manufacturer');
       $this->screen_manufacturer->allowNull(true);
-      $this->hi_def = new \Variable\Bool(false,'hi_def');
+      $this->hi_def = new \phpws2\Variable\BooleanVar(false,'hi_def');
     }
 
     public function setDeviceID($device_id){
