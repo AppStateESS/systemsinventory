@@ -8,25 +8,25 @@ use systemsinventory\Factory\Search as Factory;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class Search extends \Http\Controller {
+class Search extends \phpws2\Http\Controller {
 
     public $search_params = NULL;
 
-    public function get(\Request $request) {
+    public function get(\Canopy\Request $request) {
         $data = array();
         $view = $this->getView($data, $request);
-        $response = new \Response($view);
+        $response = new \Canopy\Response($view);
         return $response;
     }
 
-    protected function getHtmlView($data, \Request $request) {
+    protected function getHtmlView($data, \Canopy\Request $request) {
         $content = Factory::form($request);
-        $view = new \View\HtmlView($content);
+        $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    protected function getJsonView($data, \Request $request) {
-        $db = \Database::newDB();
+    protected function getJsonView($data, \Canopy\Request $request) {
+        $db = \phpws2\Database::newDB();
         $sd = $db->addTable('systems_device');
         $conditional = $this->createSearchConditional($db);
         if (!empty($conditional))
@@ -139,7 +139,7 @@ class Search extends \Http\Controller {
      * @param \Request $request
      * @return \Response
      */
-    public function post(\Request $request) {
+    public function post(\Canopy\Request $request) {
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
         $source_http = PHPWS_SOURCE_HTTP;
         \Layout::addJSHeader("<script type='text/javascript'>var source_http = '$source_http';</script>");
@@ -148,12 +148,12 @@ class Search extends \Http\Controller {
         $factory = new Factory;
         $search_vars = $request->getVars();
         $_SESSION['system_search_vars'] = $search_vars['vars'];
-        \Pager::prepare();
-        $template = new \Template;
+        \phpws2\Pager::prepare();
+        $template = new \phpws2\Template;
         $template->setModuleTemplate('systemsinventory', 'search_results.html');
 
-        $view = new \View\HtmlView($template->get());
-        $response = new \Response($view);
+        $view = new \phpws2\View\HtmlView($template->get());
+        $response = new \Canopy\Response($view);
         return $response;
     }
 

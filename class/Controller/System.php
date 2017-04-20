@@ -14,17 +14,17 @@ use systemsinventory\Resource;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class System extends \Http\Controller {
+class System extends \phpws2\Http\Controller {
 
-    public function get(\Request $request) {
+    public function get(\Canopy\Request $request) {
         $data = array();
         $data['command'] = $request->shiftCommand();
         $view = $this->getView($data, $request);
-        $response = new \Response($view);
+        $response = new \Canopy\Response($view);
         return $response;
     }
 
-    protected function getHtmlView($data, \Request $request) {
+    protected function getHtmlView($data, \Canopy\Request $request) {
         if (empty($data['command']))
             $data['command'] = 'add';
 
@@ -36,11 +36,11 @@ class System extends \Http\Controller {
         }else {
             $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
         }
-        $view = new \View\HtmlView($content);
+        $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    public function post(\Request $request) {
+    public function post(\Canopy\Request $request) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $vars = $request->getRequestVars();
@@ -62,15 +62,15 @@ class System extends \Http\Controller {
 
         $data['action'] = 'success';
         if ($isJSON) {
-            $view = new \View\JsonView(array('success' => TRUE));
+            $view = new \phpws2\View\JsonView(array('success' => TRUE));
         } else {
             $view = $this->getHtmlView($data, $request);
         }
-        $response = new \Response($view);
+        $response = new \Canopy\Response($view);
         return $response;
     }
 
-    public function postSpecificDevice(\Request $request, $device_type, $device_id) {
+    public function postSpecificDevice(\Canopy\Request $request, $device_type, $device_id) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
 
         switch ($device_type) {
@@ -118,13 +118,13 @@ class System extends \Http\Controller {
             $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
 
 
-        $nav_bar = new \Template($nav_vars);
+        $nav_bar = new \phpws2\Template($nav_vars);
         $nav_bar->setModuleTemplate('systemsinventory', 'navbar.html');
         $content = $nav_bar->get();
         \Layout::plug($content, 'NAV_LINKS');
     }
 
-    protected function getJsonView($data, \Request $request) {
+    protected function getJsonView($data, \Canopy\Request $request) {
         $vars = $request->getRequestVars();
         $command = '';
         if (!empty($data['command']))
@@ -163,7 +163,7 @@ class System extends \Http\Controller {
             $result = array('Error');
         }
         
-        $view = new \View\JsonView($result);
+        $view = new \phpws2\View\JsonView($result);
         return $view;
     }
 

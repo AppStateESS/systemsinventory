@@ -7,7 +7,7 @@ use systemsinventory\Resource\PC as Resource;
 class PC extends SystemDevice
 {
 
-  public function postNewPC(\Request $request, $device_id){
+  public function postNewPC(\Canopy\Request $request, $device_id){
     $pc = new Resource;
     $vars = $request->getRequestVars();
     

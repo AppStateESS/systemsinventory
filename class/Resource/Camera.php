@@ -7,7 +7,7 @@ namespace systemsinventory\Resource;
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 
-class Camera extends \Resource
+class Camera extends \phpws2\Resource
 {
 
   protected $device_id;
@@ -22,14 +22,14 @@ class Camera extends \Resource
     public function __construct()
     {
       parent::__construct();
-      $this->device_id = new \Variable\Integer(0,'device_id');
-      $this->megapixels = new \Variable\TextOnly(null,'megapixels');
+      $this->device_id = new \phpws2\Variable\IntegerVar(0,'device_id');
+      $this->megapixels = new \phpws2\Variable\TextOnly(null,'megapixels');
       $this->megapixels->allowNull(true);
-      $this->sd_support = new \Variable\Bool(false,'sd_support');
-      $this->hi_def = new \Variable\Bool(false,'hi_def');
-      $this->exterior = new \Variable\Bool(false,'exterior');
-      $this->covert = new \Variable\Bool(false,'covert');
-      $this->is_on = new \Variable\Bool(false,'is_on');
+      $this->sd_support = new \phpws2\Variable\BooleanVar(false,'sd_support');
+      $this->hi_def = new \phpws2\Variable\BooleanVar(false,'hi_def');
+      $this->exterior = new \phpws2\Variable\BooleanVar(false,'exterior');
+      $this->covert = new \phpws2\Variable\BooleanVar(false,'covert');
+      $this->is_on = new \phpws2\Variable\BooleanVar(false,'is_on');
     }
 
     public function setDeviceID($device_id){

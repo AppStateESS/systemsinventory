@@ -7,13 +7,13 @@ use systemsinventory\Resource\SystemDevice as Resource;
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
  */
-class Search extends \ResourceFactory
+class Search extends \phpws2\ResourceFactory
 {
 
-  public static function form(\Request $request, $command=null)
+  public static function form(\Canopy\Request $request, $command=null)
     {
         javascript('jquery');
-        \Form::requiredScript();     
+        \phpws2\Form::requiredScript();     
     
 	if(empty($command))
 	  $command = 'run_search';
@@ -36,7 +36,7 @@ class Search extends \ResourceFactory
 	}
 	$vars['departments'] = $dep_optons;
 	$vars['form_action'] = "./systemsinventory/search/".$command;
-        $template = new \Template($vars);
+        $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('systemsinventory', 'Search_System.html');
         return $template->get();
     }

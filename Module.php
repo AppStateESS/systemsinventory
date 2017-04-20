@@ -6,7 +6,7 @@
 
 namespace systemsinventory;
 
-class Module extends \Module implements \SettingDefaults {
+class Module extends \Canopy\Module implements \Canopy\SettingDefaults {
 
     public function __construct() {
         parent::__construct();
@@ -14,7 +14,7 @@ class Module extends \Module implements \SettingDefaults {
         $this->setProperName('Systems Inventory');
     }
 
-    public function getController(\Request $request) {
+    public function getController(\Canopy\Request $request) {
         $cmd = $request->shiftCommand();
 
         if (\Current_User::allow('sysinventory')) {
@@ -37,7 +37,7 @@ class Module extends \Module implements \SettingDefaults {
         }
     }
 
-    public function runTime(\Request $request) {
+    public function runTime(\Canopy\Request $request) {
         if (\Current_User::allow('sysinventory'))
             \systemsinventory\Controller\System::loadAdminBar();
 

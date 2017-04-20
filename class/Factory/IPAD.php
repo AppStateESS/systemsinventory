@@ -7,7 +7,7 @@ use systemsinventory\Resource\IPAD as Resource;
 class IPAD extends SystemDevice
 {
 
-  public function postNewIPAD(\Request $request, $device_id){
+  public function postNewIPAD(\Canopy\Request $request, $device_id){
     $ipad = new Resource;
     $vars = $request->getRequestVars();
     
