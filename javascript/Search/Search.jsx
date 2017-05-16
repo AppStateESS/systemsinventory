@@ -1,18 +1,47 @@
 'use strict'
 import React, {Component} from 'react'
-import FilterModal from './FilterModal.jsx'
 import Filters from './Filters.jsx'
 import Listing from './Listing.jsx'
 import SystemSelection from './SystemSelection.jsx'
-import {ModalManager} from 'react-dynamic-modal'
-
+import {Modal, Effect} from 'react-dynamic-modal'
 /* global $, jsonFilters */
+
+const modalCss = {
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 99999999,
+    overflow: 'hidden',
+    perspective: 1300,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)'
+  },
+
+  content: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '100%',
+    margin: '0px',
+    width: '30%',
+    padding: '8px',
+    border: '1px solid rgba(0, 0, 0, .2)',
+    overflow: 'auto',
+    borderRadius: '4px',
+    outline: 'none',
+    boxShadow: '0 5px 10px rgba(0, 0, 0, .3)'
+  }
+}
 
 export default class Search extends Component {
   constructor() {
     super()
     this.offset = 0
-    this.state = {
+    this.filters = this.state = {
       modalOpen: false,
       filters: {
         systemType: [],
@@ -26,9 +55,9 @@ export default class Search extends Component {
         username: ''
       },
       total: 0,
-      shown : 0,
+      shown: 0,
       more: false,
-      listing: null,
+      listing: null
     }
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -68,26 +97,28 @@ export default class Search extends Component {
         if (this.offset === 0 || this.offset === -1) {
           this.setState({listing: data.listing, total: data.total, shown: data.shown, more: data.more})
         } else if (this.offset > 0) {
-          this.setState({listing : this.state.listing.concat(data.listing), shown:data.shown, total: data.total})
+          this.setState({
+            listing: this.state.listing.concat(data.listing),
+            shown: data.shown,
+            total: data.total
+          })
         }
       }
     }.bind(this))
   }
 
   reset() {
-    const filters = {
-      systemType: [],
-      department: null,
-      location: null,
-      physicalId: '',
-      macAddress: '',
-      purchaseDate: '',
-      model: '',
-      ipAddress: '',
-      username: ''
-    }
+    let filters = this.state.filters
+    filters.department = null
+    filters.location = null
+    filters.physicalId = ''
+    filters.macAddress = ''
+    filters.purchaseDate = ''
+    filters.model = ''
+    filters.ipAddress = ''
+    filters.username = ''
     this.setState({filters: filters})
-    this.openModal()
+    this.load()
   }
 
   updateSystemType(type) {
@@ -116,16 +147,11 @@ export default class Search extends Component {
   }
 
   openModal() {
-    const filters = <Filters filters={this.state.filters} options={jsonFilters} update={this.updateFilter} reset={this.reset}/>
-    ModalManager.open(<FilterModal
-      content={filters}
-      refresh={this.load}
-      close={this.closeModal}
-      onRequestClose={() => true}/>)
+    this.setState({modalOpen: true})
   }
 
   closeModal() {
-    ModalManager.close()
+    this.setState({modalOpen: false})
   }
 
   incrementOffset() {
@@ -147,22 +173,31 @@ export default class Search extends Component {
         </div>
       )
     }
+    let modal
+    if (this.state.modalOpen) {
+      modal = <Modal
+        style={modalCss}
+        effect={Effect.Newspaper}
+        onRequestClose={this.closeModal}
+        open={this.state.modalOpen}><Filters
+        filters={this.state.filters}
+        options={jsonFilters}
+        update={this.updateFilter}
+        reset={this.reset}/></Modal>
+    }
     return (
       <div>
+        {modal}
         <SystemSelection
           update={this.updateSystemType}
           jsonFilters={jsonFilters}
           active={this.state.filters.systemType}/>
         <div className="filter-button">
-          <button
-            className="btn btn-primary"
-            type="button"
-            onClick={this.openModal}>Search filters
+          <button className="btn btn-primary" type="button" onClick={this.openModal}>Search filters
           </button>
         </div>
-        Devices shown: {this.state.shown} rows of {this.state.total}
+        Devices shown: {this.state.shown}&nbsp;rows of {this.state.total}
         <Listing rows={this.state.listing}/> {moreButtons}
-
       </div>
     )
   }
