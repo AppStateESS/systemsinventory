@@ -3,130 +3,211 @@
 namespace systemsinventory\Controller;
 
 use systemsinventory\Factory\Search as Factory;
+use systemsinventory\Factory\React;
+use systemsinventory\Factory\SystemDevice;
+use phpws2\Database;
+use phpws2\Database\Conditional;
+
+/**
+ * Search row increments
+ */
+define('SYSINV_ROWS', 50);
 
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class Search extends \phpws2\Http\Controller {
+class Search extends \phpws2\Http\Controller
+{
 
     public $search_params = NULL;
 
-    public function get(\Canopy\Request $request) {
+    public function get(\Canopy\Request $request)
+    {
         $data = array();
         $view = $this->getView($data, $request);
         $response = new \Canopy\Response($view);
         return $response;
     }
 
-    protected function getHtmlView($data, \Canopy\Request $request) {
-        $content = Factory::form($request);
+    protected function getHtmlView($data, \Canopy\Request $request)
+    {
+        \Layout::addStyle('systemsinventory');
+//$content = Factory::form($request);
+        $content = $this->getFilterScript() . React::view('search');
         $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    protected function getJsonView($data, \Canopy\Request $request) {
-        $db = \phpws2\Database::newDB();
-        $sd = $db->addTable('systems_device');
-        $conditional = $this->createSearchConditional($db);
-        if (!empty($conditional))
-            $db->addConditional($conditional);
-        $result = $db->select();
-        $dbpager = new \DatabasePager($db);
-        $dbpager->setHeaders(array('physical_id' => 'Physical ID', 'department_id' => 'Department', 'location_id' => 'Location', 'model' => 'Model', 'room_number' => 'Room Number', 'username' => 'Username', 'purchase_date' => 'Purchase Date'));
-        $tbl_headers['physical_id'] = $sd->getField('physical_id');
-        $tbl_headers['department_id'] = $sd->getField('department_id');
-        $tbl_headers['location_id'] = $sd->getField('location_id');
-        $tbl_headers['model'] = $sd->getField('model');
-        $tbl_headers['room_number'] = $sd->getField('room_number');
-        $tbl_headers['username'] = $sd->getField('username');
-        $tbl_headers['purchase_date'] = $sd->getField('purchase_date');
-        $dbpager->setTableHeaders($tbl_headers);
-        $dbpager->setId('device-list');
-        $dbpager->setRowIdColumn('id');
-        $dbpager->setCallback(array('\systemsinventory\Controller\Search', 'alterSearchRow'));
-        $data = $dbpager->getJson();
-        return parent::getJsonView($data, $request);
+    protected function getFilterScript()
+    {
+        $filter = $this->getSearchFilterJson();
+        return <<<EOF
+<script>const jsonFilters = $filter</script>
+EOF;
     }
 
-    private function createSearchConditional($db) {
-        $conditional = NULL;
-        if (empty($_SESSION['system_search_vars'])) {
-            $conditional = NULL;
+    protected function getSearchFilterJson()
+    {
+        $filters = $this->getJsonSearchFilters();
+        return json_encode($filters);
+    }
+
+    protected function getJsonSearchFilters()
+    {
+        $system_types = SystemDevice::getSystemTypes();
+        foreach ($system_types as $val) {
+            $filters['system_types'][] = array('value' => $val['id'], 'label' => $val['description']);
+        }
+        $departments = SystemDevice::getSystemDepartments();
+        foreach ($departments as $val) {
+            $filters['departments'][] = array('value' => $val['id'], 'label' => $val['display_name']);
+        }
+        $locations = SystemDevice::getSystemLocations();
+        foreach ($locations as $val) {
+            $filters['locations'][] = array('value' => $val['id'], 'label' => $val['display_name']);
+        }
+        return $filters;
+    }
+
+    protected function getJsonView($data, \Canopy\Request $request)
+    {
+        $total = 0;
+        $total_shown = 0;
+        $more = false;
+        $system_type = $request->pullGetArray('systemType', true);
+        $offset = 0;
+
+        if (empty($system_type)) {
+            $result = null;
         } else {
-            $search_vars = $_SESSION['system_search_vars'];
-            $system_dep = \systemsinventory\Factory\SystemDevice::getSystemDepartments();
+            $db = Database::getDB();
+            $sd = $db->addTable('systems_device');
+            $deptbl = $db->addTable('systems_department');
+            $loctbl = $db->addTable('systems_location');
+            $deptbl->addField('display_name', 'department_name');
+            $loctbl->addField('display_name', 'location_name');
+            $exp = new \phpws2\Database\Expression('systems_device.*, count(*) OVER() as full_count');
+            $sd->addField($exp);
+            $db->joinResources($sd, $deptbl,
+                    new Conditional($db, $sd->getField('department_id'),
+                    $deptbl->getField('id'), '='));
+            $db->joinResources($sd, $loctbl,
+                    new Conditional($db, $sd->getField('location_id'),
+                    $loctbl->getField('id'), '='));
+            $conditional = $this->createSearchConditional($db, $sd, $request);
+            if (!empty($conditional)) {
+                $db->addConditional($conditional);
+            }
 
-            if ($search_vars['system_type']) {
-                $conditional = new \Database\Conditional($db, 'device_type_id', $search_vars['system_type'], '=');
+            $offsetMult = $request->pullGetInteger('offset', true);
+            // -1 means show everything at once
+            if ($offsetMult !== -1) {
+                $db->setLimit(SYSINV_ROWS, SYSINV_ROWS * $offsetMult);
             }
-            if ($search_vars['department']) {
-                $tmp_cond = new \Database\Conditional($db, 'department_id', $search_vars['department'], '=');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                
-            }else {
-                $cond = NULL;
-                foreach ($system_dep as $val) {
-                    $tmp_cond = new \Database\Conditional($db, 'department_id', $val['id'], '=');
-                    $cond = $this->addSearchConditional($db, $cond, $tmp_cond, 'OR');
+
+            $result = $db->select();
+            if ($result) {
+                // Total number of rows not adjusted for limit
+                if (isset($result[1])) {
+                    $total = $result[1]['full_count'];
                 }
-                $conditional = $this->addSearchConditional($db, $conditional, $cond, 'AND');
+
+                $row_count = count($result);
+
+                if ($row_count === SYSINV_ROWS) {
+                    $more = true;
+                    $total_shown = ($offsetMult + 1) * SYSINV_ROWS;
+                } else if ($row_count < SYSINV_ROWS) {
+                    $more = false;
+                    $total_shown = $total;
+                } else {
+                    // $row_count > SYSINV_ROWS
+                    $more = false;
+                    $total_shown = $row_count;
+                }
             }
-            if ($search_vars['location']) {
-                $tmp_cond = new \Database\Conditional($db, 'location_id', $search_vars['location'], '=');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['physical_id'])) {
-                $tmp_cond = new \Database\Conditional($db, 'physical_id', $search_vars['physical_id'], 'like');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['model'])) {
-                $tmp_cond = new \Database\Conditional($db, 'model', "%" . $search_vars['model'] . "%", 'like');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['username'])) {
-                $tmp_cond = new \Database\Conditional($db, 'username', "%" . $search_vars['username'] . "%", 'LIKE');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['purchase_date'])) {
-                $from_date = strtotime($search_vars['purchase_date']);
-                $to_date = strtotime($search_vars['purchase_date']) + 86400;
-                $tmp_cond = new \Database\Conditional($db, 'purchase_date', $from_date, '>');
-                $tmp_cond1 = new \Database\Conditional($db, 'purchase_date', $to_date, '<');
-                $tmp_cond = new \Database\Conditional($db, $tmp_cond, $tmp_cond1, 'AND');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['ip'])) {
-                $tmp_cond = new \Database\Conditional($db, 'primary_ip', "%" . $search_vars['ip'] . "%", 'like');
-                $tmp_cond1 = new \Database\Conditional($db, 'secondary_ip', "%" . $search_vars['ip'] . "%", 'like');
-                $tmp_cond = new \Database\Conditional($db, $tmp_cond, $tmp_cond1, 'OR');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
-            if (!empty($search_vars['mac'])) {
-                $tmp_cond = new \Database\Conditional($db, 'mac', "%" . $search_vars['mac'] . "%", 'like');
-                $tmp_cond1 = new \Database\Conditional($db, 'mac2', "%" . $search_vars['mac'] . "%", 'like');
-                $tmp_cond = new \Database\Conditional($db, $tmp_cond, $tmp_cond1, 'OR');
-                $conditional = $this->addSearchConditional($db, $conditional, $tmp_cond, 'AND');                                
-            }
+        }
+
+        return parent::getJsonView(array('listing' => $result, 'total' => $total, 'shown' => $total_shown, 'more' => $more),
+                        $request);
+    }
+
+    private function createSearchConditional(\phpws2\Database\DB $db,
+            \phpws2\Database\Table $tbl, $request)
+    {
+        $conditional = NULL;
+        $system_dep = \systemsinventory\Factory\SystemDevice::getSystemDepartments();
+
+        $system_type = $request->pullGetArray('systemType', true);
+        $department_id = $request->pullGetString('department', true);
+        $location_id = $request->pullGetString('location', true);
+        $physical_id = $request->pullGetString('physicalId', true);
+        $model = $request->pullGetString('model', true);
+        $username = $request->pullGetString('username', true);
+        $purchase_date = $request->pullGetString('purchaseDate', true);
+        $ip = $request->pullGetString('ipAddress', true);
+        $mac = $request->pullGetString('macAddress', true);
+
+        if ($system_type[0] !== 'all') {
+            $tbl->addFieldConditional('device_type_id', $system_type, 'in');
+        }
+
+        foreach ($system_dep as $val) {
+            $permitted_ids[] = $val['id'];
+        }
+
+        if ($department_id && in_array($department_id, $permitted_ids)) {
+            $tbl->addFieldConditional('department_id', $department_id);
+        } else {
+            $tbl->addFieldConditional('department_id', $permitted_ids, 'in');
+        }
+
+        if ($location_id) {
+            $tbl->addFieldConditional('location_id', $location_id);
+        }
+
+        if (!empty($physical_id)) {
+            $tbl->addFieldConditional('physical_id', "%$physical_id%", 'like');
+        }
+
+        if (!empty($model)) {
+            $tbl->addFieldConditional('model', "%$model%", 'like');
+        }
+
+        if (!empty($username)) {
+            $tbl->addFieldConditional('username', "%$username%", 'LIKE');
+        }
+
+        if (!empty($purchase_date)) {
+            $from_date = strtotime($purchase_date);
+            $to_date = strtotime($purchase_date) + 86400;
+            $tbl->addFieldConditional('purchase_date', $from_date, '>');
+            $tbl->addFieldConditional('purchase_date', $to_date, '<');
+        }
+
+        if (!empty($ip)) {
+            $c1 = $tbl->getFieldConditional('primary_ip', "%$ip%", 'like');
+            $c2 = $tbl->getFieldConditional('secondary_ip', "%$ip%", 'like');
+            $db->addConditional($c1, $c2, 'or');
+        }
+
+        if (!empty($search_vars['mac'])) {
+            $c1 = $tbl->getFieldConditional('mac', "%$mac%", 'like');
+            $c2 = $tbl->getFieldConditional('mac2', "%$mac%", 'like');
+            $db->addConditional($c1, $c2, 'or');
         }
         return $conditional;
     }
-    
-    private function addSearchConditional($db, $conditional, $tmp_cond, $operator){
-        if (empty($conditional)){
-            $conditional = $tmp_cond;
-        }else{
-            $conditional = new \Database\Conditional($db, $conditional, $tmp_cond, $operator);    
-        }
-        return $conditional;
-    }
-    
+
     /**
      * Format the search row by translating id's to names and formatting the date to human readable
-     * 
+     *
      * @param array $row
      * @return array
      */
-    public static function alterSearchRow($row) {
+    public static function alterSearchRow($row)
+    {
         $row['department_id'] = \systemsinventory\Factory\SystemDevice::getDepartmentByID($row['department_id']);
         $row['location_id'] = \systemsinventory\Factory\SystemDevice::getLocationByID($row['location_id']);
         $row['purchase_date'] = date('n/d/Y', $row['purchase_date']);
@@ -139,7 +220,8 @@ class Search extends \phpws2\Http\Controller {
      * @param \Request $request
      * @return \Response
      */
-    public function post(\Canopy\Request $request) {
+    public function post(\Canopy\Request $request)
+    {
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
         $source_http = PHPWS_SOURCE_HTTP;
         \Layout::addJSHeader("<script type='text/javascript'>var source_http = '$source_http';</script>");
