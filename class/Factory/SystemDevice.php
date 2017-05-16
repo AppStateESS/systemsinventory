@@ -500,8 +500,9 @@ EOF;
         }
         $result = $db->select();
 
-        if (empty($result))
-            return 0; //should be exception
+        if (empty($result)) {
+            throw new \Exception('System departments not found');
+        }
         return $result;
     }
 
