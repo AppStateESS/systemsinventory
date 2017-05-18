@@ -158,6 +158,7 @@ export default class Search extends Component {
 
   maxOffset() {
     this.offset = -1
+    this.load()
   }
 
   updateDeviceValue(varname, value) {

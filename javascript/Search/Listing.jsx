@@ -3,12 +3,14 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import DeviceRow from './DeviceRow.jsx'
 import Sort from './Sort.jsx'
+import TooltipSearch from './TooltipSearch.jsx'
 
 export default class Listing extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showOverlay: false
+      showOverlay: false,
+      test: ''
     }
     this.getRows = this.getTable.bind(this)
     this.sort = this.sort.bind(this)
@@ -47,18 +49,28 @@ export default class Listing extends Component {
   search() {
     const {filters} = this.props
     let search = {}
-    search.physicalSearch = <i className="fa fa-search"></i>
-    search.modelSearch = <i className="fa fa-search"></i>
+    search.physicalSearch = <TooltipSearch
+      value={this.props.filters.physicalId}
+      change={this.props.update.bind(null, 'physicalId')}/>
+    search.modelSearch = <TooltipSearch
+      value={this.props.filters.model}
+      change={this.props.update.bind(null, 'model')}/>
     search.locationSearch = <i className="fa fa-search"></i>
-    search.roomSearch = <i className="fa fa-search"></i>
-    search.usernameSearch = <i className="fa fa-search"></i>
+    search.usernameSearch = <TooltipSearch
+      value={this.props.filters.username}
+      change={this.props.update.bind(null, 'username')}/>
     search.departmentSearch = <i className="fa fa-search"></i>
     return search
+  }
+
+  updateTest(e) {
+    this.setState({test: e.target.value})
   }
 
   getTable() {
     let table
     let rows
+    const {filters} = this.props
 
     const {
       physicalSort,
@@ -68,14 +80,7 @@ export default class Listing extends Component {
       usernameSort,
       departmentSort
     } = this.sort()
-    const {
-      physicalSearch,
-      modelSearch,
-      locationSearch,
-      roomSearch,
-      usernameSearch,
-      departmentSearch
-    } = this.search()
+    const {physicalSearch, modelSearch, locationSearch, usernameSearch, departmentSearch} = this.search()
 
     if (this.props.rows === null) {
       return <div></div>
@@ -92,17 +97,25 @@ export default class Listing extends Component {
             <tbody>
               <tr className="search-header">
                 <th>Type</th>
-                <th>Physical ID<span className="pull-right">{physicalSort}&nbsp;{physicalSearch}</span>
+                <th
+                  className={filters.physicalId.length > 0
+                  ? 'bg-success'
+                  : null}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
                 </th>
-                <th>Model<span className="pull-right">{modelSort}&nbsp;{modelSearch}</span>
+                <th
+                  className={filters.model.length > 0
+                  ? 'bg-success'
+                  : null}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
                 </th>
-                <th>Location<span className="pull-right">{locationSort}&nbsp;{locationSearch}</span>
+                <th>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
                 </th>
-                <th>Room#<span className="pull-right">{roomSort}&nbsp;{roomSearch}</span>
+                <th>Room&nbsp;&nbsp;{roomSort}</th>
+                <th
+                  className={filters.username.length > 0
+                  ? 'bg-success'
+                  : null}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
                 </th>
-                <th>Username<span className="pull-right">{usernameSort}&nbsp;{usernameSearch}</span>
-                </th>
-                <th>Department<span className="pull-right">{departmentSort}&nbsp;{departmentSearch}</span>
+                <th>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
                 </th>
               </tr>
               {rows}
@@ -128,5 +141,6 @@ Listing.propTypes = {
   showOverlay: PropTypes.func,
   filters: PropTypes.object,
   toggleSort: PropTypes.func,
-  sort: PropTypes.object
+  sort: PropTypes.object,
+  update: PropTypes.func
 }

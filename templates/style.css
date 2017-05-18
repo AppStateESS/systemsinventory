@@ -20,4 +20,5 @@
 
 .search-header th {
     border : 2px solid #e3e3e3;
+    white-space:nowrap;
 }
