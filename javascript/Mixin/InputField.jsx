@@ -69,7 +69,7 @@ export default class InputField extends Component {
       id={this.props.iid}
       type={this.props.type}
       name={this.props.name}
-      value={this.props.value}
+      value={this.props.value === null ? '' : this.props.value}
       className={inputClass}
       onChange={this.handleChange}
       onBlur={this.handleBlur}

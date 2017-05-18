@@ -67,7 +67,46 @@ EOF;
         foreach ($locations as $val) {
             $filters['locations'][] = array('value' => $val['id'], 'label' => $val['display_name']);
         }
+        $filters['vlan'][] = array('value' => 1, 'label' => 'Admin');
+        $filters['vlan'][] = array('value' => 2, 'label' => 'Closed');
+        $filters['vlan'][] = array('value' => 3, 'label' => 'Public');
+        $filters['vlan'][] = array('value' => 4, 'label' => 'VOIP');
         return $filters;
+    }
+
+    private function sort($request, \phpws2\Database\Table $system_table,
+            \phpws2\Database\Table $dept_table,
+            \phpws2\Database\Table $location_table)
+    {
+        $sort = $request->pullGetArray('sort', true);
+        if ($sort && $sort['direction'] !== '0') {
+            $direction = $sort['direction'] === '1' ? 'asc' : 'desc';
+            switch ($sort['column']) {
+                case 'physical':
+                    $system_table->addOrderBy('physical_id', $direction);
+                    break;
+
+                case 'model':
+                    $system_table->addOrderBy('model', $direction);
+                    break;
+
+                case 'location':
+                    $location_table->addOrderBy('display_name', $direction);
+                    break;
+
+                case 'room':
+                    $system_table->addOrderBy('room_number', $direction);
+                    break;
+
+                case 'username':
+                    $system_table->addOrderBy('username', $direction);
+                    break;
+
+                case 'department':
+                    $dept_table->addOrderBy('display_name', $direction);
+                    break;
+            }
+        }
     }
 
     protected function getJsonView($data, \Canopy\Request $request)
@@ -106,6 +145,7 @@ EOF;
                 $db->setLimit(SYSINV_ROWS, SYSINV_ROWS * $offsetMult);
             }
 
+            $this->sort($request, $sd, $deptbl, $loctbl);
             $result = $db->select();
             if ($result) {
                 // Total number of rows not adjusted for limit

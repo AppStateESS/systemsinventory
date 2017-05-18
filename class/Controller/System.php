@@ -131,7 +131,7 @@ class System extends \phpws2\Http\Controller {
             $command = $data['command'];
 
         if ($command == 'getDetails' && \Current_User::allow('systemsinventory', 'view')) {
-            $result = SDFactory::getSystemDetails($vars['device_id'], $vars['row_index']);
+            $result = SDFactory::getSystemDetails($vars['device_id']);
         } else if (\Current_User::allow('systemsinventory', 'edit')) {
             $system_details = '';
             switch ($command) {
@@ -157,7 +157,7 @@ class System extends \phpws2\Http\Controller {
                     $result = SDFactory::getDeviceAudits($vars['device_id']);
                     break;
                 default:
-                    throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
+                    throw new \Exception("Invalid command received in system controller getJsonView. Command = $command");
             }
         } else {
             $result = array('Error');

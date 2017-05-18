@@ -151,7 +151,7 @@ EOF;
         return $vars;
     }
 
-    public static function getSystemDetails($system_id, $row_index) {
+    public static function getSystemDetails($system_id) {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $device_details = array();
         if (empty($system_id)) {
@@ -181,21 +181,7 @@ EOF;
         $device_details['device-type-id'] = $device_type_id;
         $purchase_date = $device_details['purchase_date'];
         $device_details["purchase_date"] = date('Y-m-d', $purchase_date);
-        $system_locations = SystemDevice::getSystemLocations();
-        $location_options = '<option value="1">Select Location</opton>';
-        foreach ($system_locations as $key => $val) {
-            $location_options .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
-        }
-        $device_details['locations'] = $location_options;
-        $system_dep = SystemDevice::getSystemDepartments();
-        $dep_optons = '<option value="1">Select Department</opton>';
-        foreach ($system_dep as $val) {
-            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
-        }
-        $device_details['departments'] = $dep_optons;
-        $device_details['testarray'] = array("test1" => "test1", "test2" => "test2", "test3" => "test3");
-        $device_details['row_index'] = $row_index;
-
+        
         return $device_details;
     }
 

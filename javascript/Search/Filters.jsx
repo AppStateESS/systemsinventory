@@ -79,7 +79,8 @@ export default class Filters extends Component {
             label="Username"
             change={this.update.bind(this, 'username')}/>
         </div>
-        <button onClick={this.props.reset}>Reset</button>
+        <button className="btn btn-default" onClick={this.props.reset}>Reset</button>
+        <button className="btn btn-default" onClick={this.props.close}>Close</button>
       </div>
     )
   }
@@ -89,5 +90,6 @@ Filters.propTypes = {
   filters: PropTypes.object,
   options: PropTypes.object,
   update: PropTypes.func,
-  reset: PropTypes.func
+  reset: PropTypes.func,
+  close : PropTypes.func,
 }

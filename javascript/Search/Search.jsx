@@ -4,38 +4,11 @@ import Filters from './Filters.jsx'
 import Listing from './Listing.jsx'
 import SystemSelection from './SystemSelection.jsx'
 import {Modal, Effect} from 'react-dynamic-modal'
+import Overlay from '../Mixin/Overlay.jsx'
+import DeviceForm from './DeviceForm.jsx'
+import modalCss from './ModalCss.js'
+
 /* global $, jsonFilters */
-
-const modalCss = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 99999999,
-    overflow: 'hidden',
-    perspective: 1300,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)'
-  },
-
-  content: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    height: '100%',
-    margin: '0px',
-    width: '30%',
-    padding: '8px',
-    border: '1px solid rgba(0, 0, 0, .2)',
-    overflow: 'auto',
-    borderRadius: '4px',
-    outline: 'none',
-    boxShadow: '0 5px 10px rgba(0, 0, 0, .3)'
-  }
-}
 
 export default class Search extends Component {
   constructor() {
@@ -54,10 +27,16 @@ export default class Search extends Component {
         ipAddress: '',
         username: ''
       },
+      device: null,
+      showOverlay: false,
       total: 0,
       shown: 0,
       more: false,
-      listing: null
+      listing: null,
+      sort: {
+        column : null,
+        direction: 0
+      }
     }
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -67,6 +46,23 @@ export default class Search extends Component {
     this.reset = this.reset.bind(this)
     this.incrementOffset = this.incrementOffset.bind(this)
     this.maxOffset = this.maxOffset.bind(this)
+    this.showOverlay = this.showOverlay.bind(this)
+    this.closeOverlay = this.closeOverlay.bind(this)
+    this.toggleSort = this.toggleSort.bind(this)
+  }
+
+  showOverlay(id) {
+    this.loadDevice(id)
+  }
+
+  closeOverlay() {
+    this.setState({showOverlay: false})
+  }
+
+  loadDevice(id) {
+    $.getJSON('./systemsinventory/system/getDetails', {device_id: id}).done(function (data) {
+      this.setState({device: data, showOverlay: true})
+    }.bind(this))
   }
 
   load() {
@@ -91,6 +87,7 @@ export default class Search extends Component {
       model,
       ipAddress,
       username,
+      sort: this.state.sort.direction !== 0 ? this.state.sort : null,
       offset: this.offset
     }).done(function (data) {
       if (data.listing !== undefined) {
@@ -163,6 +160,30 @@ export default class Search extends Component {
     this.offset = -1
   }
 
+  updateDeviceValue(varname, value) {
+    let device = this.state.device
+    device[varname] = value
+    this.setState({device: device})
+  }
+
+  toggleSort(type) {
+    const sort = this.state.sort
+    if (sort.column !== type) {
+      sort.column = type
+      sort.direction = 1
+    } else {
+      if (sort.direction === 0) {
+        sort.direction = 1
+      } else if (sort.direction === 1) {
+        sort.direction = -1
+      } else {
+        sort.direction = 0
+      }
+    }
+    this.setState({sort: sort})
+    this.load()
+  }
+
   render() {
     let moreButtons
     if (this.state.more) {
@@ -177,27 +198,49 @@ export default class Search extends Component {
     if (this.state.modalOpen) {
       modal = <Modal
         style={modalCss}
-        effect={Effect.Newspaper}
+        effect={Effect.FlipHorizontal3D}
         onRequestClose={this.closeModal}
         open={this.state.modalOpen}><Filters
         filters={this.state.filters}
         options={jsonFilters}
         update={this.updateFilter}
-        reset={this.reset}/></Modal>
+        reset={this.reset}
+        close={this.closeModal}/></Modal>
+    }
+    let overlay
+    if (this.state.showOverlay) {
+      overlay = (
+        <Overlay close={this.closeOverlay}>
+          <DeviceForm
+            options={jsonFilters}
+            update={this.updateDeviceValue}
+            device={this.state.device}/>
+        </Overlay>
+      )
     }
     return (
       <div>
         {modal}
+        {overlay}
         <SystemSelection
           update={this.updateSystemType}
           jsonFilters={jsonFilters}
           active={this.state.filters.systemType}/>
-        <div className="filter-button">
-          <button className="btn btn-primary" type="button" onClick={this.openModal}>Search filters
-          </button>
+        <button
+          className="btn btn-primary marginLeft"
+          type="button"
+          onClick={this.openModal}>Search filters
+        </button>
+        <div className="alert alert-info">
+          Devices shown: {this.state.shown}&nbsp;rows of {this.state.total}
         </div>
-        Devices shown: {this.state.shown}&nbsp;rows of {this.state.total}
-        <Listing rows={this.state.listing}/> {moreButtons}
+        <Listing
+          showOverlay={this.showOverlay}
+          rows={this.state.listing}
+          update={this.updateFilter}
+          filters={this.state.filters}
+          toggleSort={this.toggleSort}
+          sort={this.state.sort}/> {moreButtons}
       </div>
     )
   }

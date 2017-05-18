@@ -41,7 +41,7 @@ export default class DeviceRow extends Component {
     } = this.props.value
 
     return (
-      <tr>
+      <tr onClick={this.props.showOverlay}>
         <td>
           {this.deviceType(device_type_id)}
         </td>
@@ -52,7 +52,10 @@ export default class DeviceRow extends Component {
           {model}
         </td>
         <td>
-          {location_name}<br />{room_number}
+          {location_name}
+        </td>
+        <td>
+          {room_number}
         </td>
         <td>
           {username}
@@ -66,5 +69,6 @@ export default class DeviceRow extends Component {
 }
 
 DeviceRow.propTypes = {
-  value: PropTypes.object
+  value: PropTypes.object,
+  showOverlay: PropTypes.func
 }
