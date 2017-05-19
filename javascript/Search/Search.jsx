@@ -14,7 +14,7 @@ export default class Search extends Component {
   constructor() {
     super()
     this.offset = 0
-    this.filters = this.state = {
+    this.state = {
       modalOpen: false,
       filters: {
         systemType: [],
@@ -34,7 +34,7 @@ export default class Search extends Component {
       more: false,
       listing: null,
       sort: {
-        column : null,
+        column: null,
         direction: 0
       }
     }
@@ -49,6 +49,8 @@ export default class Search extends Component {
     this.showOverlay = this.showOverlay.bind(this)
     this.closeOverlay = this.closeOverlay.bind(this)
     this.toggleSort = this.toggleSort.bind(this)
+    this.updateSelectFilter = this.updateSelectFilter.bind(this)
+    this.download = this.download.bind(this)
   }
 
   showOverlay(id) {
@@ -65,6 +67,12 @@ export default class Search extends Component {
     }.bind(this))
   }
 
+  download() {
+    const parameters = $.param(this.state.filters)
+    const url = './systemsinventory/search/download?' + parameters
+    window.location.href = url
+  }
+
   load() {
     const {
       systemType,
@@ -77,7 +85,7 @@ export default class Search extends Component {
       ipAddress,
       username
     } = this.state.filters
-    $.getJSON('./systemsinventory/', {
+    $.getJSON('./systemsinventory/search', {
       systemType,
       department,
       location,
@@ -87,7 +95,9 @@ export default class Search extends Component {
       model,
       ipAddress,
       username,
-      sort: this.state.sort.direction !== 0 ? this.state.sort : null,
+      sort: this.state.sort.direction !== 0
+        ? this.state.sort
+        : null,
       offset: this.offset
     }).done(function (data) {
       if (data.listing !== undefined) {
@@ -97,7 +107,8 @@ export default class Search extends Component {
           this.setState({
             listing: this.state.listing.concat(data.listing),
             shown: data.shown,
-            total: data.total
+            total: data.total,
+            more: data.more
           })
         }
       }
@@ -106,8 +117,8 @@ export default class Search extends Component {
 
   reset() {
     let filters = this.state.filters
-    filters.department = null
-    filters.location = null
+    filters.department = 0
+    filters.location = 0
     filters.physicalId = ''
     filters.macAddress = ''
     filters.purchaseDate = ''
@@ -141,6 +152,10 @@ export default class Search extends Component {
     filters[varname] = value
     this.setState({filters: filters})
     this.load()
+  }
+
+  updateSelectFilter(varname, value) {
+    this.updateFilter(varname, value.value)
   }
 
   openModal() {
@@ -227,11 +242,14 @@ export default class Search extends Component {
           update={this.updateSystemType}
           jsonFilters={jsonFilters}
           active={this.state.filters.systemType}/>
-        <button
-          className="btn btn-primary marginLeft"
-          type="button"
-          onClick={this.openModal}>Search filters
-        </button>
+        <div className="marginTop marginBottom">
+          <button
+            className="btn btn-sm btn-primary"
+            type="button"
+            onClick={this.openModal}>Search filters
+          </button>
+          <button className="btn btn-sm btn-default" onClick={this.download}>Download report</button>
+        </div>
         <div className="alert alert-info">
           Devices shown: {this.state.shown}&nbsp;rows of {this.state.total}
         </div>
@@ -239,8 +257,10 @@ export default class Search extends Component {
           showOverlay={this.showOverlay}
           rows={this.state.listing}
           update={this.updateFilter}
+          updateSelect={this.updateSelectFilter}
           filters={this.state.filters}
           toggleSort={this.toggleSort}
+          options={jsonFilters}
           sort={this.state.sort}/> {moreButtons}
       </div>
     )
