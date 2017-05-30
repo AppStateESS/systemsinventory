@@ -35,9 +35,6 @@ export default class Listing extends Component {
     sort.locationSort = <Sort
       direction={this.currentDirection('location')}
       handleClick={this.props.toggleSort.bind(null, 'location')}/>
-    sort.roomSort = <Sort
-      direction={this.currentDirection('room')}
-      handleClick={this.props.toggleSort.bind(null, 'room')}/>
     sort.usernameSort = <Sort
       direction={this.currentDirection('username')}
       handleClick={this.props.toggleSort.bind(null, 'username')}/>
@@ -81,14 +78,13 @@ export default class Listing extends Component {
       physicalSort,
       modelSort,
       locationSort,
-      roomSort,
       usernameSort,
       departmentSort
     } = this.sort()
     const {physicalSearch, modelSearch, locationSearch, usernameSearch, departmentSearch} = this.search()
 
     if (this.props.rows === null || this.props.rows.length === 0) {
-      return <div></div>
+      rows = <tr><td colSpan="7">No rows found. Change your search criteria.</td></tr>
     } else {
       rows = this.props.rows.map(function (val, key) {
         return <DeviceRow
@@ -96,31 +92,29 @@ export default class Listing extends Component {
           value={val}
           key={key}/>
       }.bind(this))
-      table = (
-        <div>
-          <table className="table table-striped">
-            <tbody>
-              <tr className="search-header">
-                <th>Type</th>
-                <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-                </th>
-                <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-                </th>
-                <th className={this.highlight(filters.location > 0)}>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
-                </th>
-                <th>Room&nbsp;&nbsp;{roomSort}</th>
-                <th className={this.highlight(filters.username.length > 0)}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
-                </th>
-                <th className={this.highlight(filters.department > 0)}>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
-                </th>
-              </tr>
-              {rows}
-            </tbody>
-          </table>
-        </div>
-      )
-      return table
     }
+    return (
+      <div>
+        <table className="table table-striped">
+          <tbody>
+            <tr className="search-header">
+              <th>Type</th>
+              <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+              </th>
+              <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+              </th>
+              <th className={this.highlight(filters.location > 0)}>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
+              </th>
+              <th className={this.highlight(filters.username.length > 0)}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
+              </th>
+              <th className={this.highlight(filters.department > 0)}>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
+              </th>
+            </tr>
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   render() {
