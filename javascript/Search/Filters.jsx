@@ -1,10 +1,9 @@
 'use strict'
 import React, {Component} from 'react'
-import SelectFilter from './SelectFilter.jsx'
+import SelectFilter from '../Mixin/SelectFilter.jsx'
 import InputField from '../Mixin/InputField.jsx'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import 'react-date-picker/index.css'
 
 export default class Filters extends Component {
   // Search:openModal
