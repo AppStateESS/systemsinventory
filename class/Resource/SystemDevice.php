@@ -32,6 +32,11 @@ class SystemDevice extends \phpws2\Resource
   protected $profile;
   protected $profile_name;
   protected $sys_period = null;
+  /**
+   *
+   * @var \phpws2\Variable\SmallInteger
+   */
+  protected $status;
   protected $notes;
 
   protected $table = 'systems_device';
@@ -83,7 +88,7 @@ class SystemDevice extends \phpws2\Resource
       $this->profile_name->allowNull(true);
       $this->notes = new \phpws2\Variable\TextOnly(null, 'notes');
       $this->notes->allowNull(true);
-      
+      $this->status = new \phpws2\Variable\SmallInteger(0, 'status');
     }
 
     public function setName($first_name, $last_name){
