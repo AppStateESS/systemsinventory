@@ -48,7 +48,7 @@ class Search extends \phpws2\Http\Controller
 
     private function view()
     {
-        $content = $this->getFilterScript() . React::view('search');
+        $content = SystemDevice::getFilterScript() . React::view('search');
         return $content;
     }
 
@@ -81,41 +81,6 @@ class Search extends \phpws2\Http\Controller
         header("Content-disposition: attachment; filename=\"$file_name\"");
         echo readfile($file_location);
         exit();
-    }
-
-    protected function getFilterScript()
-    {
-        $filter = $this->getSearchFilterJson();
-        return <<<EOF
-<script>const jsonFilters = $filter</script>
-EOF;
-    }
-
-    protected function getSearchFilterJson()
-    {
-        $filters = $this->getJsonSearchFilters();
-        return json_encode($filters);
-    }
-
-    protected function getJsonSearchFilters()
-    {
-        $system_types = SystemDevice::getSystemTypes();
-        foreach ($system_types as $val) {
-            $filters['system_types'][] = array('value' => $val['id'], 'label' => $val['description']);
-        }
-        $departments = SystemDevice::getSystemDepartments();
-        foreach ($departments as $val) {
-            $filters['departments'][] = array('value' => $val['id'], 'label' => $val['display_name']);
-        }
-        $locations = SystemDevice::getSystemLocations();
-        foreach ($locations as $val) {
-            $filters['locations'][] = array('value' => $val['id'], 'label' => $val['display_name']);
-        }
-        $filters['vlan'][] = array('value' => 1, 'label' => 'Admin');
-        $filters['vlan'][] = array('value' => 2, 'label' => 'Closed');
-        $filters['vlan'][] = array('value' => 3, 'label' => 'Public');
-        $filters['vlan'][] = array('value' => 4, 'label' => 'VOIP');
-        return $filters;
     }
 
     protected function getJsonView($data, \Canopy\Request $request)
