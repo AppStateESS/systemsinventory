@@ -122,11 +122,11 @@ InputField.defaultProps = {
   disabled: false,
   size: null,
   maxLength: null,
-  selectOnClick: true,
+  selectOnClick: false,
   wrap: null,
   onEmpty: null,
   flagEmpty: true,
-  disableRequireCheck: false
+  disableRequireCheck: false,
 }
 
 InputField.propTypes = {
@@ -148,7 +148,7 @@ InputField.propTypes = {
   selectOnClick: PropTypes.bool,
   onEmpty: PropTypes.func,
   flagEmpty: PropTypes.bool,
-  disableRequireCheck: PropTypes.bool
+  disableRequireCheck: PropTypes.bool,
 }
 
 export const RequiredIcon = () => {
