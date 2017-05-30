@@ -5,7 +5,7 @@ import Listing from './Listing.jsx'
 import SystemSelection from './SystemSelection.jsx'
 import {Modal, Effect} from 'react-dynamic-modal'
 import Overlay from '../Mixin/Overlay.jsx'
-import DeviceForm from './DeviceForm.jsx'
+import DeviceForm from '../DeviceForm/DeviceForm.jsx'
 import modalCss from './ModalCss.js'
 
 /* global $, jsonFilters */
@@ -27,7 +27,7 @@ export default class Search extends Component {
         ipAddress: '',
         username: ''
       },
-      device: null,
+      device: {},
       showOverlay: false,
       total: 0,
       shown: 0,
@@ -51,6 +51,7 @@ export default class Search extends Component {
     this.toggleSort = this.toggleSort.bind(this)
     this.updateSelectFilter = this.updateSelectFilter.bind(this)
     this.download = this.download.bind(this)
+    this.updateDeviceValue = this.updateDeviceValue.bind(this)
   }
 
   showOverlay(id) {
@@ -155,6 +156,9 @@ export default class Search extends Component {
   }
 
   updateSelectFilter(varname, value) {
+    if (value === null) {
+      value = ''
+    }
     this.updateFilter(varname, value.value)
   }
 
@@ -177,6 +181,9 @@ export default class Search extends Component {
   }
 
   updateDeviceValue(varname, value) {
+    if (typeof value === 'object') {
+      value = value.target.value
+    }
     let device = this.state.device
     device[varname] = value
     this.setState({device: device})
@@ -238,17 +245,18 @@ export default class Search extends Component {
       <div>
         {modal}
         {overlay}
-        <SystemSelection
-          update={this.updateSystemType}
-          jsonFilters={jsonFilters}
-          active={this.state.filters.systemType}/>
-        <div className="marginTop marginBottom">
-          <button
-            className="btn btn-sm btn-primary"
-            type="button"
-            onClick={this.openModal}>Search filters
-          </button>
-          <button className="btn btn-sm btn-default" onClick={this.download}>Download report</button>
+        <div className="row">
+          <div className="col-md-7 marginBottom">
+            <SystemSelection
+              update={this.updateSystemType}
+              jsonFilters={jsonFilters}
+              active={this.state.filters.systemType}/>
+          </div>
+          <div className="col-md-5 marginBottom">
+            <button className="btn btn-primary" onClick={this.openModal}>Search filters</button>
+            {this.state.listing !== null && this.state.listing.length > 0 ? <button className="btn btn-info marginLeft" onClick={this.download}><i className="fa fa-download"></i>&nbsp;Download report</button> : null}
+            <button className="btn btn-default marginLeft" onClick={this.reset}>Reset filters</button>
+          </div>
         </div>
         <div className="alert alert-info">
           Devices shown: {this.state.shown}&nbsp;rows of {this.state.total}
