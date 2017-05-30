@@ -13,7 +13,7 @@ export default class TooltipSelectSearch extends Component {
 
   render() {
     const tooltip = (
-      <div style={{minWidth: '200px'}}>
+      <div style={{minWidth: '250px'}}>
       <Select
         value={this.props.value}
         options={this.props.options}
