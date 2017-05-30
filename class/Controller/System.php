@@ -8,15 +8,18 @@ use systemsinventory\Factory\Printer as PrinterFactory;
 use systemsinventory\Factory\Camera as CameraFactory;
 use systemsinventory\Factory\DigitalSign as DigitalSignFactory;
 use systemsinventory\Factory\SystemDevice as SDFactory;
+use systemsinventory\Factory\React;
 use systemsinventory\Resource;
 
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class System extends \phpws2\Http\Controller {
+class System extends \phpws2\Http\Controller
+{
 
-    public function get(\Canopy\Request $request) {
+    public function get(\Canopy\Request $request)
+    {
         $data = array();
         $data['command'] = $request->shiftCommand();
         $view = $this->getView($data, $request);
@@ -24,23 +27,27 @@ class System extends \phpws2\Http\Controller {
         return $response;
     }
 
-    protected function getHtmlView($data, \Canopy\Request $request) {
+    protected function getHtmlView($data, \Canopy\Request $request)
+    {
+        \Layout::addStyle('systemsinventory');
         if (empty($data['command']))
             $data['command'] = 'add';
 
         if (\Current_User::allow('systemsinventory', 'edit')) {
-            if ($data['command'] == 'editPermissions')
+            if ($data['command'] == 'editPermissions') {
                 $content = SDFactory::UserPermissionsView($data, $request);
-            else
-                $content = SDFactory::form($request, 'system-pc', $data);
-        }else {
+            } else {
+                $content = SDFactory::getFilterScript() . React::view('add');
+            }
+        } else {
             $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
         }
         $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    public function post(\Canopy\Request $request) {
+    public function post(\Canopy\Request $request)
+    {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $vars = $request->getRequestVars();
@@ -70,7 +77,9 @@ class System extends \phpws2\Http\Controller {
         return $response;
     }
 
-    public function postSpecificDevice(\Canopy\Request $request, $device_type, $device_id) {
+    public function postSpecificDevice(\Canopy\Request $request, $device_type,
+            $device_id)
+    {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
 
         switch ($device_type) {
@@ -102,7 +111,8 @@ class System extends \phpws2\Http\Controller {
         }
     }
 
-    public static function loadAdminBar() {
+    public static function loadAdminBar()
+    {
         $auth = \Current_User::getAuthorization();
 
         $nav_vars['is_deity'] = \Current_user::isDeity();
@@ -124,13 +134,15 @@ class System extends \phpws2\Http\Controller {
         \Layout::plug($content, 'NAV_LINKS');
     }
 
-    protected function getJsonView($data, \Canopy\Request $request) {
+    protected function getJsonView($data, \Canopy\Request $request)
+    {
         $vars = $request->getRequestVars();
         $command = '';
         if (!empty($data['command']))
             $command = $data['command'];
 
-        if ($command == 'getDetails' && \Current_User::allow('systemsinventory', 'view')) {
+        if ($command == 'getDetails' && \Current_User::allow('systemsinventory',
+                        'view')) {
             $result = SDFactory::getSystemDetails($vars['device_id']);
         } else if (\Current_User::allow('systemsinventory', 'edit')) {
             $system_details = '';
@@ -148,7 +160,9 @@ class System extends \phpws2\Http\Controller {
                     $result = SDFactory::searchPhysicalID($vars['physical_id']);
                     break;
                 case 'delete':
-                    $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
+                    $result = SDFactory::deleteDevice($vars['device_id'],
+                                    $vars['specific_device_id'],
+                                    $vars['device_type_id']);
                     break;
                 case 'inventory':
                     $result = SDFactory::markDeviceInventoried($vars['device_id']);
@@ -162,7 +176,7 @@ class System extends \phpws2\Http\Controller {
         } else {
             $result = array('Error');
         }
-        
+
         $view = new \phpws2\View\JsonView($result);
         return $view;
     }
