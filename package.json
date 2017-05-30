@@ -16,7 +16,7 @@
     "moment": "^2.15.1",
     "prop-types": "^15.5.8",
     "react": "^15.3.0",
-    "react-date-picker": "^5.3.28",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^15.3.0",
     "react-dynamic-modal": "^1.1.1",
     "react-input-autosize": "1.1.0",
