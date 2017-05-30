@@ -41,7 +41,7 @@ export default class DeviceRow extends Component {
     } = this.props.value
 
     return (
-      <tr onClick={this.props.showOverlay}>
+      <tr onClick={this.props.showOverlay} className="pointer">
         <td>
           {this.deviceType(device_type_id)}
         </td>
