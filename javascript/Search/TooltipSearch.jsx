@@ -14,24 +14,41 @@ export default class TooltipSearch extends Component {
     this.props.change(e.target.value)
   }
 
+  focus(e) {
+    e.target.focus()
+  }
+
+
   render() {
     const tooltip = (
-      <div className="input-group" style={{width:'200px'}}>
+      <div className="input-group" style={{
+        width: '200px'
+      }}>
         <input
+          onMouseOver={this.focus}
           type="text"
+          id="searchTool"
           className="form-control"
           name="search"
           placeholder={"Search..."}
           value={this.props.value}
           onChange={this.update.bind(this)}/>
         <span className="input-group-btn">
-          <button className="btn btn-danger" type="button" onClick={this.props.change.bind(null, '')}><i className="fa fa-times"></i></button>
+          <button
+            className="btn btn-danger"
+            type="button"
+            onClick={this.props.change.bind(null, '')}>
+            <i className="fa fa-times"></i>
+          </button>
         </span>
       </div>
     )
 
     return (
-      <Tooltip placement="top" trigger={['click']} overlay={tooltip}>
+      <Tooltip
+        placement="top"
+        trigger={['click']}
+        overlay={tooltip}>
         <a href="#">
           <i className="fa fa-search"></i>
         </a>
