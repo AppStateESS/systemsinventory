@@ -48,14 +48,14 @@ class Search extends \phpws2\Http\Controller
 
     private function view()
     {
-        $content = SystemDevice::getFilterScript() . React::view('search');
+        $content = SystemDevice::getFilterScript() . SystemDevice::getProfilesJson() . React::view('search');
         return $content;
     }
 
     private function download($request)
     {
         $system_type = $request->pullGetArray('systemType', true);
-        $file_name =  \Canopy\TextString::randomString(12) . '.csv';
+        $file_name = \Canopy\TextString::randomString(12) . '.csv';
         $file_location = "/tmp/$file_name";
 
         if (empty($system_type)) {
@@ -89,13 +89,21 @@ class Search extends \phpws2\Http\Controller
         $total_shown = 0;
         $more = false;
         $system_type = $request->pullGetArray('systemType', true);
+        $status_type = $request->pullGetInteger('statusType', true);
 
-        if (empty($system_type)) {
+        $user_restrictions = \systemsinventory\Factory\SystemDevice::getUserPermissions(\Current_User::getId());
+        $restricted = !empty($user_restrictions);
+        // If a system type is not chosen OR this is a restricted user
+        // trying to view unassigned or surplus devices then return a null result
+
+        if (empty($system_type) ||
+                ($restricted && $status_type == 1 || $status_type == 3)) {
             $result = null;
         } else {
             $factory = new Factory;
             $offsetMult = $request->pullGetInteger('offset', true);
             $factory->offset = $offsetMult;
+            $factory->status_type = $status_type;
             $result = $factory->getDevices($request);
 
             if ($result) {
@@ -119,8 +127,7 @@ class Search extends \phpws2\Http\Controller
                 }
             }
         }
-
-        return parent::getJsonView(array('listing' => $result, 'total' => $total, 'shown' => $total_shown, 'more' => $more),
+        return parent::getJsonView(array('restricted' => $restricted, 'listing' => $result, 'total' => $total, 'shown' => $total_shown, 'more' => $more),
                         $request);
     }
 

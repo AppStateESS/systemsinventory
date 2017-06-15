@@ -13,6 +13,7 @@ export default class Listing extends Component {
       showOverlay: false,
       test: ''
     }
+    this.columnNumber = 3
     this.getRows = this.getTable.bind(this)
     this.sort = this.sort.bind(this)
     this.search = this.search.bind(this)
@@ -41,6 +42,10 @@ export default class Listing extends Component {
     sort.departmentSort = <Sort
       direction={this.currentDirection('department')}
       handleClick={this.props.toggleSort.bind(null, 'department')}/>
+    sort.statusSort = <Sort
+      direction={this.currentDirection('status')}
+      handleClick={this.props.toggleSort.bind(null, 'status')}/>
+
     return sort
   }
 
@@ -69,52 +74,105 @@ export default class Listing extends Component {
       : null
   }
 
+  columnHeader() {
+    const {filters} = this.props
+    const {physicalSort, modelSort, locationSort, usernameSort, departmentSort, statusSort} = this.sort()
+    const {physicalSearch, modelSearch, locationSearch, usernameSearch, departmentSearch} = this.search()
+    const shortWidth = {width: '2%'}
+
+    switch (filters.statusType) {
+      case 0:
+        this.columnNumber = 4
+        return (
+          <tr className="search-header">
+            <th style={shortWidth}></th>
+            <th style={shortWidth}>Type</th>
+            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+            </th>
+            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+            </th>
+            <th className={this.highlight(filters.status > 0)}>Status&nbsp;&nbsp;<span>{statusSort}</span>
+            </th>
+          </tr>
+        )
+
+      case 1:
+        this.columnNumber = 3
+        return (
+          <tr className="search-header">
+            <th></th>
+            <th>Type</th>
+            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+            </th>
+            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+            </th>
+            <th></th>
+          </tr>
+        )
+
+      case 2:
+        this.columnNumber = 6
+        return (
+          <tr className="search-header">
+            <th></th>
+            <th>Type</th>
+            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+            </th>
+            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+            </th>
+            <th className={this.highlight(filters.username.length > 0)}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
+            </th>
+            <th className={this.highlight(filters.location > 0)}>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
+            </th>
+            <th className={this.highlight(filters.department > 0)}>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
+            </th>
+          </tr>
+        )
+
+      case 3:
+        this.columnNumber = 3
+        return (
+          <tr className="search-header">
+            <th></th>
+            <th>Type</th>
+            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+            </th>
+            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+            </th>
+          </tr>
+        )
+
+    }
+  }
+
   getTable() {
     let table
     let rows
-    const {filters} = this.props
-
-    const {
-      physicalSort,
-      modelSort,
-      locationSort,
-      usernameSort,
-      departmentSort
-    } = this.sort()
-    const {physicalSearch, modelSearch, locationSearch, usernameSearch, departmentSearch} = this.search()
+    let columnHeader
 
     if (this.props.rows === null || this.props.rows.length === 0) {
-      rows = <tr><td colSpan="7">No rows found. Change your search criteria.</td></tr>
+      return <p>No rows found. Change your search criteria.</p>
     } else {
+      columnHeader = this.columnHeader()
       rows = this.props.rows.map(function (val, key) {
         return <DeviceRow
-          showOverlay={this.props.showOverlay.bind(null, val.id)}
+          statusType={this.props.filters.statusType}
+          showOverlay={this.props.showOverlay}
           value={val}
           key={key}/>
       }.bind(this))
+
+      return (
+        <div>
+          <table className="table table-striped">
+            <tbody>
+              {columnHeader}
+              {rows}
+            </tbody>
+          </table>
+        </div>
+      )
     }
-    return (
-      <div>
-        <table className="table table-striped">
-          <tbody>
-            <tr className="search-header">
-              <th>Type</th>
-              <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-              </th>
-              <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-              </th>
-              <th className={this.highlight(filters.location > 0)}>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
-              </th>
-              <th className={this.highlight(filters.username.length > 0)}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
-              </th>
-              <th className={this.highlight(filters.department > 0)}>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
-              </th>
-            </tr>
-            {rows}
-          </tbody>
-        </table>
-      </div>
-    )
   }
 
   render() {
@@ -134,5 +192,5 @@ Listing.propTypes = {
   sort: PropTypes.object,
   update: PropTypes.func,
   updateSelect: PropTypes.func,
-  options: PropTypes.object
+  options: PropTypes.object,
 }

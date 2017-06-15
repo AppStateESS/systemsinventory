@@ -27,7 +27,7 @@ export default class SystemSelection extends Component {
         onClick={this.props.update.bind(this, value.value)}>{label}</button>
     }.bind(this))
     return (
-      <div className="btn-group" role="group">
+      <div className="btn-group marginBottom" role="group">
         <button
           className={allCn}
           onClick={this.props.update.bind(this, 'all')}>All</button>

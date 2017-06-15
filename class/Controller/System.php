@@ -30,32 +30,103 @@ class System extends \phpws2\Http\Controller
     protected function getHtmlView($data, \Canopy\Request $request)
     {
         \Layout::addStyle('systemsinventory');
-        if (empty($data['command']))
-            $data['command'] = 'add';
+        $command = $data['command'];
 
-        if (\Current_User::allow('systemsinventory', 'edit')) {
-            if ($data['command'] == 'editPermissions') {
-                $content = SDFactory::UserPermissionsView($data, $request);
-            } else {
-                $content = SDFactory::getFilterScript() . React::view('add');
-            }
-        } else {
-            $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
+        switch ($command) {
+            case 'add':
+                if (!\Current_User::allow('systemsinventory', 'edit')) {
+                    return $this->permissionErrorView();
+                }
+                $content = SDFactory::getProfilesJson() . SDFactory::getFilterScript() . React::view('add');
+                break;
+
+            //view is default
+            default:
+                $id = $request->pullGetInteger('id', true);
+                if (empty($id)) {
+                    $id = $request->lastCommand();
+                }
+                if (is_numeric($id)) {
+                    $content = SDFactory::view($id);
+                } else {
+                    \phpws2\Error::errorPage('404');
+                }
         }
+        $view = new \phpws2\View\HtmlView($content);
+        return $view;
+    }
+
+    public function delete(\Canopy\Request $request)
+    {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
+        $command = $request->shiftCommand();
+        if (empty($command)) {
+            throw new \Exception('Bad delete command');
+        }
+        switch ($command) {
+            case 'profile':
+                if (!\Current_User::allow('systeminventory', 'settings')) {
+                    return $this->permissionErrorView();
+                }
+                SDFactory::deleteDevice($request->pullDeleteInteger('profile'));
+                break;
+
+            case 'device':
+                if (!\Current_User::allow('systeminventory', 'edit')) {
+                    return $this->permissionErrorView();
+                }
+                SDFactory::deleteDevice($request->pullDeleteInteger('device_id'));
+                break;
+        }
+
+        $view = new \phpws2\View\JsonView(array('success' => true));
+        $response = new \Canopy\Response($view);
+        return $response;
+    }
+
+    public function patch(\Canopy\Request $request)
+    {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
+        $factory = new SDFactory;
+        $command = $request->shiftCommand();
+        switch ($command) {
+            case 'assign':
+                $factory->assign($request);
+                break;
+
+            case 'unassign':
+                $factory->unassign($request);
+                break;
+
+            default:
+                throw new \Exception('Unknown patch command');
+        }
+
+        $view = new \phpws2\View\JsonView(array('success' => true));
+        $response = new \Canopy\Response($view);
+        return $response;
+    }
+
+    private function permissionErrorView()
+    {
+        $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
         $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
     public function post(\Canopy\Request $request)
     {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
-        $vars = $request->getRequestVars();
-        $isJSON = false;
+        $vars = $request->pullPostVars();
         $data['command'] = $request->shiftCommand();
-
-        if (!empty($vars['device_id']) && empty($vars['profile_name']))
-            $isJSON = true;
         $device_type = PC;
 
         if (isset($vars['server'])) {
@@ -67,11 +138,11 @@ class System extends \phpws2\Http\Controller
 
         $this->postSpecificDevice($request, $device_type, $device_id);
 
-        $data['action'] = 'success';
-        if ($isJSON) {
-            $view = new \phpws2\View\JsonView(array('success' => TRUE));
+        if (!empty($vars['profile_name'])) {
+            // returning id and profile name to update the form
+            $view = new \phpws2\View\JsonView(array('success' => TRUE, 'id' => $device_id, 'name' => $vars['profile_name']));
         } else {
-            $view = $this->getHtmlView($data, $request);
+            $view = new \phpws2\View\JsonView(array('success' => TRUE));
         }
         $response = new \Canopy\Response($view);
         return $response;
@@ -118,14 +189,18 @@ class System extends \phpws2\Http\Controller
         $nav_vars['is_deity'] = \Current_user::isDeity();
         $nav_vars['logout_uri'] = $auth->logout_link;
         $nav_vars['username'] = \Current_User::getDisplayName();
-        if (\Current_User::allow('systemsinventory', 'edit'))
+        if (\Current_User::allow('systemsinventory', 'edit')) {
             $nav_vars['add'] = '<a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a>';
-        if (\Current_User::allow('systemsinventory', 'view'))
+        }
+        if (\Current_User::allow('systemsinventory', 'view')) {
             $nav_vars['search'] = '<a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a>';
-        if (\Current_User::allow('systemsinventory', 'reports'))
+        }
+        if (\Current_User::allow('systemsinventory', 'reports')) {
             $nav_vars['reports'] = '<a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a>';
-        if (\Current_User::allow('systemsinventory', 'settings'))
+        }
+        if (\Current_User::allow('systemsinventory', 'settings')) {
             $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
+        }
 
 
         $nav_bar = new \phpws2\Template($nav_vars);
@@ -158,11 +233,6 @@ class System extends \phpws2\Http\Controller
                     break;
                 case 'searchPhysicalID':
                     $result = SDFactory::searchPhysicalID($vars['physical_id']);
-                    break;
-                case 'delete':
-                    $result = SDFactory::deleteDevice($vars['device_id'],
-                                    $vars['specific_device_id'],
-                                    $vars['device_type_id']);
                     break;
                 case 'inventory':
                     $result = SDFactory::markDeviceInventoried($vars['device_id']);

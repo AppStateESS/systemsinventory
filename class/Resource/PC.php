@@ -145,12 +145,7 @@ class PC extends \phpws2\Resource
 
     public function setIsServer($server)
     {
-        $this->is_server = (bool) $server;
+        $this->is_server->set((bool) $server);
     }
     
-    public function setDockingStand($stand)
-    {
-        $this->docking_stand = (bool) $stand;
-    }
-
 }

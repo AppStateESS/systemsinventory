@@ -95,7 +95,6 @@ CREATE TABLE systems_ipad (
        generation character varying,
        apple_id character varying,
        protective_case smallint default 0,
-       phone character varying,
        system_usage character varying,
        PRIMARY KEY (id)
 );
