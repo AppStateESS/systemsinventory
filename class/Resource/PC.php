@@ -45,7 +45,7 @@ class PC extends \phpws2\Resource
         $this->server_type->allowNull(true);
         $this->system_usage = new \phpws2\Variable\IntegerVar(0, 'system_usage');
         $this->system_usage->allowNull(true);
-        $this->is_server = new \phpws2\Variable\SmallInteger(0, 'is_server');
+        $this->is_server = new \phpws2\Variable\BooleanVar(0, 'is_server');
         $this->battery_backup = new \phpws2\Variable\BooleanVar(false,
                 'battery_backup');
         $this->redundant_backup = new \phpws2\Variable\BooleanVar(false,
@@ -145,7 +145,7 @@ class PC extends \phpws2\Resource
 
     public function setIsServer($server)
     {
-        $this->is_server->set((bool) $server);
+        $this->is_server->set($server);
     }
     
 }
