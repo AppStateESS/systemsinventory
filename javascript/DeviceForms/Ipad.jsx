@@ -12,7 +12,7 @@ export default class Ipad extends Base {
   }
 
   render() {
-    const {device, update, options} = this.props
+    const {device, update} = this.props
     return (
       <div>
         <div className="row">

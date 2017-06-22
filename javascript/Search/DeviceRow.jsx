@@ -80,6 +80,9 @@ export default class DeviceRow extends Component {
           data-toggle="dropdown"></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li>
+            <a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')} className="pointer"><i className="fa fa-eye"></i>&nbsp;View</a>
+          </li>
+          <li>
             <a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'edit')} className="pointer"><i className="fa fa-edit"></i>&nbsp;Edit</a>
           </li>
           {assign}

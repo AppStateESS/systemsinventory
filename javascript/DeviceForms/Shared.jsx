@@ -43,7 +43,8 @@ export default class Shared extends Base {
       }
     ]
     let buttonClass
-    let deviceButtons = deviceList.map((value, key) =>{
+
+    let deviceButtons = deviceList.map((value, key) => {
       buttonClass = "btn btn-default"
       if (this.props.device.device_type_id == value.value) {
         buttonClass = "btn btn-default active"
@@ -57,19 +58,23 @@ export default class Shared extends Base {
       )
     })
 
-    const selectDevice = (
-      <div className="btn-group" role="group">
-        {deviceButtons}
-      </div>
-    )
-    return (
-      <div>
+    let selectDevice
+    if (this.props.device.id === 0) {
+      selectDevice = (
         <div className="row marginBottom">
           <div className="col-sm-12">
             <label>Device type:</label>&nbsp;
-            {selectDevice}
+            <div className="btn-group" role="group">
+              {deviceButtons}
+            </div>
           </div>
         </div>
+      )
+    }
+
+    return (
+      <div>
+        {selectDevice}
         <div className="row">
           <div className="col-sm-6">
             {this.inputField('physical_id')}
@@ -88,7 +93,9 @@ export default class Shared extends Base {
         <label>Notes</label>
         <textarea
           className="form-control"
-          value={this.props.device.notes}
+          value={this.props.device.notes === null
+          ? ''
+          : this.props.device.notes}
           onChange={this.props.update.bind(this, 'notes')}/>
       </div>
     )
@@ -96,8 +103,8 @@ export default class Shared extends Base {
 }
 
 Shared.propTypes = {
-  device: PropTypes.object,
-  update: PropTypes.func,
-  options: PropTypes.object,
-  errors: PropTypes.array,
+  device: PropTypes.object.isRequired,
+  update: PropTypes.func.isRequired,
+  options: PropTypes.object.isRequired,
+  errors: PropTypes.array.isRequired
 }

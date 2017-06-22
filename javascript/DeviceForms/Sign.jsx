@@ -25,7 +25,7 @@ export default class Sign extends Base {
             {this.inputField('screen_manufacturer')}
           </div>
           <div className="col-sm-3">
-            {this.inputField('player_manufacturer')}
+            {this.inputField('manufacturer', 'Player manufacturer')}
           </div>
         </div>
         <div className="row">
@@ -33,13 +33,13 @@ export default class Sign extends Base {
             {this.inputField('screen_size')}
           </div>
           <div className="col-sm-3">
-            {this.inputField('processor')}
+            {this.inputField('processor', null, false, 'e.g. Intel core i5')}
           </div>
           <div className="col-sm-3">
-            {this.inputField('ram', 'RAM')}
+            {this.inputField('ram', 'RAM',false,'in gigabytes (GB)')}
           </div>
           <div className="col-sm-3">
-            {this.inputField('hd_size')}
+            {this.inputField('hd_size', 'Hard drive size', false, 'TB or GB')}
           </div>
         </div>
         <BigCheckbox

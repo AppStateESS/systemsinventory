@@ -37,6 +37,7 @@ const required = {
     user: ['username', 'first_name', 'last_name', 'phone']
   },
   ipad: {
+    userAssigned: true,
     profile: [
       'hd_size', 'generation'
     ],
@@ -56,10 +57,10 @@ const required = {
   printer: {
     userAssigned: true,
     profile: [
-      'manufacturer', 'model', 'toner'
+      'manufacturer', 'model', 'toner_cartridge'
     ],
     unassigned: [
-      'manufacturer', 'model', 'toner'
+      'manufacturer', 'model', 'toner_cartridge'
     ],
     assigned: [
       'department_id', 'location_id', 'room_number', 'primary_ip'
@@ -69,10 +70,10 @@ const required = {
   camera: {
     userAssigned: false,
     profile: [
-      'model', 'manufacturer', 'resolution'
+      'model', 'manufacturer', 'megapixels'
     ],
     unassigned: [
-      'model', 'manufacturer', 'resolution', 'mac'
+      'model', 'manufacturer', 'megapixels', 'mac'
     ],
     assigned: [
       'department_id', 'location_id', 'room_number', 'primary_ip'
@@ -85,7 +86,7 @@ const required = {
       'model',
       'processor',
       'screen_manufacturer',
-      'player_manfacturer',
+      'manufacturer',
       'screen_size',
       'ram',
       'hd_size'
@@ -95,7 +96,7 @@ const required = {
       'model',
       'processor',
       'screen_manufacturer',
-      'player_manfacturer',
+      'manufacturer',
       'screen_size',
       'ram',
       'hd_size'

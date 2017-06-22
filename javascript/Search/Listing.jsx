@@ -100,13 +100,13 @@ export default class Listing extends Component {
         this.columnNumber = 3
         return (
           <tr className="search-header">
-            <th></th>
-            <th>Type</th>
+            <th style={shortWidth}></th>
+            <th style={shortWidth}>Type</th>
             <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
             </th>
             <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
             </th>
-            <th></th>
+            <th style={shortWidth}></th>
           </tr>
         )
 
@@ -114,8 +114,8 @@ export default class Listing extends Component {
         this.columnNumber = 6
         return (
           <tr className="search-header">
-            <th></th>
-            <th>Type</th>
+            <th style={shortWidth}></th>
+            <th style={shortWidth}>Type</th>
             <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
             </th>
             <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
@@ -133,8 +133,8 @@ export default class Listing extends Component {
         this.columnNumber = 3
         return (
           <tr className="search-header">
-            <th></th>
-            <th>Type</th>
+            <th style={shortWidth}></th>
+            <th style={shortWidth}>Type</th>
             <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
             </th>
             <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>

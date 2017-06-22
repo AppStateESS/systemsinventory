@@ -8,7 +8,6 @@ import Camera from '../DeviceForms/Camera.jsx'
 import Sign from '../DeviceForms/Sign.jsx'
 import Clock from '../DeviceForms/Clock.jsx'
 import Shared from '../DeviceForms/Shared.jsx'
-import moment from 'moment'
 import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import Overlay from '../Mixin/Overlay.jsx'
 import ProfileForm from './ProfileForm.jsx'
@@ -251,6 +250,7 @@ export default class DeviceForm extends Component {
 }
 
 DeviceForm.propTypes = {
-  save: PropTypes.func,
-  update : PropTypes.func
+  save: PropTypes.func.isRequired,
+  update : PropTypes.func.isRequired,
+  device: PropTypes.object.isRequired
 }

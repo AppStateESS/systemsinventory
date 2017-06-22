@@ -23,7 +23,7 @@ export default class Overlay extends Component {
     this.refs.closebutton.style.color = '#BFBFBF'
   }
   lighten() {
-    this.refs.closebutton.style.color = 'black'
+    this.refs.closebutton.style.color = '#FF5C6B'
   }
   close() {
     this.unlockBody()

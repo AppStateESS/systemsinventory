@@ -25,7 +25,7 @@ export default class Camera extends Base {
             {this.inputField('manufacturer')}
           </div>
           <div className="col-sm-6 col-md-3">
-            {this.inputField('resolution')}
+            {this.inputField('megapixels')}
           </div>
         </div>
         <div className="row">

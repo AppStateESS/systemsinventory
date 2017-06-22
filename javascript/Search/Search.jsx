@@ -1,5 +1,5 @@
 'use strict'
-import React, {Component} from 'react'
+import React from 'react'
 import Filters from './Filters.jsx'
 import Listing from './Listing.jsx'
 import SystemSelection from './SystemSelection.jsx'
@@ -7,23 +7,25 @@ import StatusSelection from './StatusSelection.jsx'
 import {Modal, Effect} from 'react-dynamic-modal'
 import Overlay from '../Mixin/Overlay.jsx'
 import DeviceForm from '../Shared/DeviceForm.jsx'
-import moment from 'moment'
 import modalCss from './ModalCss.js'
-import AssignForm from './AssignForm.jsx'
+import AssignForm from '../AssignForms/AssignForm.jsx'
 import DeleteDevice from './DeleteDevice.jsx'
 import UnassignDevice from './UnassignDevice.jsx'
+import ViewDevice from '../View/ViewDevice.jsx'
+import Device from '../Mixin/Device.js'
+import FormBase from '../Shared/FormBase.jsx'
 
 /* global $, jsonFilters, restricted */
 
-export default class Search extends Component {
+export default class Search extends FormBase {
   constructor() {
     super()
-    this.errors = []
+
     this.offset = 0
     this.state = {
       modalOpen: false,
       filters: {
-        systemType: [],
+        systemType: ['all'],
         statusType: 0,
         department: null,
         location: null,
@@ -34,11 +36,7 @@ export default class Search extends Component {
         ipAddress: '',
         username: ''
       },
-      device: {
-        device_type_id: 1,
-        purchase_date: moment().format('YYYY-MM-DD'),
-        status: 0
-      },
+
       showOverlay: false,
       formType: null,
       total: 0,
@@ -52,6 +50,7 @@ export default class Search extends Component {
       restricted: false
     }
     this.load = this.load.bind(this)
+    this.save = this.save.bind(this)
     this.reset = this.reset.bind(this)
     this.delete = this.delete.bind(this)
     this.assign = this.assign.bind(this)
@@ -59,6 +58,7 @@ export default class Search extends Component {
     this.unassign = this.unassign.bind(this)
     this.maxOffset = this.maxOffset.bind(this)
     this.openModal = this.openModal.bind(this)
+    this.editSwitch = this.editSwitch.bind(this)
     this.toggleSort = this.toggleSort.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.showOverlay = this.showOverlay.bind(this)
@@ -74,6 +74,7 @@ export default class Search extends Component {
     if (restricted) {
       this.setState({restricted: true, statusType: 2})
     }
+    this.load()
   }
 
   showOverlay(id, formType) {
@@ -89,7 +90,9 @@ export default class Search extends Component {
   loadDevice(id, forceAssign = false) {
     $.getJSON('./systemsinventory/system/getDetails', {device_id: id}).done(function (data) {
       if (forceAssign) {
-        data.status = '1'
+        data.status = Device.userAssigned(data)
+          ? '1'
+          : '2'
       }
       this.setState({device: data})
     }.bind(this))
@@ -99,6 +102,29 @@ export default class Search extends Component {
     const parameters = $.param(this.state.filters)
     const url = './systemsinventory/search/download?' + parameters
     window.location.href = url
+  }
+
+  editSwitch(e) {
+    e.preventDefault()
+    this.closeOverlay()
+    this.showOverlay(this.state.device.id, 'edit')
+  }
+
+  save() {
+    $.ajax({
+      url: './systemsinventory',
+      data: {},
+      dataType: 'json',
+      type: 'delete|patch|post|get',
+      success: function (data) {}.bind(this),
+      error: function (data) {}.bind(this)
+    })
+
+    $.post('./systemsinventory/system/', this.state.device, null, 'json').done(function (data) {
+      this.closeOverlay()
+    }.bind(this)).fail(function (data) {
+      console.log(data)
+    })
   }
 
   load() {
@@ -159,37 +185,21 @@ export default class Search extends Component {
         this.closeOverlay()
         this.load()
       }.bind(this),
-      error: function (data) {}.bind(this)
+      error: function () {}.bind(this)
     })
-  }
-
-  updateDeviceValue(varname, value) {
-    if (value === null) {
-      value = ''
-    }
-    if (typeof value === 'object') {
-      value = value.target.value
-    }
-    let device = this.state.device
-    device[varname] = value
-    this.setState({device: device})
   }
 
   assign() {
     $.ajax({
       url: './systemsinventory/system/assign',
-      data: {
-        device_id: this.state.device.id
-      },
+      data: this.state.device,
       dataType: 'json',
       type: 'patch',
       success: function () {
         this.closeOverlay()
         this.load()
       }.bind(this),
-      error: function (data) {
-        console.log('error');
-      }.bind(this)
+      error: function () {}.bind(this)
     })
   }
 
@@ -205,9 +215,7 @@ export default class Search extends Component {
         this.closeOverlay()
         this.load()
       }.bind(this),
-      error: function (data) {
-        console.log('error');
-      }.bind(this)
+      error: function () {}.bind(this)
     })
   }
 
@@ -321,11 +329,12 @@ export default class Search extends Component {
     let formType
     let overlayTitle
 
-    if (this.state.showOverlay) {
+    if (this.state.showOverlay && this.state.device !== undefined) {
       switch (this.state.formType) {
         case 'edit':
           overlayTitle = `Update device ${this.state.device.physical_id}`
           formType = <DeviceForm
+            save={this.save}
             options={jsonFilters}
             update={this.updateDeviceValue}
             device={this.state.device}/>
@@ -334,6 +343,7 @@ export default class Search extends Component {
         case 'assign':
           overlayTitle = `Assign device ${this.state.device.physical_id}`
           formType = <AssignForm
+            edit={this.editSwitch}
             update={this.updateDeviceValue}
             device={this.state.device}
             options={jsonFilters}
@@ -355,6 +365,11 @@ export default class Search extends Component {
             device={this.state.device}
             delete={this.delete}
             close={this.closeOverlay}/>
+          break
+
+        case 'view':
+          overlayTitle = `View device ${this.state.device.physical_id}`
+          formType = <ViewDevice device={this.state.device} />
           break
       }
 
@@ -399,7 +414,7 @@ export default class Search extends Component {
           </div>
         </div>
         <div className="alert alert-info">
-          Devices shown: {this.state.shown}&nbsp; rows of {this.state.total}
+          Devices shown: {`${this.state.shown} rows of ${this.state.total}`}
         </div>
         <Listing
           showOverlay={this.showOverlay}

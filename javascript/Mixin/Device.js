@@ -18,6 +18,19 @@ export default class Device {
     }
   }
 
+  static getStatus(device) {
+    switch (device.status) {
+      case 0:
+        return 'Unassigned'
+      case 1:
+        return 'Assigned - person'
+      case 2:
+        return 'Assigned - location'
+      case 3:
+        return 'Surplus'
+    }
+  }
+
   static profileReady(device) {
     const dtype = this.getType(device.device_type_id)
     const profile = required[dtype].profile
@@ -30,28 +43,36 @@ export default class Device {
     return dataExists
   }
 
-  static collectRequired(device) {
+  static collectRequired(device, status = null) {
     const allRequired = required.allRequired
     const {unassigned, assigned, user} = required[this.getType(device.device_type_id)]
+    if (status === null) {
+      status = device.status
+    }
     let errorChecks
     errorChecks = allRequired.concat(unassigned)
-    if (device.status === '1' || device.status === '2') {
+    if (status === '1' || status === '2') {
       errorChecks = errorChecks.concat(assigned)
-      if (device.status === '1') {
+      if (status === '1') {
         errorChecks = errorChecks.concat(user)
       }
     }
     return errorChecks
   }
 
-  static checkForErrors(device, errors) {
-    const errorChecks = this.collectRequired(device)
+  static userAssigned(device) {
+    return required[this.getType(device.device_type_id)].userAssigned
+  }
+
+  static checkForErrors(device, errors, status = null) {
+    const errorChecks = this.collectRequired(device, status)
     let errorFound = false
     let foundIndex = -1
     errorChecks.forEach(function (item) {
       foundIndex = errors.indexOf(item)
       if (device[item] === undefined || device[item] === null || device[item].length === 0) {
         errorFound = true
+        //console.log(`found error on ${item}`)
         if (foundIndex > -1) {
           errors.push(item)
         }

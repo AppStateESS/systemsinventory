@@ -33,10 +33,10 @@ export default class PC extends Base {
         </div>
         <div className="row">
           <div className="col-sm-4">
-            {this.inputField('processor')}
+            {this.inputField('processor', null, false, 'Intel core 5')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('video_card')}
+            {this.inputField('video_card', null, false, 'Nvidia, ATI')}
           </div>
           <div className="col-sm-4">
             {this.inputField('os', 'Operating system')}
@@ -44,10 +44,10 @@ export default class PC extends Base {
         </div>
         <div className="row">
           <div className="col-sm-4">
-            {this.inputField('ram', 'RAM')}
+            {this.inputField('ram', 'RAM', false, 'in GB')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('hd_size', 'Hard drive')}
+            {this.inputField('hd_size', 'Hard drive', false, 'GB or TB')}
           </div>
           <div className="col-sm-4">
             {this.inputField('primary_monitor', 'Primary monitor size')}
@@ -81,22 +81,7 @@ export default class PC extends Base {
             </div>
           </div>
           <div className="col-sm-4">
-            <div>
-              <BigCheckbox
-                checked={device.smart_room === 1}
-                handle={update.bind(null, 'smart_room', device.smart_room === 1
-                ? 0
-                : 1)}
-                label="Smart room"/>
-            </div>
-            <div>
-              <BigCheckbox
-                checked={device.check_in === 1}
-                handle={update.bind(null, 'check_in', device.check_in === 1
-                ? 0
-                : 1)}
-                label="Check in"/>
-            </div>
+
             <div>
               <BigCheckbox
                 checked={device.is_server === 1}
@@ -130,20 +115,6 @@ export default class PC extends Base {
                 : 1)}
                 label="Docking stand"/>
             </div>
-            <div>
-              <BigCheckbox
-                checked={device.dual_monitor === 1}
-                handle={update.bind(null, 'dual_monitor', device.dual_monitor === 1
-                ? 0
-                : 1)}
-                label="Dual monitor"/>
-            </div>
-            <InputField
-              name="secondary_monitor"
-              disabled={device.dual_monitor === 0}
-              value={device.secondary_monitor}
-              label="Secondary monitor size"
-              change={update.bind(null, 'secondary_monitor')}/>
           </div>
         </div>
       </div>
