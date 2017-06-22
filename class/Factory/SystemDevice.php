@@ -15,101 +15,6 @@ use systemsinventory\Resource\Printer as PrinterResource;
  */
 class SystemDevice extends \phpws2\ResourceFactory
 {
-    /*
-    public static function form(\Canopy\Request $request, $active_tab, $data)
-    {
-        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-        $vars = array();
-        $req_vars = $request->getRequestVars();
-        $vars['title'] = '';
-        $system_id = NULL;
-        $command = $data['command'];
-        $action = NULL;
-        if (!empty($data['action']))
-            $action = $data['action'];
-
-        if ($command == "editProfiles") {
-            $message = "Profile Saved!";
-            $template_name = 'Edit_Profile.html';
-        } else {
-            $message = "System Saved!";
-            $template_name = 'Add_System.html';
-        }
-
-        javascript('jquery');
-        \phpws2\Form::requiredScript();
-
-        if (!in_array($active_tab,
-                        array('systems-pc', 'ipad', 'printer', 'camera', 'digital-sign', 'time-clock'))) {
-            $active_tab = 'systems-pc';
-        }
-
-        $js_string = <<<EOF
-	  <script type='text/javascript'>var active_tab = '$active_tab';</script> 
-EOF;
-        \Layout::addJSHeader($js_string);
-        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/systems.js';
-        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
-
-
-        if ($action == 'success') {
-            $vars['message'] = $message;
-            $vars['display'] = 'display: block;';
-        } else {
-            $vars['message'] = '';
-            $vars['display'] = 'display: none;';
-        }
-
-        $system_locations = SystemDevice::getSystemLocations();
-        $location_options = '<option value="1">Select Location</opton>';
-        foreach ($system_locations as $key => $val) {
-            $location_options .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
-        }
-        $vars['locations'] = $location_options;
-        $system_dep = SystemDevice::getSystemDepartments();
-        $dep_optons = '<option value="1">Select Department</opton>';
-        foreach ($system_dep as $val) {
-            $dep_optons .= '<option value="' . $val['id'] . '">' . $val['display_name'] . '</option>';
-        }
-        $vars['departments'] = $dep_optons;
-        $system_profiles = SystemDevice::getSystemProfiles();
-        $profile_options = $printer_profile_options = '<option value="1">Select Profile</opton>';
-        if (!empty($system_profiles)) {
-            foreach ($system_profiles as $val) {
-                if ($val['device_type_id'] == PC) {
-                    $profile_optons .= '<option value="' . $val['id'] . '">' . $val['profile_name'] . '</option>';
-                } else {
-                    $printer_profile_options .= '<option value="' . $val['id'] . '">' . $val['profile_name'] . '</option>';
-                }
-            }
-        }
-        $vars['profiles'] = $profile_optons;
-        $vars['printer_profiles'] = $printer_profile_options;
-        $vars['form_action'] = "./systemsinventory/system/" . $command;
-        $template = new \phpws2\Template($vars);
-        $template->setModuleTemplate('systemsinventory', $template_name);
-        return $template->get();
-    }
-     *
-     */
-
-    public function assign(\Canopy\Request $request)
-    {
-        $device = new Resource;
-        $device->setId($request->pullPatchInteger('id'));
-        self::loadByID($device);
-        $device->setStatus($status);
-        $device->setDepartment($department_id);
-        $device->setLocation($location_id);
-        $device->setRoomNumber($room_number);
-        $device->setPrimaryIP($ip);
-        $device->setSecondaryIP($ip);
-        $device->setVlan($vlan);
-        $device->setFirstName($first_name);
-        $device->setLastName($last_name);
-        $device->setUserName($username);
-        $device->setPhone($phone);
-    }
 
     public function unassign(\Canopy\Request $request)
     {
@@ -129,93 +34,121 @@ EOF;
         $device->setPhone(null);
         self::saveResource($device);
     }
-    
-    
-    
+
     public function postDevice(\Canopy\Request $request)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-        $system_device = new Resource;
-        $device_type = PC;
-        $vars = $request->pullPostVars();
+        $device = new Resource;
 
-        if (isset($vars['device_type_id'])) {
-            $device_type = $vars['device_type_id'];
+        $id = $request->pullPostInteger('id', true);
+        if ($id) {
+            $device->setId($id);
+            $this->loadByID($device);
+        } else {
+            $device->setDeviceType($request->pullPostInteger('device_type_id'));
+            if ($device->isPC() && $request->pullPostInteger('is_server', true)) {
+                $device->setDeviceType(SERVER);
+            }
         }
 
-        if ($device_type === PC && isset($vars['server'])) {
-            $device_type = SERVER;
+        $device->setPurchaseDate($request->pullPostString('purchase_date', true));
+        $device->setPhysicalID($request->pullPostString('physical_id'));
+
+        if (!$device->isPrinter()) {
+            $device->setMac($request->pullPostString('mac'));
         }
 
-        if (!empty($vars['id'])) {
-            $system_device->setId($vars['id']);
-        }
-        $system_device->setDeviceType($device_type);
-        $system_device->setPhysicalID(filter_input(INPUT_POST, 'physical_id'));
-        if (!empty($vars['first_name']))
-            $system_device->setName(filter_input(INPUT_POST, 'first_name',
-                            FILTER_SANITIZE_STRING),
-                    filter_input(INPUT_POST, 'last_name', FILTER_SANITIZE_STRING));
-        if (!empty($vars['username']))
-            $system_device->setUserName(filter_input(INPUT_POST, 'username',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['phone']))
-            $system_device->setPhone(filter_input(INPUT_POST, 'phone',
-                            FILTER_SANITIZE_STRING));
-        $system_device->setLocation(filter_input(INPUT_POST, 'location',
-                        FILTER_SANITIZE_NUMBER_INT));
-        if (!empty($vars['room_number']))
-            $system_device->setRoomNumber(filter_input(INPUT_POST,
-                            'room_number', FILTER_SANITIZE_STRING));
-        $system_device->setDepartment(filter_input(INPUT_POST, 'department',
-                        FILTER_SANITIZE_NUMBER_INT));
-        if (!empty($vars['model']))
-            $system_device->setModel(filter_input(INPUT_POST, 'model',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['hd_size']))
-            $system_device->setHdSize(filter_input(INPUT_POST, 'hd_size',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['processor']))
-            $system_device->setProcessor(filter_input(INPUT_POST, 'processor',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['ram']))
-            $system_device->setRAM(filter_input(INPUT_POST, 'ram',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['mac']))
-            $system_device->setMac(filter_input(INPUT_POST, 'mac',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['mac2']))
-            $system_device->setMac2(filter_input(INPUT_POST, 'mac2',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['primary_ip']))
-            $system_device->setPrimaryIP(filter_input(INPUT_POST, 'primary_ip',
-                            FILTER_SANITIZE_STRING));
-        if (!empty($vars['secondary_ip']))
-            $system_device->setSecondaryIP(filter_input(INPUT_POST,
-                            'secondary_ip', FILTER_SANITIZE_STRING));
-        if (!empty($vars['manufacturer']))
-            $system_device->setManufacturer(filter_input(INPUT_POST,
-                            'manufacturer', FILTER_SANITIZE_STRING));
-        $system_device->setVlan(filter_input(INPUT_POST, 'vlan',
-                        FILTER_SANITIZE_NUMBER_INT));
-        $system_device->setPurchaseDate(filter_input(INPUT_POST,
-                        'purchase_date', FILTER_SANITIZE_STRING));
-        if (!empty($vars['profile_name'])) {
-            $system_device->setProfile(TRUE);
-            $system_device->setProfileName(filter_input(INPUT_POST,
-                            'profile_name', FILTER_SANITIZE_STRING));
-        }
-        $system_device->setNotes(filter_input(INPUT_POST, 'system_notes',
-                        FILTER_SANITIZE_STRING));
+        $notes = $request->pullPostString('notes', true);
+        $device->setNotes($notes ? $notes : '');
 
-        self::saveResource($system_device);
-        return $system_device->getId();
+        if ($request->postVarIsset('mac2')) {
+            $device->setMac2($request->pullPostString('mac2'));
+        }
+
+        if ($request->postVarIsset('model')) {
+            $device->setModel($request->pullPostString('model'));
+        }
+        if ($request->postVarIsset('hd_size')) {
+            $device->setHdSize($request->pullPostString('hd_size'));
+        }
+        if ($request->postVarIsset('processor')) {
+            $device->setProcessor($request->pullPostString('processor'));
+        }
+        if ($request->postVarIsset('ram')) {
+            $device->setRam($request->pullPostString('ram'));
+        }
+        if ($request->postVarIsset('manufacturer')) {
+            $device->setManufacturer($request->pullPostString('manufacturer',
+                            true));
+        }
+
+        $profile_name = $request->pullPostString('profile_name', true);
+        if (!empty($profile_name)) {
+            $device->setProfile(TRUE);
+            $device->setProfileName($profile_name);
+        }
+
+        self::saveResource($device);
+        return $device;
     }
 
-    public static function initSystem($vars, $system_id)
+    public static function assign(\Canopy\Request $request)
     {
+        $device_id = $request->pullPatchInteger('id');
+        $device = new Resource;
+        $device->setId($device_id);
+        self::loadByID($device);
+        self::assignByType($device);
 
-        return $vars;
+        $location_id = $request->pullPatchInteger('location_id');
+        $device->setLocation($location_id ? $location_id : null);
+
+        $department_id = $request->pullPatchInteger('department_id');
+        $device->setDepartment($department_id ? $department_id : null);
+
+        $device->setNotes($request->pullPatchString('notes'));
+        $device->setPrimaryIP($request->pullPatchString('primary_ip'));
+
+        if ($request->patchVarIsset('room_number')) {
+            $device->setRoomNumber($request->pullPatchString('room_number'));
+        }
+
+        self::saveResource($device);
+        return $device;
+    }
+
+    private static function assignByType(Resource $device)
+    {
+        switch ($device->getDeviceType()) {
+            case PC:
+            case SERVER:
+                PC::assignDevice($device, $request);
+                break;
+
+            case IPAD:
+                IPAD::assignDevice($device, $request);
+                break;
+
+            case PRINTER:
+                break;
+
+            case CAMERA:
+                Camera::assignDevice($device, $request);
+                break;
+
+            case DIGITAL_SIGN:
+                DigitalSign::assignDevice($device, $request);
+                break;
+
+            case TIME_CLOCK:
+                self::assignDevice($device, $request);
+                break;
+        }
+    }
+
+    private static function assignClock($device, $request)
+    {
+        $device->setVlan($request->pullPatchString('vlan', true));
     }
 
     public static function getSystemDetails($system_id)
@@ -239,14 +172,13 @@ EOF;
             $device_table->addFieldConditional('device_id', $system_id);
             $device_result = $db->selectOneRow();
             // set the specific device id so we can use it to save the device specific info later.
-            if (empty($device_result)) {
-                throw new \Exception('Device specific could not be found');
+            if (!empty($device_result)) {
+                $specific_device_id = $device_result['id'];
+                unset($device_result['id']);
+                $device_result['specific-device-id'] = $specific_device_id;
+                //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
+                $device_details = array_merge($device_details, $device_result);
             }
-            $specific_device_id = $device_result['id'];
-            unset($device_result['id']);
-            $device_result['specific-device-id'] = $specific_device_id;
-            //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
-            $device_details = array_merge($device_details, $device_result);
         }
         $device_details['device-type-id'] = $device_type_id;
         $purchase_date = $device_details['purchase_date'];
@@ -315,15 +247,22 @@ EOF;
             case '6':
                 $specific_device = new DigitalSignResource;
                 break;
+
+            case '7':
+                return;
         }
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable(self::getSystemType($device->getDeviceType()));
         $tbl->addFieldConditional('device_id', $device->getId());
         $row = $db->selectOneRow();
-        $specific_device->setVars($row);
+        if ($row) {
+            $specific_device->setVars($row);
+        } else {
+            $specific_device->setDeviceID($device->getId());
+        }
         return $specific_device;
     }
-    
+
     public static function deleteDevice($device_id)
     {
         $systems_device = new Resource;
@@ -331,9 +270,16 @@ EOF;
         if (!parent::loadByID($systems_device)) {
             throw new \Exception('Cannot load resource. System id not found:' . $device_id);
         }
-        $specific_device = self::loadSpecificByDevice($systems_device);
-        if (!SystemDevice::deleteResource($specific_device)) {
-            throw new \Exception('Cannot delete specific resource. Query failed');
+        if ($systems_device->getDeviceType() !== TIME_CLOCK) {
+            $specific_device = self::loadSpecificByDevice($systems_device);
+            // This could be more restrictive but in case there is a faulty device
+            // without an accompanying specific, you should be able to move on and
+            // delete it.
+            if ($specific_device->getId()) {
+                if (!SystemDevice::deleteResource($specific_device)) {
+                    throw new \Exception('Cannot delete specific resource. Query failed');
+                }
+            }
         }
         if (!SystemDevice::deleteResource($systems_device)) {
             throw new \Exception('Cannot delete resource. Query failed');
@@ -349,8 +295,9 @@ EOF;
         $db = \Database::getDB();
         $query = "INSERT INTO systems_log (username, device_id, log_type, timestamp) VALUES('$username', '$device_id', '$log_type', '$timestamp')";
         $result = $db->query($query);
-        if (empty($result))
+        if (empty($result)) {
             return 0; //should be exception
+        }
         return array("success" => "1", "timestamp" => date("F j, Y, g:i a",
                     $timestamp), "username" => $username);
     }
@@ -371,7 +318,7 @@ EOF;
         $conditional = new \Database\Conditional($db, $condition0, $condition1,
                 'AND');
         $db->addConditional($conditional);
-        $tbl->addOrderBy("timestamp", "DESC");
+        $tbl->addOrderBy('timestamp', 'DESC');
         $result = $db->select();
 
         if (empty($result)) {
@@ -559,7 +506,7 @@ EOF;
         $permission_result = $permission_db->select();
         return $permission_result;
     }
-    
+
     public static function getSystemDepartments()
     {
         $user_id = \Current_User::getId();
@@ -643,7 +590,7 @@ EOF;
         $depts = self::getUserPermissions(\Current_User::getId());
         return !empty($depts);
     }
-    
+
     public static function getFilterScript()
     {
         $restricted = self::currentUserRestricted() ? 'true' : 'false';
@@ -662,11 +609,23 @@ EOF;
         return json_encode($filters);
     }
 
+    private static function systemLabel($label)
+    {
+        switch ($label) {
+            case 'pc':
+                return 'PC';
+            case 'ipad':
+                return 'Tablet';
+            default:
+                return ucfirst($label);
+        }
+    }
+
     public static function getJsonSearchFilters()
     {
         $system_types = self::getSystemTypes();
         foreach ($system_types as $val) {
-            $filters['system_types'][] = array('value' => $val['id'], 'label' => $val['description']);
+            $filters['system_types'][] = array('value' => $val['id'], 'label' => $val['description'], 'name' => self::systemLabel($val['description']));
         }
         $departments = self::getSystemDepartments();
         foreach ($departments as $val) {
@@ -682,15 +641,15 @@ EOF;
         $filters['vlan'][] = array('value' => 4, 'label' => 'VOIP');
 
         $filters['system_usage'][] = array('value' => 1, 'label' => 'Staff');
-        $filters['system_usage'][] = array('value' => 1, 'label' => 'Student');
-        $filters['system_usage'][] = array('value' => 1, 'label' => 'Public');
+        $filters['system_usage'][] = array('value' => 2, 'label' => 'Student');
+        $filters['system_usage'][] = array('value' => 3, 'label' => 'Public');
         return $filters;
     }
-    
+
     public static function view($id)
     {
         $values = self::getSystemDetails($id);
-        
+
         switch ($values['status']) {
             case 0:
                 $status = 'Not assigned';
@@ -706,8 +665,8 @@ EOF;
                 break;
         }
         $new_values['Status'] = $status;
-        
-        foreach ($values as $key=>$value) {
+
+        foreach ($values as $key => $value) {
             switch ($key) {
                 case 'location_id':
                     $value = self::getLocationByID($value);
@@ -718,10 +677,10 @@ EOF;
                     $value = self::getDepartmentByID($value);
                     $new_key = 'Department';
                     break;
-                
+
                 case 'status':
                     continue;
-                
+
                 case 'battery_backup':
                 case 'redundant_backup':
                 case 'touch_screen':
@@ -734,7 +693,7 @@ EOF;
                     $value = $value ? '<span class="text-success"><i class="fa fa-check"></i> Yes</span>' : '<span class="text-danger"><i class="fa fa-times"></i> No</span>';
                     $new_key = ucfirst(str_replace('_', ' ', $key));
                     break;
-                
+
                 default:
                     $new_key = ucfirst(str_replace('_', ' ', $key));
             }
