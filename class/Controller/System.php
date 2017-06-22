@@ -125,18 +125,12 @@ class System extends \phpws2\Http\Controller
         }
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
-        $vars = $request->pullPostVars();
-        $data['command'] = $request->shiftCommand();
-        $device_type = PC;
-
-        if (isset($vars['server'])) {
-            $device_type = SERVER;
-        } elseif (isset($vars['device_type'])) {
-            $device_type = $vars['device_type'];
+        $device = $sdfactory->postDevice($request);
+        
+        // Time clock doesn't have data outside the default device
+        if ($device->getDeviceType() !== TIME_CLOCK) {
+            $this->postSpecificDevice($request, $device);
         }
-        $device_id = $sdfactory->postDevice($request);
-
-        $this->postSpecificDevice($request, $device_type, $device_id);
 
         if (!empty($vars['profile_name'])) {
             // returning id and profile name to update the form
@@ -148,32 +142,32 @@ class System extends \phpws2\Http\Controller
         return $response;
     }
 
-    public function postSpecificDevice(\Canopy\Request $request, $device_type,
-            $device_id)
+    public function postSpecificDevice(\Canopy\Request $request, $device)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-
-        switch ($device_type) {
+        $specific_device = SDFactory::loadSpecificByDevice($device);
+        switch ($device->getDeviceType()) {
             case SERVER:
             case PC:
                 $pcfactory = new PCFactory;
-                $pcfactory->postNewPC($request, $device_id);
+                $pcfactory->postNewPC($request, $specific_device);
                 break;
             case IPAD:
                 $ipadfactory = new IPADFactory;
-                $ipadfactory->postNewIPAD($request, $device_id);
+                $ipadfactory->postNewIPAD($request, $specific_device);
                 break;
             case PRINTER:
                 $printerfactory = new PrinterFactory;
-                $printerfactory->postNewPrinter($request, $device_id);
+                $printerfactory->postNewPrinter($request, $specific_device);
                 break;
             case CAMERA:
                 $camerafactory = new CameraFactory;
-                $camerafactory->postNewCamera($request, $device_id);
+                $camerafactory->postNewCamera($request, $specific_device);
                 break;
             case DIGITAL_SIGN:
                 $digitalsignfactory = new DigitalSignFactory;
-                $digitalsignfactory->postNewDigitalSign($request, $device_id);
+                $digitalsignfactory->postNewDigitalSign($request,
+                        $specific_device);
                 break;
             case TIME_CLOCK:
                 break;
