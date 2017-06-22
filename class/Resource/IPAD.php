@@ -14,7 +14,6 @@ class IPAD extends \phpws2\Resource
     protected $apple_id;
     protected $protective_case;
     protected $table = 'systems_ipad';
-    protected $phone;
     protected $system_usage;
 
     public function __construct()
@@ -25,9 +24,7 @@ class IPAD extends \phpws2\Resource
         $this->generation->allowNull(true);
         $this->apple_id = new \phpws2\Variable\TextOnly(null, 'apple_id');
         $this->apple_id->allowNull(true);
-        $this->protective_case = new \Variable\Bool(false, 'case');
-        $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
-        $this->phone->allowNull(true);
+        $this->protective_case = new \phpws2\Variable\BooleanVar(false, 'protective_case');
         $this->system_usage = new \phpws2\Variable\TextOnly(null, 'system_usage');
     }
 
@@ -46,7 +43,7 @@ class IPAD extends \phpws2\Resource
         $this->apple_id->set($apple_id);
     }
 
-    public function setCase($case)
+    public function setProtectiveCase($case)
     {
         $this->protective_case->set($case);
     }
