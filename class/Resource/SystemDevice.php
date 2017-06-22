@@ -2,6 +2,8 @@
 
 namespace systemsinventory\Resource;
 
+require_once PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/device_types.php';
+
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
@@ -44,11 +46,12 @@ class SystemDevice extends \phpws2\Resource
     public function __construct()
     {
         parent::__construct();
-        $this->location_id = new \phpws2\Variable\IntegerVar(0, 'location');
+        $this->location_id = new \phpws2\Variable\IntegerVar(null, 'location');
         $this->location_id->allowNull(true);
         $this->room_number = new \phpws2\Variable\TextOnly(null, 'room_number');
         $this->room_number->allowNull(true);
-        $this->department_id = new \phpws2\Variable\IntegerVar(0, 'department');
+        $this->department_id = new \phpws2\Variable\IntegerVar(null,
+                'department');
         $this->department_id->allowNull(true);
         $this->physical_id = new \phpws2\Variable\TextOnly(null, 'physical_id');
         $this->physical_id->allowNull(true);
@@ -216,7 +219,7 @@ class SystemDevice extends \phpws2\Resource
     {
         $this->notes->set($notes);
     }
-    
+
     public function setFirstName($name)
     {
         $this->first_name->set($name);
@@ -226,10 +229,35 @@ class SystemDevice extends \phpws2\Resource
     {
         $this->last_name->set($name);
     }
-    
+
     public function setStatus($status)
     {
         $this->status->set($status);
+    }
+
+    public function isPC()
+    {
+        return $this->device_type_id->get() === PC;
+    }
+
+    public function isPrinter()
+    {
+        return $this->device_type_id->get() === PRINTER;
+    }
+
+    public function isClock()
+    {
+        return $this->device_type_id->get() === TIME_CLOCK;
+    }
+
+    public function isIpad()
+    {
+        return $this->device_type_id->get() === IPAD;
+    }
+
+    public function isSign()
+    {
+        return $this->device_type_id->get() === DIGITAL_SIGN;
     }
 
 }
