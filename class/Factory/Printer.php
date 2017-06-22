@@ -7,22 +7,22 @@ use systemsinventory\Resource\Printer as Resource;
 class Printer extends SystemDevice
 {
 
-  public function postNewPrinter(\Canopy\Request $request, $device_id){
-    $printer = new Resource;
-    $vars = $request->getRequestVars();
-    
-    if(!empty($vars['specific_device_id']))
-        $printer->setId ($vars['specific_device_id']);
-    $printer->setDeviceID($device_id);
-    $printer->setTonerCartridge(filter_input(INPUT_POST, 'toner_cartridge', FILTER_SANITIZE_STRING));
-    if(isset($vars['color']))
-      $printer->setColor(true);
-    if(isset($vars['network']))
-      $printer->setNetwork(true);
-    if(isset($vars['duplex']))
-      $printer->setDuplex(true);
+    public function postNewPrinter(\Canopy\Request $request, $printer)
+    {
+        $printer->setTonerCartridge($request->pullPostString('toner_cartridge'));
+        $printer->setColor($request->pullPostBoolean('color'));
+        $printer->setNetwork($request->pullPostBoolean('network'));
+        $printer->setDuplex($request->pullPostBoolean('duplex'));
 
-    self::saveResource($printer);
+        self::saveResource($printer);
+    }
 
-  }
+    public function assignDevice(Resource $device, $request)
+    {
+        $device->setFirstName($request->pullPatchString('first_name'));
+        $device->setLastName($request->pullPatchString('last_name'));
+        $device->setUsername($request->pullPatchString('username'));
+        $device->setPhone($request->pullPatchString('phone'));
+    }
+
 }

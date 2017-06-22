@@ -7,20 +7,23 @@ use systemsinventory\Resource\IPAD as Resource;
 class IPAD extends SystemDevice
 {
 
-  public function postNewIPAD(\Canopy\Request $request, $device_id){
-    $ipad = new Resource;
-    $vars = $request->getRequestVars();
-    
-    if(isset($vars['specific_device_id']))
-        $ipad->setId ($vars['specific_device_id']);
-    $ipad->setDeviceID($device_id);
-    $ipad->setGeneration(filter_input(INPUT_POST, 'generation', FILTER_SANITIZE_STRING));
-    $ipad->setAppleID(filter_input(INPUT_POST, 'apple_id', FILTER_SANITIZE_STRING));
-    if(isset($vars['case'])){
-        $ipad->setCase(TRUE);
+    public function postNewIPAD(\Canopy\Request $request, $ipad)
+    {
+        $ipad->setGeneration($request->pullPostString('generation'));
+        $ipad->setAppleID($request->pullPostString('apple_id'));
+        $ipad->setProtectiveCase($request->pullPostBoolean('protective_case'));
+
+        self::saveResource($ipad);
     }
 
-    self::saveResource($ipad);
+    public static function assignDevice(Resource $device, $request)
+    {
+        $device->setFirstName($request->pullPatchString('first_name'));
+        $device->setLastName($request->pullPatchString('last_name'));
+        $device->setUsername($request->pullPatchString('username'));
+        $device->setPhone($request->pullPatchString('phone'));
+        $device->setSysPeriod($request->pullPatchString('system_usage'));
+        $device->setAppleID($request->pullPatchString('apple_id'));
+    }
 
-  }
 }
