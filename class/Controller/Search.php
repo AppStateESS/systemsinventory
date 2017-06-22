@@ -55,6 +55,7 @@ class Search extends \phpws2\Http\Controller
     private function download($request)
     {
         $system_type = $request->pullGetArray('systemType', true);
+        $status_type = $request->pullGetInteger('statusType', true);
         $file_name = \Canopy\TextString::randomString(12) . '.csv';
         $file_location = "/tmp/$file_name";
 
@@ -63,6 +64,7 @@ class Search extends \phpws2\Http\Controller
         } else {
             $factory = new Factory;
             $factory->offset = -1;
+            $factory->status_type = $status_type;
             $result = $factory->getDevices($request);
             if (empty($result)) {
                 return 'No results found';
