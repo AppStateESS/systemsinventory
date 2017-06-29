@@ -11,6 +11,7 @@ use systemsinventory\Factory\SystemDevice as SDFactory;
 use systemsinventory\Factory\React;
 use systemsinventory\Resource;
 
+require_once(PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/device_types.php');
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
@@ -101,6 +102,10 @@ class System extends \phpws2\Http\Controller
             case 'unassign':
                 $factory->unassign($request);
                 break;
+            
+            case 'surplus':
+                $factory->surplus($request);
+                break;
 
             default:
                 throw new \Exception('Unknown patch command');
@@ -123,6 +128,7 @@ class System extends \phpws2\Http\Controller
         if (!\Current_User::allow('systemsinventory', 'edit')) {
             return $this->permissionErrorView();
         }
+        
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $device = $sdfactory->postDevice($request);
@@ -132,9 +138,9 @@ class System extends \phpws2\Http\Controller
             $this->postSpecificDevice($request, $device);
         }
 
-        if (!empty($vars['profile_name'])) {
+        if (!empty($request->postVarIsset('profile_name'))) {
             // returning id and profile name to update the form
-            $view = new \phpws2\View\JsonView(array('success' => TRUE, 'id' => $device_id, 'name' => $vars['profile_name']));
+            $view = new \phpws2\View\JsonView(array('success' => TRUE, 'id' => $device->getId(), 'name' => $device->getProfileName()));
         } else {
             $view = new \phpws2\View\JsonView(array('success' => TRUE));
         }
@@ -144,7 +150,6 @@ class System extends \phpws2\Http\Controller
 
     public function postSpecificDevice(\Canopy\Request $request, $device)
     {
-        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $specific_device = SDFactory::loadSpecificByDevice($device);
         switch ($device->getDeviceType()) {
             case SERVER:
