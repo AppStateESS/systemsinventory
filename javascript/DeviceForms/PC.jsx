@@ -3,6 +3,7 @@ import React from 'react'
 import Base from './Base.jsx'
 import InputField from '../FormMixin/InputField.jsx'
 import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
+import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import empty from '../Mixin/Empty.js'
 
 export default class PC extends Base {
@@ -12,7 +13,7 @@ export default class PC extends Base {
   }
 
   render() {
-    const {device, update} = this.props
+    const {device, update, options} = this.props
     return (
       <div>
         <div className="row">
@@ -25,10 +26,10 @@ export default class PC extends Base {
         </div>
         <div className="row">
           <div className="col-sm-6">
-            {this.inputField('model')}
+            {this.inputField('manufacturer')}
           </div>
           <div className="col-sm-6">
-            {this.inputField('manufacturer')}
+            {this.inputField('model')}
           </div>
         </div>
         <div className="row">
@@ -36,10 +37,15 @@ export default class PC extends Base {
             {this.inputField('processor', null, false, 'Intel core 5')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('video_card', null, false, 'Nvidia, ATI')}
+            {this.inputField('video_card', null, false, 'Nvidia, ATI, Onboard')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('os', 'Operating system')}
+            {this.inputField('os', 'Operating system', false, 'Windows 10, Mac OS, Linux')}
+            <SelectFilter
+              value={device.os}
+              options={options.os}
+              update={update.bind(null, 'os')}
+              name="os"/>
           </div>
         </div>
         <div className="row">
