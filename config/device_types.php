@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * This information is shared in parallel with the systems_device_type table. They
+ * CANNOT differ in regards to id
+ */
 define('PC', 1);
 define('SERVER', 2);
 define('IPAD', 3);
