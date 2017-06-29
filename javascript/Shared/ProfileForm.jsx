@@ -2,8 +2,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import InputField from "../FormMixin/InputField.jsx"
-import DeviceSummary from '../Mixin/DeviceSummary.jsx'
 import acceptableFields from "../Config/acceptableFields.js"
+import ViewDevice from '../View/ViewDevice.jsx'
 
 /* global $ */
 
@@ -58,7 +58,7 @@ export default class ProfileForm extends Component {
             required={true}/>
           <button className="btn btn-primary" disabled={disabled} onClick={this.save}>Save profile</button>
           <hr/>
-          <DeviceSummary device={this.props.device}/>
+          <ViewDevice device={this.props.device}/>
         </div>
       </div>
     )
