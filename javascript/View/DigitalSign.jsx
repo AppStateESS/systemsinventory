@@ -8,11 +8,12 @@ export default class DigitalSign extends Component {
   }
 
   render() {
+    const {device} = this.props
     return (
       <tbody>
         <tr>
-          <th></th>
-          <td>DigitalSign</td>
+          <th>Model</th>
+          <td>{device.model}</td>
         </tr>
       </tbody>
     )

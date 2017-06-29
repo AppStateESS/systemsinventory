@@ -18,6 +18,30 @@ export default class PC extends Component {
     return (
       <tbody>
         <tr>
+          <th>Secondary MAC</th>
+          <td>{device.mac2}</td>
+        </tr>
+        <tr>
+          <th>Manufacturer</th>
+          <td>{device.manufacturer}</td>
+        </tr>
+        <tr>
+          <th>Model</th>
+          <td>{device.model}</td>
+        </tr>
+        <tr>
+          <th>Hard drive size</th>
+          <td>{device.hd_size}</td>
+        </tr>
+        <tr>
+          <th>Processor</th>
+          <td>{device.processor}</td>
+        </tr>
+        <tr>
+          <th>RAM</th>
+          <td>{device.ram}</td>
+        </tr>
+        <tr>
           <th>Primary monitor</th>
           <td>{device.primary_monitor}</td>
         </tr>
@@ -28,10 +52,6 @@ export default class PC extends Component {
         <tr>
           <th>Video card</th>
           <td>{device.video_card}</td>
-        </tr>
-        <tr>
-          <th>Server type</th>
-          <td>{device.server_type}</td>
         </tr>
         <tr>
           <th>Operating system</th>
@@ -72,6 +92,10 @@ export default class PC extends Component {
         <tr>
           <th>Is server</th>
           <td>{this.YesNo(device.is_server)}</td>
+        </tr>
+        <tr>
+          <th>Server type</th>
+          <td>{device.server_type}</td>
         </tr>
       </tbody>
     )

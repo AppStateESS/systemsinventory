@@ -38,6 +38,8 @@ export default class ViewDevice extends Component {
 
   render() {
     const {device} = this.props
+
+
     let assigned
     if (device.status === 1 || device.status === 2) {
       assigned = <Assigned device={device}/>
@@ -47,39 +49,12 @@ export default class ViewDevice extends Component {
         <h2>Status: {Device.getStatus(device)}</h2>
         <div className="row">
           <div className="col-sm-6">
+            <h3>Device details</h3>
             <table className="table table-striped">
               <tbody>
                 <tr>
                   <th>Device type</th>
-                  <td>{device.device_type_id}</td>
-                </tr>
-                <tr>
-                  <th>Model</th>
-                  <td>{device.model}</td>
-                </tr>
-                <tr>
-                  <th>Hard drive size</th>
-                  <td>{device.hd_size}</td>
-                </tr>
-                <tr>
-                  <th>Processor</th>
-                  <td>{device.processor}</td>
-                </tr>
-                <tr>
-                  <th>RAM</th>
-                  <td>{device.ram}</td>
-                </tr>
-                <tr>
-                  <th>MAC</th>
-                  <td>{device.mac}</td>
-                </tr>
-                <tr>
-                  <th>Secondary MAC</th>
-                  <td>{device.mac2}</td>
-                </tr>
-                <tr>
-                  <th>Manufacturer</th>
-                  <td>{device.manufacturer}</td>
+                  <td>{device.device_type}</td>
                 </tr>
                 <tr>
                   <th>Purchase date</th>
@@ -88,6 +63,10 @@ export default class ViewDevice extends Component {
                 <tr>
                   <th>Notes</th>
                   <td>{device.notes}</td>
+                </tr>
+                <tr>
+                  <th>MAC</th>
+                  <td>{device.mac}</td>
                 </tr>
               </tbody>
               {this.system()}
