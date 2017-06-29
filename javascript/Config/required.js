@@ -20,7 +20,6 @@ const required = {
       'model',
       'manufacturer',
       'processor',
-      'video_card',
       'os',
       'ram',
       'hd_size',
@@ -63,7 +62,7 @@ const required = {
       'manufacturer', 'model', 'toner_cartridge'
     ],
     assigned: [
-      'department_id', 'location_id', 'room_number', 'primary_ip'
+      'department_id', 'location_id', 'room_number'
     ],
     user: ['username', 'first_name', 'last_name', 'phone']
   },
