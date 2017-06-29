@@ -2,7 +2,6 @@
 import React from 'react'
 import Base from './Base.jsx'
 import PropTypes from 'prop-types'
-import InputField from '../FormMixin/InputField.jsx'
 import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
 
 export default class Ipad extends Base {
@@ -20,10 +19,10 @@ export default class Ipad extends Base {
             {this.inputField('mac', 'MAC address', false, 'XX:XX:XX:XX:XX:XX')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('hd_size', 'Memory', false,'32MB, 64MB')}
+            {this.inputField('hd_size', 'Memory', false,'32GB, 64GB')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('generation', null, false, 'Pro, mini, air, 4th')}
+            {this.inputField('generation', 'Model/Generation', false, 'Ipad Mini Pro, Samsung Galaxy, etc.')}
           </div>
         </div>
         <BigCheckbox
