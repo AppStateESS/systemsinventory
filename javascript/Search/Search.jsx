@@ -14,6 +14,7 @@ import UnassignDevice from './UnassignDevice.jsx'
 import ViewDevice from '../View/ViewDevice.jsx'
 import Device from '../Mixin/Device.js'
 import FormBase from '../Shared/FormBase.jsx'
+import SurplusDevice from './SurplusDevice.jsx'
 
 /* global $, jsonFilters, restricted */
 
@@ -54,6 +55,7 @@ export default class Search extends FormBase {
     this.reset = this.reset.bind(this)
     this.delete = this.delete.bind(this)
     this.assign = this.assign.bind(this)
+    this.surplus = this.surplus.bind(this)
     this.download = this.download.bind(this)
     this.unassign = this.unassign.bind(this)
     this.maxOffset = this.maxOffset.bind(this)
@@ -111,19 +113,25 @@ export default class Search extends FormBase {
   }
 
   save() {
-    $.ajax({
-      url: './systemsinventory',
-      data: {},
-      dataType: 'json',
-      type: 'delete|patch|post|get',
-      success: function (data) {}.bind(this),
-      error: function (data) {}.bind(this)
-    })
-
-    $.post('./systemsinventory/system/', this.state.device, null, 'json').done(function (data) {
+    $.post('./systemsinventory/system/', this.state.device, null, 'json').done(function () {
       this.closeOverlay()
-    }.bind(this)).fail(function (data) {
-      console.log(data)
+      this.load()
+    }.bind(this)).fail(function () {})
+  }
+
+  surplus() {
+    $.ajax({
+      url: './systemsinventory/system/surplus',
+      data: {
+        device_id: this.state.device.id
+      },
+      dataType: 'json',
+      type: 'patch',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
     })
   }
 
@@ -367,9 +375,17 @@ export default class Search extends FormBase {
             close={this.closeOverlay}/>
           break
 
+        case 'surplus':
+          overlayTitle = `Surplus device ${this.state.device.physical_id}`
+          formType = <SurplusDevice
+            device={this.state.device}
+            surplus={this.surplus}
+            close={this.closeOverlay}/>
+          break
+
         case 'view':
           overlayTitle = `View device ${this.state.device.physical_id}`
-          formType = <ViewDevice device={this.state.device} />
+          formType = <ViewDevice device={this.state.device}/>
           break
       }
 
