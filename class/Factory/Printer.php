@@ -17,7 +17,7 @@ class Printer extends SystemDevice
         self::saveResource($printer);
     }
 
-    public function assignDevice(Resource $device, $request)
+    public function assignDevice(Resource $sdevice, $device, $request)
     {
         $device->setFirstName($request->pullPatchString('first_name'));
         $device->setLastName($request->pullPatchString('last_name'));
