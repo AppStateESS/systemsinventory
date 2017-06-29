@@ -24,7 +24,10 @@ export default class DeviceForm extends Component {
     this.state = {
       profile: 0,
       overlay: false,
-      message: {type: 'info', content: ''}
+      message: {
+        type: 'info',
+        content: ''
+      }
     }
     this.errors = []
     this.save = this.save.bind(this)
@@ -58,6 +61,9 @@ export default class DeviceForm extends Component {
   }
 
   addToProfiles(id, name) {
+    if (!profiles[this.props.device.device_type_id]) {
+      profiles[this.props.device.device_type_id]=[]
+    }
     profiles[this.props.device.device_type_id].push({id: id, name: name})
     this.setState({profile: id})
   }
@@ -77,7 +83,7 @@ export default class DeviceForm extends Component {
 
   deleteProfile() {
     const currentProfiles = profiles[this.props.device.device_type_id]
-    currentProfiles.forEach(function(value, key){
+    currentProfiles.forEach(function (value, key) {
       if (value.id === this.state.profile) {
         currentProfiles.splice(key, 1)
         this.forceUpdate()
@@ -102,19 +108,33 @@ export default class DeviceForm extends Component {
   }
 
   profileListing() {
+    if (this.props.device.id > 0) {
+      return null
+    }
     const {device_type_id} = this.props.device
+    let profileListing
+
     if (profiles[device_type_id] === undefined) {
-      return (
-        <div className="marginBottom">
+      profileListing = (
+        <div className="col-sm-3">
           No profiles available
         </div>
       )
+    } else {
+      let options
+      options = profiles[device_type_id].map(function (value) {
+        return {value: value.id, label: value.name}
+      })
+      profileListing = (
+        <div className="col-sm-6">
+          <SelectFilter
+            value={this.state.profile}
+            options={options}
+            update={this.fillProfile}
+            name="profile"/>
+        </div>
+      )
     }
-
-    let options
-    options = profiles[device_type_id].map(function (value) {
-      return {value: value.id, label: value.name}
-    })
 
     let deleteButton
     if (this.state.profile > 0) {
@@ -126,17 +146,11 @@ export default class DeviceForm extends Component {
     }
 
     return (
-      <div className="row">
+      <div className="row marginBottom">
         <div className="col-sm-2">
           <label>Profile</label>
         </div>
-        <div className="col-sm-6">
-          <SelectFilter
-            value={this.state.profile}
-            options={options}
-            update={this.fillProfile}
-            name="profile"/>
-        </div>
+        {profileListing}
         <div className="col-sm-4">
           <div className="btn-group">
             <button
@@ -167,8 +181,9 @@ export default class DeviceForm extends Component {
     if (Device.checkForErrors(this.props.device, this.errors)) {
       this.props.save(this.props.device)
     } else {
-      this.setMessage('Please complete all required fields', 'danger')
-      window.scrollTo(0,0)
+      const message = 'Please complete all required fields'
+      this.setMessage(message, 'danger')
+      window.scrollTo(0, 0)
       this.forceUpdate()
     }
   }
@@ -251,6 +266,6 @@ export default class DeviceForm extends Component {
 
 DeviceForm.propTypes = {
   save: PropTypes.func.isRequired,
-  update : PropTypes.func.isRequired,
+  update: PropTypes.func.isRequired,
   device: PropTypes.object.isRequired
 }
