@@ -27,7 +27,7 @@ export default class Shared extends Base {
         label: 'PC'
       }, {
         value: 3,
-        label: 'iPad'
+        label: 'Tablet'
       }, {
         value: 4,
         label: 'Printer'
@@ -61,14 +61,12 @@ export default class Shared extends Base {
     let selectDevice
     if (this.props.device.id === 0) {
       selectDevice = (
-        <div className="row marginBottom">
-          <div className="col-sm-12">
+          <div className="device-choice">
             <label>Device type:</label>&nbsp;
             <div className="btn-group" role="group">
               {deviceButtons}
             </div>
           </div>
-        </div>
       )
     }
 
