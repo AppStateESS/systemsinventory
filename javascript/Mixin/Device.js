@@ -18,6 +18,30 @@ export default class Device {
     }
   }
 
+  static isPc(device) {
+    return device.device_type_id === 1 || device.device_type_id === 2
+  }
+
+  static isIpad(device) {
+    return device.device_type_id === 3
+  }
+
+  static isPrinter(device) {
+    return device.device_type_id === 4
+  }
+
+  static isCamera(device) {
+    return device.device_type_id === 5
+  }
+
+  static isSign(device) {
+    return device.device_type_id === 6
+  }
+
+  static isClock(device) {
+    return device.device_type_id === 7
+  }
+
   static getStatus(device) {
     switch (device.status) {
       case 0:
@@ -36,7 +60,7 @@ export default class Device {
     const profile = required[dtype].profile
     let dataExists = false
     profile.forEach(function (value) {
-      if (device[value] !== undefined && device[value].length > 0) {
+      if (device[value] !== undefined && device[value] !== null && device[value].length > 0) {
         dataExists = true
       }
     }.bind(this))
@@ -70,10 +94,10 @@ export default class Device {
     let foundIndex = -1
     errorChecks.forEach(function (item) {
       foundIndex = errors.indexOf(item)
+
       if (device[item] === undefined || device[item] === null || device[item].length === 0) {
         errorFound = true
-        //console.log(`found error on ${item}`)
-        if (foundIndex > -1) {
+        if (foundIndex === -1) {
           errors.push(item)
         }
       } else {
