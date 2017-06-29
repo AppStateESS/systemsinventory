@@ -1,7 +1,7 @@
 'use strict'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import DeviceSummary from '../Mixin/DeviceSummary.jsx'
+import ViewDevice from '../View/ViewDevice.jsx'
 
 export default class DeleteDevice extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class DeleteDevice extends Component {
         <button className="marginRight btn-lg btn btn-success" onClick={this.props.delete}>Yes, I am sure</button>
         <button className="btn btn-danger btn-lg" onClick={this.props.close}>No, get me out of here</button>
         <hr />
-        <DeviceSummary device={this.props.device}/>
+        <ViewDevice device={this.props.device}/>
       </div>
     )
   }
