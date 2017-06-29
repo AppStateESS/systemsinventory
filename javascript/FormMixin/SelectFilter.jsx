@@ -27,8 +27,7 @@ export default class SelectFilter extends Component {
         <span>&nbsp;<i className="fa fa-asterisk text-danger"></i>
         </span>
       )
-
-      if (this.props.value === undefined) {
+      if (this.state.error) {
         error = <div className="label label-danger">{`Select an option for ${this.props.label}`}</div>
       }
     }
