@@ -74,11 +74,12 @@ export default class AssignForm extends Base {
         }
       ]
       assignToggle = (
-        <div className="marginBottom"><ButtonGroup
-          buttons={buttons}
-          match={device.status}
-          name="status"
-          handle={update.bind(null, 'status')}/>
+        <div className="marginBottom">
+          <ButtonGroup
+            buttons={buttons}
+            match={device.status}
+            name="status"
+            handle={update.bind(null, 'status')}/>
         </div>
       )
     }
