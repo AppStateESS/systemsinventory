@@ -181,6 +181,10 @@ class Search extends \phpws2\ResourceFactory
                 case 'department':
                     $dept_table->addOrderBy('display_name', $direction);
                     break;
+
+                case 'purchaseDate':
+                    $system_table->addOrderBy('purchase_date', $direction);
+                    break;
             }
         }
     }
