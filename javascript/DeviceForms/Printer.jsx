@@ -16,10 +16,10 @@ export default class Printer extends Base {
       <div>
         <div className="row">
           <div className="col-sm-4">
-            {this.inputField('model')}
+            {this.inputField('manufacturer')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('manufacturer')}
+            {this.inputField('model')}
           </div>
           <div className="col-sm-4">
             {this.inputField('toner_cartridge')}
