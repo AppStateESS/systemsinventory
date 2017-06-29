@@ -11,7 +11,16 @@ export default class Clock extends Base {
 
   render() {
     return (
-      <div></div>
+      <div>
+        <div className="row">
+          <div className="col-sm-6">
+            {this.inputField('primary_ip', 'Primary IP')}
+          </div>
+          <div className="col-sm-6">
+            {this.select('vlan', 'VLAN')}
+          </div>
+        </div>
+      </div>
     )
   }
 }
