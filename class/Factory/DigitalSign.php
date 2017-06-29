@@ -18,7 +18,7 @@ class DigitalSign extends SystemDevice
         self::saveResource($digital_sign);
     }
 
-    public static function assignDevice(Resource $device, $request)
+    public static function assignDevice(Resource $sdevice, $device, $request)
     {
         $device->setVlan($request->pullPatchString('vlan', true));
     }
