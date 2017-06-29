@@ -30,6 +30,9 @@ export default class Listing extends Component {
     sort.physicalSort = <Sort
       direction={this.currentDirection('physical')}
       handleClick={this.props.toggleSort.bind(null, 'physical')}/>
+    sort.purchaseDateSort = <Sort
+      direction={this.currentDirection('purchaseDate')}
+      handleClick={this.props.toggleSort.bind(null, 'purchaseDate')}/>
     sort.modelSort = <Sort
       direction={this.currentDirection('model')}
       handleClick={this.props.toggleSort.bind(null, 'model')}/>
@@ -76,73 +79,69 @@ export default class Listing extends Component {
 
   columnHeader() {
     const {filters} = this.props
-    const {physicalSort, modelSort, locationSort, usernameSort, departmentSort, statusSort} = this.sort()
+    const {
+      physicalSort,
+      modelSort,
+      locationSort,
+      usernameSort,
+      departmentSort,
+      statusSort,
+      purchaseDateSort
+    } = this.sort()
     const {physicalSearch, modelSearch, locationSearch, usernameSearch, departmentSearch} = this.search()
-    const shortWidth = {width: '2%'}
+    const shortWidth = {
+      width: '2%'
+    }
+
+    let headerColumns = []
+    headerColumns.push(<th style={shortWidth} key="h1"></th>)
+    headerColumns.push(<th style={shortWidth} key="h2">Type</th>)
+    headerColumns.push(<th className={this.highlight(filters.physicalId.length > 0)} key="h3">Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
+    </th>)
+    headerColumns.push(<th className={this.highlight(filters.purchaseDate.length > 0)} key="h4">Purchase Date&nbsp;&nbsp;<span>{purchaseDateSort}</span>
+    </th>)
 
     switch (filters.statusType) {
       case 0:
         this.columnNumber = 4
-        return (
-          <tr className="search-header">
-            <th style={shortWidth}></th>
-            <th style={shortWidth}>Type</th>
-            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-            </th>
-            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-            </th>
-            <th className={this.highlight(filters.status > 0)}>Status&nbsp;&nbsp;<span>{statusSort}</span>
-            </th>
-          </tr>
-        )
+        headerColumns.push(<th className={this.highlight(filters.model.length > 0)} key="h5">Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+        </th>)
+        headerColumns.push(<th className={this.highlight(filters.status > 0)} key="h6">Status&nbsp;&nbsp;<span>{statusSort}</span>
+        </th>)
+        break
+
 
       case 1:
         this.columnNumber = 3
-        return (
-          <tr className="search-header">
-            <th style={shortWidth}></th>
-            <th style={shortWidth}>Type</th>
-            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-            </th>
-            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-            </th>
-            <th style={shortWidth}></th>
-          </tr>
-        )
+        headerColumns.push(<th className={this.highlight(filters.model.length > 0)} key="h5">Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+        </th>)
+        break
+
 
       case 2:
         this.columnNumber = 6
-        return (
-          <tr className="search-header">
-            <th style={shortWidth}></th>
-            <th style={shortWidth}>Type</th>
-            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-            </th>
-            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-            </th>
-            <th className={this.highlight(filters.username.length > 0)}>Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
-            </th>
-            <th className={this.highlight(filters.location > 0)}>Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
-            </th>
-            <th className={this.highlight(filters.department > 0)}>Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
-            </th>
-          </tr>
-        )
+        headerColumns.push(<th className={this.highlight(filters.model.length > 0)} key="h5">Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+        </th>)
+        headerColumns.push(<th className={this.highlight(filters.username.length > 0)} key="h6">Username&nbsp;&nbsp;<span>{usernameSort}&nbsp;{usernameSearch}</span>
+        </th>)
+        headerColumns.push(<th className={this.highlight(filters.location > 0)} key="h7">Location&nbsp;&nbsp;<span>{locationSort}&nbsp;{locationSearch}</span>
+        </th>)
+        headerColumns.push(<th className={this.highlight(filters.department > 0)} key="h8">Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
+        </th>)
+        break
+
 
       case 3:
         this.columnNumber = 3
-        return (
-          <tr className="search-header">
-            <th style={shortWidth}></th>
-            <th style={shortWidth}>Type</th>
-            <th className={this.highlight(filters.physicalId.length > 0)}>Physical ID&nbsp;&nbsp;<span>{physicalSort}&nbsp;{physicalSearch}</span>
-            </th>
-            <th className={this.highlight(filters.model.length > 0)}>Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
-            </th>
-          </tr>
-        )
-
+        headerColumns.push(<th className={this.highlight(filters.model.length > 0)} key="h5">Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
+        </th>)
+        break
     }
+    return (
+      <tr className="search-header">
+        {headerColumns}
+      </tr>
+    )
   }
 
   getTable() {
