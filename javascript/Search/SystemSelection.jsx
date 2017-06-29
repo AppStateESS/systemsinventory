@@ -11,10 +11,8 @@ export default class SystemSelection extends Component {
   }
 
   render() {
-    let label
     let cn
     const allCn  = this.props.active[0] === 'all' ? 'btn btn-primary' : 'btn btn-default'
-    console.log(this.props.jsonFilters);
     let buttons = this.props.jsonFilters.system_types.map(function (value, key) {
       if ($.inArray(value.value, this.props.active) > -1) {
         cn = 'btn btn-primary'
@@ -22,7 +20,6 @@ export default class SystemSelection extends Component {
         cn = 'btn btn-default'
       }
 
-      //label = value.label.charAt(0).toUpperCase() + value.label.slice(1)
       return <button key={key}
         className={cn}
         onClick={this.props.update.bind(this, value.value)}>{value.name}</button>
