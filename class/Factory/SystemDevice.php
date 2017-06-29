@@ -34,6 +34,15 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device->setPhone(null);
         self::saveResource($device);
     }
+    
+    public function surplus(\Canopy\Request $request)
+    {
+        $device = new Resource;
+        $device->setId($request->pullPatchInteger('device_id'));
+        self::loadByID($device);
+        $device->setStatus(3);
+        self::saveResource($device);
+    }
 
     public function postDevice(\Canopy\Request $request)
     {
@@ -51,19 +60,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             }
         }
 
-        $device->setPurchaseDate($request->pullPostString('purchase_date', true));
-        $device->setPhysicalID($request->pullPostString('physical_id'));
-
-        if (!$device->isPrinter()) {
-            $device->setMac($request->pullPostString('mac'));
-        }
-
         $notes = $request->pullPostString('notes', true);
         $device->setNotes($notes ? $notes : '');
-
-        if ($request->postVarIsset('mac2')) {
-            $device->setMac2($request->pullPostString('mac2'));
-        }
+        $device->setVlan($request->pullPostInteger('vlan'));
 
         if ($request->postVarIsset('model')) {
             $device->setModel($request->pullPostString('model'));
@@ -86,6 +85,16 @@ class SystemDevice extends \phpws2\ResourceFactory
         if (!empty($profile_name)) {
             $device->setProfile(TRUE);
             $device->setProfileName($profile_name);
+        } else {
+            $device->setPurchaseDate($request->pullPostString('purchase_date',
+                            true));
+            $device->setPhysicalID($request->pullPostString('physical_id'));
+            if (!$device->isPrinter()) {
+                $device->setMac($request->pullPostString('mac'));
+                if ($request->postVarIsset('mac2')) {
+                    $device->setMac2($request->pullPostString('mac2'));
+                }
+            }
         }
 
         self::saveResource($device);
@@ -98,7 +107,8 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device = new Resource;
         $device->setId($device_id);
         self::loadByID($device);
-        self::assignByType($device);
+
+        self::assignByType($device, $request);
 
         $location_id = $request->pullPatchInteger('location_id');
         $device->setLocation($location_id ? $location_id : null);
@@ -112,38 +122,46 @@ class SystemDevice extends \phpws2\ResourceFactory
         if ($request->patchVarIsset('room_number')) {
             $device->setRoomNumber($request->pullPatchString('room_number'));
         }
+        $device->setStatus($request->pullPatchInteger('status'));
 
         self::saveResource($device);
         return $device;
     }
 
-    private static function assignByType(Resource $device)
+    private static function assignByType(Resource $device,
+            \Canopy\Request $request)
     {
+        $special_device = self::loadSpecificByDevice($device);
         switch ($device->getDeviceType()) {
             case PC:
             case SERVER:
-                PC::assignDevice($device, $request);
+                $factory = new PC;
                 break;
 
             case IPAD:
-                IPAD::assignDevice($device, $request);
+                $factory = new IPAD;
                 break;
 
             case PRINTER:
+                $factory = new Printer;
                 break;
 
             case CAMERA:
-                Camera::assignDevice($device, $request);
+                $factory = new Camera;
                 break;
 
             case DIGITAL_SIGN:
-                DigitalSign::assignDevice($device, $request);
+                $factory = new DigitalSign;
                 break;
 
             case TIME_CLOCK:
-                self::assignDevice($device, $request);
+                self::assignClock($device, $request);
+                self::saveResource($device);
+                return;
                 break;
         }
+        $factory->assignDevice($special_device, $device, $request);
+        self::saveResource($special_device);
     }
 
     private static function assignClock($device, $request)
@@ -154,19 +172,16 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getSystemDetails($system_id)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-        $device_details = array();
         if (empty($system_id)) {
             throw new \Exception("System ID invalid.");
         }
         // get the common device attributes
         $db = \phpws2\Database::getDB();
-        $query = "SELECT * FROM systems_device WHERE id='$system_id'";
-        $pdo = $db->query($query);
-        $result = $pdo->fetch(\PDO::FETCH_ASSOC);
-        $device_type_id = $result['device_type_id'];
-        $device_details = $result;
+        $tbl = $db->addTable('systems_device');
+        $tbl->addFieldConditional('id', $system_id);
+        $device = $db->selectOneRow();
         // get the device specific attributes
-        $table = SystemDevice::getSystemType($device_type_id);
+        $table = SystemDevice::getSystemTypeTable($device['device_type_id']);
         if (!empty($table)) {
             $device_table = $db->addTable($table);
             $device_table->addFieldConditional('device_id', $system_id);
@@ -175,41 +190,59 @@ class SystemDevice extends \phpws2\ResourceFactory
             if (!empty($device_result)) {
                 $specific_device_id = $device_result['id'];
                 unset($device_result['id']);
-                $device_result['specific-device-id'] = $specific_device_id;
                 //$device_attr = SystemDevice::getDeviceAttributes($device_type_id);
-                $device_details = array_merge($device_details, $device_result);
+                $device = array_merge($device, $device_result);
             }
         }
-        $device_details['device-type-id'] = $device_type_id;
-        $purchase_date = $device_details['purchase_date'];
-        $device_details["purchase_date"] = date('Y-m-d', $purchase_date);
+        $purchase_date = $device['purchase_date'];
+        $device['purchase_date'] = date('Y-m-d', $purchase_date);
+        $device['device_type'] = self::getSystemTypeLabelById($device['device_type_id']);
+        // only pull if assigned
+        if ($device['status'] == 1 || $device['status'] == 2) {
+            if (isset($device['system_usage'])) {
+                $device['system_usage'] = (int) $device['system_usage'];
+            }
+            $device['location'] = self::getLocationByID($device['location_id']);
+            $device['department'] = self::getDepartmentByID($device['department_id']);
+            switch ($device['vlan']) {
+                case 1:
+                    $device['vlan_full'] = 'Admin';
+                    break;
+                case 2:
+                    $device['vlan_full'] = 'Closed';
+                    break;
+                case 3:
+                    $device['vlan_full'] = 'Public';
+                    break;
+                case 4:
+                    $device['vlan_full'] = 'VOIP';
+                    break;
+            }
+        }
 
-        return $device_details;
+        return $device;
     }
 
-    public static function getProfile($profile_id)
+    public static function getProfile($device_id)
     {
-        if (empty($profile_id)) {
-            throw new Exception("System profile id empty.");
+        if (empty($device_id)) {
+            throw new Exception('System profile id empty.');
         }
         $db = \phpws2\Database::getDB();
-        $system_table = $db->addTable("systems_device");
-        $system_table->addFieldConditional('id', $profile_id);
-        $result = $db->select();
-        $profile_result = $result['0'];
-        $device_type_id = $profile_result['device_type_id'];
-        $profile_result['device-type-id'] = $device_type_id;
-        $device_id = $profile_result['id'];
-        $table = SystemDevice::getSystemType($device_type_id);
+        $system_table = $db->addTable('systems_device');
+        $system_table->addFieldConditional('id', $device_id);
+        $main_device = $db->selectOneRow();
+        $table = SystemDevice::getSystemTypeTable($main_device['device_type_id']);
         if (!empty($table)) {
-            $device_table = $db->addTable($table);
+            $db2 = \phpws2\Database::getDB();
+            $device_table = $db2->addTable($table);
             $device_table->addFieldConditional('device_id', $device_id);
-            $result = $db->select();
-            $result = $result['0'];
-            $specific_device_id = $result['id'];
-            unset($result['id']);
-            $profile_result = array_merge($profile_result, $result);
-            $profile_result['specific-device-id'] = $specific_device_id;
+            $additional_device = $db2->selectOneRow();
+            if (empty($additional_device)) {
+                throw new \Exception("Profile $device_id not found");
+            }
+            unset($additional_device['id']);
+            $profile_result = array_merge($main_device, $additional_device);
         }
         return $profile_result;
     }
@@ -252,7 +285,7 @@ class SystemDevice extends \phpws2\ResourceFactory
                 return;
         }
         $db = \phpws2\Database::getDB();
-        $tbl = $db->addTable(self::getSystemType($device->getDeviceType()));
+        $tbl = $db->addTable(self::getSystemTypeTable($device->getDeviceType()));
         $tbl->addFieldConditional('device_id', $device->getId());
         $row = $db->selectOneRow();
         if ($row) {
@@ -419,7 +452,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         return $attr;
     }
 
-    public static function getSystemType($type_id)
+    public static function getSystemTypeTable($type_id)
     {
         switch ($type_id) {
             case '1':
@@ -447,53 +480,63 @@ class SystemDevice extends \phpws2\ResourceFactory
         return $table;
     }
 
-    public static function getLocationByID($location_id)
-    {
-        $db = \phpws2\Database::getDB();
-        $tbl = $db->addTable('systems_location');
-        $tbl->addField('description');
-        $tbl->addFieldConditional('id', $location_id, '=');
-        $result = $db->select();
-        if (empty($result))
-            return 0; //should be exception
-        return $result[0]['description'];
-    }
-
-    public static function getDepartmentByID($department_id)
-    {
-        $db = \phpws2\Database::getDB();
-        $tbl = $db->addTable('systems_department');
-        $tbl->addField('description');
-        $tbl->addFieldConditional('id', $department_id, '=');
-        $result = $db->select();
-        if (empty($result))
-            return 'Not Found'; //should be exception
-
-        return $result[0]['description'];
-    }
-
     public static function getSystemLocations()
     {
+        $locations = array();
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('id');
         $tbl->addField('display_name');
         $result = $db->select();
-        if (empty($result))
-            return 0; //should be exception
         return $result;
+    }
+
+    public static function getLocationByID($location_id)
+    {
+        static $locations = array();
+
+        if (empty($locations)) {
+            $result = self::getSystemLocations();
+            foreach ($result as $v) {
+                $locations[$v['id']] = $v['display_name'];
+            }
+        }
+        if (!isset($locations[$location_id])) {
+            throw new \Exception('Unknown location');
+        }
+        return $locations[$location_id];
+    }
+
+    public static function getDepartmentByID($department_id)
+    {
+        static $departments;
+
+        if (empty($departments)) {
+            $departments = self::getSystemDepartments();
+        }
+        if (!isset($departments[$department_id])) {
+            throw new \Exception('Department not found');
+        }
+        return $departments[$department_id]['display_name'];
     }
 
     public static function getSystemTypes()
     {
-        $db = \phpws2\Database::getDB();
-        $tbl = $db->addTable('systems_device_type');
-        $tbl->addField('id');
-        $tbl->addField('description');
-        $result = $db->select();
-        if (empty($result))
-            return 0; //should be exception
-        return $result;
+        static $system_types = null;
+        if ($system_types === null) {
+            $db = \phpws2\Database::getDB();
+            $tbl = $db->addTable('systems_device_type');
+            $tbl->addField('id');
+            $tbl->addField('description');
+            $result = $db->select();
+            foreach ($result as $value) {
+                $system_types[$value['id']] = $value;
+            }
+        }
+        if (empty($system_types)) {
+            throw \Exception('No system types found');
+        }
+        return $system_types;
     }
 
     public static function getUserPermissions($user_id)
@@ -620,6 +663,12 @@ EOF;
                 return ucfirst($label);
         }
     }
+    
+    public static function getSystemTypeLabelById($id)
+    {
+        $types = self::getSystemTypes();
+        return self::systemLabel($types[$id]['description']);
+    }
 
     public static function getJsonSearchFilters()
     {
@@ -639,6 +688,12 @@ EOF;
         $filters['vlan'][] = array('value' => 2, 'label' => 'Closed');
         $filters['vlan'][] = array('value' => 3, 'label' => 'Public');
         $filters['vlan'][] = array('value' => 4, 'label' => 'VOIP');
+
+        $filters['os'][] = array('value' => 'Windows 7', 'label' => 'Windows 7');
+        $filters['os'][] = array('value' => 'Windows 8', 'label' => 'Windows 8');
+        $filters['os'][] = array('value' => 'Windows 10', 'label' => 'Windows 10');
+        $filters['os'][] = array('value' => 'Mac OS', 'label' => 'Mac OS');
+        $filters['os'][] = array('value' => 'Linux', 'label' => 'Linux');
 
         $filters['system_usage'][] = array('value' => 1, 'label' => 'Staff');
         $filters['system_usage'][] = array('value' => 2, 'label' => 'Student');
@@ -668,16 +723,6 @@ EOF;
 
         foreach ($values as $key => $value) {
             switch ($key) {
-                case 'location_id':
-                    $value = self::getLocationByID($value);
-                    $new_key = 'Location';
-                    break;
-
-                case 'department_id':
-                    $value = self::getDepartmentByID($value);
-                    $new_key = 'Department';
-                    break;
-
                 case 'status':
                     continue;
 
