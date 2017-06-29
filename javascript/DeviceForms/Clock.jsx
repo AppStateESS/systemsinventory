@@ -17,10 +17,10 @@ export default class Clock extends Base {
             {this.inputField('mac', 'MAC address', false, 'XX:XX:XX:XX:XX:XX')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('model')}
+            {this.inputField('manufacturer')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('manufacturer')}
+            {this.inputField('model')}
           </div>
         </div>
       </div>
