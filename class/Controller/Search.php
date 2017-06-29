@@ -98,8 +98,7 @@ class Search extends \phpws2\Http\Controller
         // If a system type is not chosen OR this is a restricted user
         // trying to view unassigned or surplus devices then return a null result
 
-        if (empty($system_type) ||
-                ($restricted && $status_type == 1 || $status_type == 3)) {
+        if (empty($system_type) || $restricted) {
             $result = null;
         } else {
             $factory = new Factory;
