@@ -135,6 +135,11 @@ class SystemDevice extends \phpws2\Resource
     {
         return $this->device_type_id->get();
     }
+    
+    public function getStatus()
+    {
+        return $this->status->get();
+    }
 
     public function setDeviceType($device_type_id)
     {
@@ -233,6 +238,11 @@ class SystemDevice extends \phpws2\Resource
     public function setStatus($status)
     {
         $this->status->set($status);
+    }
+    
+    public function getProfileName()
+    {
+        return $this->profile_name->get();
     }
 
     public function isPC()
