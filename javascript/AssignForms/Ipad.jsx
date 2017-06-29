@@ -17,20 +17,23 @@ export default class Ipad extends Base {
             {this.select('system_usage')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('first_name')}
+            {this.inputField('apple_id', 'Tablet account')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('last_name')}
+            {this.inputField('primary_ip', 'Primary IP')}
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-6">
-            {this.inputField('apple_id', 'Tablet account')}
+          <div className="col-sm-3">
+            {this.inputField('first_name')}
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-3">
+            {this.inputField('last_name')}
+          </div>
+          <div className="col-sm-3">
             {this.inputField('username')}
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-3">
             {this.inputField('phone')}
           </div>
         </div>
