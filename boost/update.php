@@ -29,7 +29,7 @@ function systemsinventory_update($content, $currentVersion)
             runDbMigration('update_1_0_5.sql');
 
         case version_compare($currentVersion, '1.1.0', '<'):
-            runDbMigration('update_1_0_5.sql');
+            runDbMigration('update_1_1_0.sql');
     }
 
     return TRUE;
