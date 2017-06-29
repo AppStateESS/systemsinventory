@@ -16,7 +16,7 @@ export default class Sign extends Base {
       <div>
         <div className="row">
           <div className="col-sm-3">
-            {this.inputField('mac', 'MAC address')}
+            {this.inputField('mac', 'MAC address', false, 'XX:XX:XX:XX:XX:XX')}
           </div>
           <div className="col-sm-3">
             {this.inputField('model')}
