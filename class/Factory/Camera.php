@@ -19,11 +19,11 @@ class Camera extends SystemDevice
         self::saveResource($camera);
     }
 
-    public static function assignDevice(CameraResource $device, $request)
+    public static function assignDevice(Resource $sdevice, $device, $request)
     {
-        $device->setCovert($request->pullPatchBoolean('covert'));
-        $device->setExterior($request->pullPatchBoolean('exterior'));
-        $device->setOn($request->pullPatchBoolean('is_on'));
+        $sdevice->setCovert($request->pullPatchBoolean('covert'));
+        $sdevice->setExterior($request->pullPatchBoolean('exterior'));
+        $sdevice->setOn($request->pullPatchBoolean('is_on'));
     }
 
 }
