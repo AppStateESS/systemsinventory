@@ -64,7 +64,6 @@ export default class InputField extends Component {
     let required = this.props.required
       ? <RequiredIcon/>
       : null
-
     let input = (<input
       id={this.props.iid}
       type={this.props.type}
@@ -77,6 +76,7 @@ export default class InputField extends Component {
       ? this.select
       : null}
       disabled={this.props.disabled}
+      style={this.props.styles}
       size={this.props.size}
       maxLength={this.props.maxLength}
       placeholder={this.props.placeholder}
@@ -127,6 +127,7 @@ InputField.defaultProps = {
   onEmpty: null,
   flagEmpty: true,
   disableRequireCheck: false,
+  styles: null
 }
 
 InputField.propTypes = {
@@ -148,6 +149,7 @@ InputField.propTypes = {
   selectOnClick: PropTypes.bool,
   onEmpty: PropTypes.func,
   flagEmpty: PropTypes.bool,
+  styles: PropTypes.object,
   disableRequireCheck: PropTypes.bool,
 }
 
