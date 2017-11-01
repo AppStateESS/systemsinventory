@@ -34,7 +34,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device->setPhone(null);
         self::saveResource($device);
     }
-    
+
     public function surplus(\Canopy\Request $request)
     {
         $device = new Resource;
@@ -62,7 +62,9 @@ class SystemDevice extends \phpws2\ResourceFactory
 
         $notes = $request->pullPostString('notes', true);
         $device->setNotes($notes ? $notes : '');
-        $device->setVlan($request->pullPostInteger('vlan'));
+        if ($request->postVarIsset('vlan')) {
+            $device->setVlan($request->pullPostInteger('vlan'));
+        }
 
         if ($request->postVarIsset('model')) {
             $device->setModel($request->pullPostString('model'));
@@ -663,7 +665,7 @@ EOF;
                 return ucfirst($label);
         }
     }
-    
+
     public static function getSystemTypeLabelById($id)
     {
         $types = self::getSystemTypes();
