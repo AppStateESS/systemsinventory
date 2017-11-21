@@ -45,8 +45,6 @@ class Search extends \phpws2\ResourceFactory
 
         $this->sort($request, $sd, $deptbl, $loctbl);
         $result = $db->select();
-        //echo $db->selectQuery();
-        //exit;
         return $result;
     }
 
