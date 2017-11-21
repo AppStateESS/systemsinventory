@@ -75,9 +75,9 @@ export default class Device {
     }
     let errorChecks
     errorChecks = allRequired.concat(unassigned)
-    if (status === '1' || status === '2') {
+    if (status == 1 || status == 2) {
       errorChecks = errorChecks.concat(assigned)
-      if (status === '1') {
+      if (status == 1) {
         errorChecks = errorChecks.concat(user)
       }
     }
@@ -122,9 +122,9 @@ export default class Device {
 
     if (unassigned || allRequired) {
       return true
-    } else if ((device.status === '2' || device.status === '1') && required[deviceType].assigned.indexOf(spec) !== -1) {
+    } else if ((device.status == 2 || device.status == 1) && required[deviceType].assigned.indexOf(spec) !== -1) {
       return true
-    } else if (device.status === '1' && required[deviceType].user.indexOf(spec) !== -1) {
+    } else if (device.status == 1 && required[deviceType].user.indexOf(spec) !== -1) {
       return true
     } else {
       return false
