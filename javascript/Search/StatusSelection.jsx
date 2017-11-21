@@ -15,23 +15,23 @@ export default class StatusSelection extends Component {
       <div className="btn-group" role="group">
         <button
           className={classNames('btn', 'btn-default', {
-          'btn-primary': this.props.active === 0
-        })}
+            'btn-primary': this.props.active === 0
+          })}
           onClick={this.props.update.bind(null, 'statusType', 0)}>All</button>
         <button
           className={classNames('btn', 'btn-default', {
-          'btn-primary': this.props.active === 1
-        })}
+            'btn-primary': this.props.active === 1
+          })}
           onClick={this.props.update.bind(null, 'statusType', 1)}>Unassigned</button>
         <button
           className={classNames('btn', 'btn-default', {
-          'btn-primary': this.props.active === 2
-        })}
+            'btn-primary': this.props.active === 2
+          })}
           onClick={this.props.update.bind(null, 'statusType', 2)}>Assigned</button>
         <button
           className={classNames('btn', 'btn-default', {
-          'btn-primary': this.props.active === 3
-        })}
+            'btn-primary': this.props.active === 3
+          })}
           onClick={this.props.update.bind(null, 'statusType', 3)}>Surplus</button>
       </div>
     )
@@ -40,5 +40,5 @@ export default class StatusSelection extends Component {
 
 StatusSelection.propTypes = {
   update: PropTypes.func,
-  active: PropTypes.number
+  active: PropTypes.number,
 }
