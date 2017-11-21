@@ -49,6 +49,7 @@ CREATE TABLE systems_device (
        profile_name character varying default NULL,
        notes character varying default NULL,
        sys_period tstzrange not null,
+       status smallint default 0,
        PRIMARY KEY (id)
 );
 
@@ -71,6 +72,8 @@ CREATE TABLE systems_pc (
        stand smallint default 0,
        smart_room smallint default 0,
        check_in smallint default 0,
+       is_server smallint default 0,
+       docking_stand smallint default 0,
        PRIMARY KEY (id)
 );
 
@@ -92,6 +95,7 @@ CREATE TABLE systems_ipad (
        generation character varying,
        apple_id character varying,
        protective_case smallint default 0,
+       system_usage character varying,
        PRIMARY KEY (id)
 );
 
@@ -111,6 +115,7 @@ CREATE TABLE systems_printer (
        toner_cartridge character varying,
        duplex smallint default 0,
        network smallint default 0,
+       phone character varying,
        PRIMARY KEY (id)
 );
 

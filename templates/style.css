@@ -1,0 +1,28 @@
+.filter {
+    margin-bottom : 1em;
+}
+
+.marginLeft {
+    margin-left: .8em;
+}
+
+.marginRight {
+    margin-right: .8em;
+}
+
+.marginBottom {
+    margin-bottom: .8em;
+}
+
+.marginTop {
+    margin-top: .8em;
+}
+
+.search-header th {
+    border : 2px solid #e3e3e3;
+    white-space:nowrap;
+}
+
+.pointer:hover {
+    cursor: pointer;
+}

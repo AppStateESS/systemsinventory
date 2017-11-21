@@ -8,15 +8,19 @@ use systemsinventory\Factory\Printer as PrinterFactory;
 use systemsinventory\Factory\Camera as CameraFactory;
 use systemsinventory\Factory\DigitalSign as DigitalSignFactory;
 use systemsinventory\Factory\SystemDevice as SDFactory;
+use systemsinventory\Factory\React;
 use systemsinventory\Resource;
 
+require_once(PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/device_types.php');
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
-class System extends \phpws2\Http\Controller {
+class System extends \phpws2\Http\Controller
+{
 
-    public function get(\Canopy\Request $request) {
+    public function get(\Canopy\Request $request)
+    {
         $data = array();
         $data['command'] = $request->shiftCommand();
         $view = $this->getView($data, $request);
@@ -24,76 +28,151 @@ class System extends \phpws2\Http\Controller {
         return $response;
     }
 
-    protected function getHtmlView($data, \Canopy\Request $request) {
-        if (empty($data['command']))
-            $data['command'] = 'add';
+    protected function getHtmlView($data, \Canopy\Request $request)
+    {
+        \Layout::addStyle('systemsinventory');
+        $command = $data['command'];
 
-        if (\Current_User::allow('systemsinventory', 'edit')) {
-            if ($data['command'] == 'editPermissions')
-                $content = SDFactory::UserPermissionsView($data, $request);
-            else
-                $content = SDFactory::form($request, 'system-pc', $data);
-        }else {
-            $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
+        switch ($command) {
+            case 'add':
+                if (!\Current_User::allow('systemsinventory', 'edit')) {
+                    return $this->permissionErrorView();
+                }
+                $content = SDFactory::getProfilesJson() . SDFactory::getFilterScript() . React::view('add');
+                break;
+
+            //view is default
+            default:
+                $id = $request->pullGetInteger('id', true);
+                if (empty($id)) {
+                    $id = $request->lastCommand();
+                }
+                if (is_numeric($id)) {
+                    $content = SDFactory::view($id);
+                } else {
+                    \phpws2\Error::errorPage('404');
+                }
         }
         $view = new \phpws2\View\HtmlView($content);
         return $view;
     }
 
-    public function post(\Canopy\Request $request) {
+    public function delete(\Canopy\Request $request)
+    {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
+        $command = $request->shiftCommand();
+        if (empty($command)) {
+            throw new \Exception('Bad delete command');
+        }
+        switch ($command) {
+            case 'profile':
+                if (!\Current_User::allow('systeminventory', 'settings')) {
+                    return $this->permissionErrorView();
+                }
+                SDFactory::deleteDevice($request->pullDeleteInteger('profile'));
+                break;
+
+            case 'device':
+                if (!\Current_User::allow('systeminventory', 'edit')) {
+                    return $this->permissionErrorView();
+                }
+                SDFactory::deleteDevice($request->pullDeleteInteger('device_id'));
+                break;
+        }
+
+        $view = new \phpws2\View\JsonView(array('success' => true));
+        $response = new \Canopy\Response($view);
+        return $response;
+    }
+
+    public function patch(\Canopy\Request $request)
+    {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
+        $factory = new SDFactory;
+        $command = $request->shiftCommand();
+        switch ($command) {
+            case 'assign':
+                $factory->assign($request);
+                break;
+
+            case 'unassign':
+                $factory->unassign($request);
+                break;
+            
+            case 'surplus':
+                $factory->surplus($request);
+                break;
+
+            default:
+                throw new \Exception('Unknown patch command');
+        }
+
+        $view = new \phpws2\View\JsonView(array('success' => true));
+        $response = new \Canopy\Response($view);
+        return $response;
+    }
+
+    private function permissionErrorView()
+    {
+        $content = '<div class="alert alert-danger" id="add-system-error">You do not have permissions to edit! Please contact your systems administrator if you believe this to be an error.</div>';
+        $view = new \phpws2\View\HtmlView($content);
+        return $view;
+    }
+
+    public function post(\Canopy\Request $request)
+    {
+        if (!\Current_User::allow('systemsinventory', 'edit')) {
+            return $this->permissionErrorView();
+        }
+        
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
-        $vars = $request->getRequestVars();
-        $isJSON = false;
-        $data['command'] = $request->shiftCommand();
-
-        if (!empty($vars['device_id']) && empty($vars['profile_name']))
-            $isJSON = true;
-        $device_type = PC;
-
-        if (isset($vars['server'])) {
-            $device_type = SERVER;
-        } elseif (isset($vars['device_type'])) {
-            $device_type = $vars['device_type'];
+        $device = $sdfactory->postDevice($request);
+        
+        // Time clock doesn't have data outside the default device
+        if ($device->getDeviceType() !== TIME_CLOCK) {
+            $this->postSpecificDevice($request, $device);
         }
-        $device_id = $sdfactory->postDevice($request);
 
-        $this->postSpecificDevice($request, $device_type, $device_id);
-
-        $data['action'] = 'success';
-        if ($isJSON) {
-            $view = new \phpws2\View\JsonView(array('success' => TRUE));
+        if (!empty($request->postVarIsset('profile_name'))) {
+            // returning id and profile name to update the form
+            $view = new \phpws2\View\JsonView(array('success' => TRUE, 'id' => $device->getId(), 'name' => $device->getProfileName()));
         } else {
-            $view = $this->getHtmlView($data, $request);
+            $view = new \phpws2\View\JsonView(array('success' => TRUE));
         }
         $response = new \Canopy\Response($view);
         return $response;
     }
 
-    public function postSpecificDevice(\Canopy\Request $request, $device_type, $device_id) {
-        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
-
-        switch ($device_type) {
+    public function postSpecificDevice(\Canopy\Request $request, $device)
+    {
+        $specific_device = SDFactory::loadSpecificByDevice($device);
+        switch ($device->getDeviceType()) {
             case SERVER:
             case PC:
                 $pcfactory = new PCFactory;
-                $pcfactory->postNewPC($request, $device_id);
+                $pcfactory->postNewPC($request, $specific_device);
                 break;
             case IPAD:
                 $ipadfactory = new IPADFactory;
-                $ipadfactory->postNewIPAD($request, $device_id);
+                $ipadfactory->postNewIPAD($request, $specific_device);
                 break;
             case PRINTER:
                 $printerfactory = new PrinterFactory;
-                $printerfactory->postNewPrinter($request, $device_id);
+                $printerfactory->postNewPrinter($request, $specific_device);
                 break;
             case CAMERA:
                 $camerafactory = new CameraFactory;
-                $camerafactory->postNewCamera($request, $device_id);
+                $camerafactory->postNewCamera($request, $specific_device);
                 break;
             case DIGITAL_SIGN:
                 $digitalsignfactory = new DigitalSignFactory;
-                $digitalsignfactory->postNewDigitalSign($request, $device_id);
+                $digitalsignfactory->postNewDigitalSign($request,
+                        $specific_device);
                 break;
             case TIME_CLOCK:
                 break;
@@ -102,20 +181,25 @@ class System extends \phpws2\Http\Controller {
         }
     }
 
-    public static function loadAdminBar() {
+    public static function loadAdminBar()
+    {
         $auth = \Current_User::getAuthorization();
 
         $nav_vars['is_deity'] = \Current_user::isDeity();
         $nav_vars['logout_uri'] = $auth->logout_link;
         $nav_vars['username'] = \Current_User::getDisplayName();
-        if (\Current_User::allow('systemsinventory', 'edit'))
+        if (\Current_User::allow('systemsinventory', 'edit')) {
             $nav_vars['add'] = '<a href="systemsinventory/system/add"><i class="fa fa-plus"></i> Add System</a>';
-        if (\Current_User::allow('systemsinventory', 'view'))
+        }
+        if (\Current_User::allow('systemsinventory', 'view')) {
             $nav_vars['search'] = '<a href="systemsinventory/search"><i class="fa fa-search"></i> Search Systems</a>';
-        if (\Current_User::allow('systemsinventory', 'reports'))
+        }
+        if (\Current_User::allow('systemsinventory', 'reports')) {
             $nav_vars['reports'] = '<a href="systemsinventory/reports"><i class="fa fa-area-chart"></i> Reports</a>';
-        if (\Current_User::allow('systemsinventory', 'settings'))
+        }
+        if (\Current_User::allow('systemsinventory', 'settings')) {
             $nav_vars['settings'] = '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><i class="fa fa-cog"></i> Settings</a>';
+        }
 
 
         $nav_bar = new \phpws2\Template($nav_vars);
@@ -124,14 +208,16 @@ class System extends \phpws2\Http\Controller {
         \Layout::plug($content, 'NAV_LINKS');
     }
 
-    protected function getJsonView($data, \Canopy\Request $request) {
+    protected function getJsonView($data, \Canopy\Request $request)
+    {
         $vars = $request->getRequestVars();
         $command = '';
         if (!empty($data['command']))
             $command = $data['command'];
 
-        if ($command == 'getDetails' && \Current_User::allow('systemsinventory', 'view')) {
-            $result = SDFactory::getSystemDetails($vars['device_id'], $vars['row_index']);
+        if ($command == 'getDetails' && \Current_User::allow('systemsinventory',
+                        'view')) {
+            $result = SDFactory::getSystemDetails($vars['device_id']);
         } else if (\Current_User::allow('systemsinventory', 'edit')) {
             $system_details = '';
             switch ($command) {
@@ -147,9 +233,6 @@ class System extends \phpws2\Http\Controller {
                 case 'searchPhysicalID':
                     $result = SDFactory::searchPhysicalID($vars['physical_id']);
                     break;
-                case 'delete':
-                    $result = SDFactory::deleteDevice($vars['device_id'], $vars['specific_device_id'], $vars['device_type_id']);
-                    break;
                 case 'inventory':
                     $result = SDFactory::markDeviceInventoried($vars['device_id']);
                     break;
@@ -157,12 +240,12 @@ class System extends \phpws2\Http\Controller {
                     $result = SDFactory::getDeviceAudits($vars['device_id']);
                     break;
                 default:
-                    throw new Exception("Invalid command received in system controller getJsonView. Command = $command");
+                    throw new \Exception("Invalid command received in system controller getJsonView. Command = $command");
             }
         } else {
             $result = array('Error');
         }
-        
+
         $view = new \phpws2\View\JsonView($result);
         return $view;
     }
