@@ -27,7 +27,7 @@ export default class Search extends FormBase {
       modalOpen: false,
       filters: {
         systemType: ['all'],
-        statusType: 0,
+        statusType: 2,
         department: null,
         location: null,
         physicalId: '',
