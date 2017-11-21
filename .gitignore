@@ -6,5 +6,5 @@
 /nbproject
 /config/defines.php
 /javascript/dev/
-/javascript/prod/
+/javascript/build/
 /node_modules/
