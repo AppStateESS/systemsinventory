@@ -77,7 +77,7 @@ export default class Overlay extends Component {
   }
 }
 Overlay.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.array,]),
   close: PropTypes.func,
   title: PropTypes.string
 }
