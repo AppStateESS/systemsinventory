@@ -81,7 +81,7 @@ export default class Search extends FormBase {
 
   showOverlay(id, formType) {
     this.setState({formType: formType, showOverlay: true})
-    this.loadDevice(id, formType === 'assign')
+    this.loadDevice(id)
   }
 
   closeOverlay() {
@@ -89,15 +89,12 @@ export default class Search extends FormBase {
     $('body').css('overflow', 'inherit')
   }
 
-  loadDevice(id, forceAssign = false) {
-    $.getJSON('./systemsinventory/system/getDetails', {device_id: id}).done(function (data) {
-      if (forceAssign) {
-        data.status = Device.userAssigned(data)
-          ? '1'
-          : '2'
-      }
-      this.setState({device: data})
-    }.bind(this))
+  loadDevice(id) {
+    $.getJSON('./systemsinventory/system/getDetails', {device_id: id}).done(
+      function (data) {
+        this.setState({device: data})
+      }.bind(this)
+    )
   }
 
   download() {
@@ -113,10 +110,12 @@ export default class Search extends FormBase {
   }
 
   save() {
-    $.post('./systemsinventory/system/', this.state.device, null, 'json').done(function () {
-      this.closeOverlay()
-      this.load()
-    }.bind(this)).fail(function () {})
+    $.post('./systemsinventory/system/', this.state.device, null, 'json').done(
+      function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this)
+    ).fail(function () {})
   }
 
   surplus() {
@@ -167,7 +166,9 @@ export default class Search extends FormBase {
     }).done(function (data) {
       if (data.listing !== undefined) {
         if (this.offset === 0 || this.offset === -1) {
-          this.setState({listing: data.listing, total: data.total, shown: data.shown, more: data.more, restricted: data.restricted})
+          this.setState(
+            {listing: data.listing, total: data.total, shown: data.shown, more: data.more, restricted: data.restricted}
+          )
         } else if (this.offset > 0) {
           this.setState({
             listing: this.state.listing.concat(data.listing),
@@ -392,6 +393,10 @@ export default class Search extends FormBase {
       overlay = (
         <Overlay close={this.closeOverlay} title={overlayTitle}>
           {formType}
+          <div className="text-center marginTop">
+            <button className="btn btn-lg btn-default" onClick={this.closeOverlay}>
+              <i className="fa fa-times"></i>&nbsp;Close</button>
+          </div>
         </Overlay>
       )
     }
@@ -421,11 +426,12 @@ export default class Search extends FormBase {
 
           <div className="col-sm-6 marginBottom">
             <button className="btn btn-primary" onClick={this.openModal}>More filters</button>
-            {this.state.listing !== null && this.state.listing.length > 0
-              ? <button className="btn btn-info marginLeft" onClick={this.download}>
-                  <i className="fa fa-download"></i>
-                  Download</button>
-              : null}
+            {
+              this.state.listing !== null && this.state.listing.length > 0
+                ? <button className="btn btn-info marginLeft" onClick={this.download}>
+                    <i className="fa fa-download"></i>&nbsp; Download</button>
+                : null
+            }
             <button className="btn btn-default marginLeft" onClick={this.reset}>Reset filters</button>
           </div>
         </div>
