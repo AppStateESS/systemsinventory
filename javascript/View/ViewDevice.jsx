@@ -53,6 +53,10 @@ export default class ViewDevice extends Component {
             <table className="table table-striped">
               <tbody>
                 <tr>
+                  <th>Id</th>
+                  <td>{device.id}</td>
+                </tr>
+                <tr>
                   <th>Device type</th>
                   <td>{device.device_type}</td>
                 </tr>
