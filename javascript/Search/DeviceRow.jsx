@@ -66,7 +66,6 @@ export default class DeviceRow extends Component {
       purchase_date,
       status
     } = this.props.value
-
     let assign
     let editAssign
     let surplus
@@ -80,7 +79,7 @@ export default class DeviceRow extends Component {
 
     const red = {color: 'red'}
     const editButton = (
-      <div className="dropdown">
+      <div className="dropdown" onClick={function(e){e.stopPropagation()}}>
         <i
           className="fa fa-gear fa-lg dropdown-toggle pointer"
           id="dropdownMenu1"
@@ -131,7 +130,7 @@ export default class DeviceRow extends Component {
         break
     }
     return (
-      <tr>
+      <tr onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')} className="pointer">
         {row.map(function(value,key){
           return <td key={key}>{value}</td>
         })}
