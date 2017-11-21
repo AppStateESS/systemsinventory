@@ -33,7 +33,7 @@ export default class AssignForm extends Base {
   }
 
   render() {
-    const {device, update} = this.props
+    const {device, update,} = this.props
 
     let assignForm
     switch (device.device_type_id) {
@@ -67,11 +67,11 @@ export default class AssignForm extends Base {
       const buttons = [
         {
           value: '1',
-          label: 'Assign to person'
+          label: 'Assign to person',
         }, {
           value: '2',
-          label: 'Assign to location'
-        }
+          label: 'Assign to location',
+        },
       ]
       assignToggle = (
         <div className="marginBottom">
@@ -84,14 +84,30 @@ export default class AssignForm extends Base {
       )
     }
 
+    let statusTypeError
     let unassignedErrors
+
     if (this.state.unassignedErrors) {
       unassignedErrors = (
-        <div className="alert alert-danger">
-          <i className="pull-left fa fa-exclamation-circle fa-2x marginRight"></i>
-          <strong>Notice!</strong>&nbsp; This device can not be assigned until&nbsp;
-          <strong>ALL</strong>&nbsp; unassigned required fields are complete.<br/>
-          <button className="btn btn-default btn-sm" onClick={this.props.edit}>Edit the device and fill in all required fields</button>
+        <div className="alert alert-danger text-center">
+          <div>
+            <i className="fa fa-exclamation-circle marginRight"></i>
+            <strong>Notice!</strong>&nbsp;This device can not be assigned until&nbsp;
+            <strong>ALL</strong>&nbsp;device fields are complete.
+          </div>
+          <div className="marginTop">
+            <button className="btn btn-default" onClick={this.props.edit}>Edit the device and fill in all required fields</button>
+          </div>
+        </div>
+      )
+    } else if (device.status == 2 && (device.username != null && device.username.length > 0)) {
+      statusTypeError = (
+        <div className="alert alert-danger text-center">
+          <div>
+            <i className="fa fa-exclamation-circle marginRight"></i>
+            <strong>Notice!</strong>&nbsp;This device has a location assignment but contains
+            user information. Consider reassignment to a person.
+          </div>
         </div>
       )
     }
@@ -99,6 +115,7 @@ export default class AssignForm extends Base {
     return (
       <div>
         {unassignedErrors}
+        {statusTypeError}
         {assignToggle}
         <div className="row">
           <div className="col-sm-4">
@@ -117,16 +134,18 @@ export default class AssignForm extends Base {
             <textarea
               className="form-control"
               value={device.notes === null
-              ? ''
-              : device.notes}
+                ? ''
+                : device.notes}
               onChange={this.props.update.bind(null, 'notes')}/>
           </div>
         </div>
         {assignForm}
-        <button
-          className="marginTop btn btn-primary"
-          onClick={this.props.assign}
-          disabled={!Device.checkForErrors(device, this.errors)}>Assign device</button>
+        <div className="text-center">
+          <button
+            className="marginTop btn btn-lg btn-primary"
+            onClick={this.props.assign}
+            disabled={!Device.checkForErrors(device, this.errors)}>Assign device</button>
+        </div>
       </div>
     )
   }
@@ -134,5 +153,5 @@ export default class AssignForm extends Base {
 
 AssignForm.propTypes = {
   assign: PropTypes.func,
-  edit: PropTypes.func
+  edit: PropTypes.func,
 }
