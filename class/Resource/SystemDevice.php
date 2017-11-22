@@ -36,7 +36,11 @@ class SystemDevice extends \phpws2\Resource
     protected $sys_period = null;
 
     /**
-     *
+     * 0 Not assigned
+     * 1 Assigned to staff
+     * 2 Assigned to location
+     * 3 Surplus
+     * 4 Stolen
      * @var \phpws2\Variable\SmallInteger
      */
     protected $status;

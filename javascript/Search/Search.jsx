@@ -12,9 +12,10 @@ import AssignForm from '../AssignForms/AssignForm.jsx'
 import DeleteDevice from './DeleteDevice.jsx'
 import UnassignDevice from './UnassignDevice.jsx'
 import ViewDevice from '../View/ViewDevice.jsx'
-import Device from '../Mixin/Device.js'
+//import Device from '../Mixin/Device.js'
 import FormBase from '../Shared/FormBase.jsx'
 import SurplusDevice from './SurplusDevice.jsx'
+import StolenDevice from './StolenDevice.jsx'
 
 /* global $, jsonFilters, restricted */
 
@@ -66,6 +67,7 @@ export default class Search extends FormBase {
     this.showOverlay = this.showOverlay.bind(this)
     this.closeOverlay = this.closeOverlay.bind(this)
     this.updateFilter = this.updateFilter.bind(this)
+    this.saveStolen = this.saveStolen.bind(this)
     this.incrementOffset = this.incrementOffset.bind(this)
     this.updateSystemType = this.updateSystemType.bind(this)
     this.updateDeviceValue = this.updateDeviceValue.bind(this)
@@ -82,6 +84,23 @@ export default class Search extends FormBase {
   showOverlay(id, formType) {
     this.setState({formType: formType, showOverlay: true})
     this.loadDevice(id)
+  }
+
+  saveStolen() {
+    $.ajax({
+      url: './systemsinventory/system/stolen',
+      data: {
+        device_id: this.state.device.id,
+        notes: this.state.device.notes,
+      },
+      dataType: 'json',
+      type: 'patch',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
+    })
   }
 
   closeOverlay() {
@@ -184,7 +203,7 @@ export default class Search extends FormBase {
 
   delete() {
     $.ajax({
-      url: 'systemsinventory/system/device',
+      url: './systemsinventory/system/device',
       data: {
         device_id: this.state.device.id
       },
@@ -387,6 +406,15 @@ export default class Search extends FormBase {
         case 'view':
           overlayTitle = `View device ${this.state.device.physical_id}`
           formType = <ViewDevice device={this.state.device}/>
+          break
+
+        case 'stolen':
+          overlayTitle = `Stolen device ${this.state.device.physical_id}`
+          formType = <StolenDevice
+            device={this.state.device}
+            update={this.updateDeviceValue}
+            save={this.saveStolen}
+            close={this.closeOverlay}/>
           break
       }
 

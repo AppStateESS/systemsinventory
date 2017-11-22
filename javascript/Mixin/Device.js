@@ -52,6 +52,8 @@ export default class Device {
         return 'Assigned - location'
       case 3:
         return 'Surplus'
+      case 4:
+        return 'Stolen'
     }
   }
 
@@ -69,7 +71,7 @@ export default class Device {
 
   static collectRequired(device, status = null) {
     const allRequired = required.allRequired
-    const {unassigned, assigned, user} = required[this.getType(device.device_type_id)]
+    const {unassigned, assigned, user,} = required[this.getType(device.device_type_id)]
     if (status === null) {
       status = device.status
     }

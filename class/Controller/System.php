@@ -106,6 +106,10 @@ class System extends \phpws2\Http\Controller
             case 'surplus':
                 $factory->surplus($request);
                 break;
+            
+            case 'stolen':
+                $factory->stolen($request);
+                break;
 
             default:
                 throw new \Exception('Unknown patch command');

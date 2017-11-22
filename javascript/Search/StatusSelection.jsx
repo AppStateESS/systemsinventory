@@ -33,6 +33,11 @@ export default class StatusSelection extends Component {
             'btn-primary': this.props.active === 3
           })}
           onClick={this.props.update.bind(null, 'statusType', 3)}>Surplus</button>
+        <button
+          className={classNames('btn', 'btn-default', {
+            'btn-primary': this.props.active === 4
+          })}
+          onClick={this.props.update.bind(null, 'statusType', 4)}>Stolen</button>
       </div>
     )
   }

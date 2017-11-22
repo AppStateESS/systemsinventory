@@ -140,6 +140,9 @@ class Search extends \phpws2\ResourceFactory
             case 3:
                 $tbl->addFieldConditional('status', 3);
                 break;
+            
+            case 4:
+                $tbl->addFieldConditional('status', 4);
 
             default:
             // status_typeof 0 means show all

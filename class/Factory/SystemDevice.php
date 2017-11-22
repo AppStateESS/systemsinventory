@@ -43,6 +43,16 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device->setStatus(3);
         self::saveResource($device);
     }
+    
+    public function stolen(\Canopy\Request $request)
+    {
+        $device = new Resource;
+        $device->setId($request->pullPatchInteger('device_id'));
+        self::loadByID($device);
+        $device->setStatus(4);
+        $device->setNotes($request->pullPatchString('notes'));
+        self::saveResource($device);
+    }
 
     public function postDevice(\Canopy\Request $request)
     {
@@ -617,10 +627,6 @@ class SystemDevice extends \phpws2\ResourceFactory
 
     public static function display()
     {
-
-        //$contact_info = self::load();
-        //$values = self::getValues($contact_info);
-
         $template = new \phpws2\Template($values);
         $template->setModuleTemplate('systemsinventory', 'view.html');
         $content = $template->get();
@@ -719,6 +725,9 @@ EOF;
                 break;
             case 3:
                 $status = 'Waiting for surplus';
+                break;
+            case 4:
+                $status = 'Stolen';
                 break;
         }
         $new_values['Status'] = $status;

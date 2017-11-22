@@ -39,7 +39,6 @@ export default class ViewDevice extends Component {
   render() {
     const {device} = this.props
 
-
     let assigned
     if (device.status === 1 || device.status === 2) {
       assigned = <Assigned device={device}/>

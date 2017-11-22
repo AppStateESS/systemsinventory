@@ -52,6 +52,8 @@ export default class DeviceRow extends Component {
         return <span>Assigned - location</span>
       case 3:
         return <span>Surplus</span>
+      case 4:
+        return <span>Stolen</span>
     }
   }
 
@@ -64,39 +66,78 @@ export default class DeviceRow extends Component {
       location_name,
       device_type_id,
       purchase_date,
-      status
+      status,
     } = this.props.value
     let assign
     let editAssign
     let surplus
+    let stolen
+
     if (status === 0) {
-      surplus = <li><a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'surplus')} className="pointer"><i className="fa fa-truck"></i>&nbsp;Surplus</a></li>
-      assign = <li><a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')} className="pointer"><i className="fa fa-user"></i>&nbsp;Assign</a></li>
+      surplus = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'surplus')}
+          className="pointer">
+          <i className="fa fa-truck"></i>&nbsp;Surplus</a>
+      </li>
+      assign = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
+          className="pointer">
+          <i className="fa fa-user"></i>&nbsp;Assign</a>
+      </li>
+      stolen = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'stolen')}
+          className="pointer">
+          <i className="fa fa-thumbs-o-down"></i>&nbsp;Stolen</a>
+      </li>
     } else if (status === 1 || status === 2) {
-      editAssign = <li><a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')} className="pointer"><i className="fa fa-pencil"></i>&nbsp;Edit assignment</a></li>
-      assign = <li><a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')} className="pointer"><i className="fa fa-recycle"></i>&nbsp;Unassign</a></li>
+      editAssign = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
+          className="pointer">
+          <i className="fa fa-pencil"></i>&nbsp;Edit assignment</a>
+      </li>
+      assign = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
+          className="pointer">
+          <i className="fa fa-recycle"></i>&nbsp;Unassign</a>
+      </li>
     }
 
-    const red = {color: 'red'}
+    const red = {
+      color: 'red'
+    }
     const editButton = (
-      <div className="dropdown" onClick={function(e){e.stopPropagation()}}>
+      <div
+        className="dropdown"
+        onClick={function (e) {
+          e.stopPropagation()
+        }}>
         <i
           className="fa fa-gear fa-lg dropdown-toggle pointer"
           id="dropdownMenu1"
           data-toggle="dropdown"></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li>
-            <a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')} className="pointer"><i className="fa fa-eye"></i>&nbsp;View</a>
-          </li>
-          <li>
-            <a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'edit')} className="pointer"><i className="fa fa-cogs"></i>&nbsp;Edit device</a>
+            <a
+              onClick={this.props.showOverlay.bind(null, this.props.value.id, 'edit')}
+              className="pointer">
+              <i className="fa fa-cogs"></i>&nbsp;Edit device</a>
           </li>
           {editAssign}
           {assign}
           {surplus}
+          {stolen}
           <li role="separator" className="divider"></li>
           <li>
-            <a onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')} style={red} className="pointer"><i className="fa fa-trash-o"></i>&nbsp;Delete</a>
+            <a
+              onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
+              style={red}
+              className="pointer">
+              <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
           </li>
         </ul>
       </div>
@@ -130,10 +171,14 @@ export default class DeviceRow extends Component {
         break
     }
     return (
-      <tr onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')} className="pointer">
-        {row.map(function(value,key){
-          return <td key={key}>{value}</td>
-        })}
+      <tr
+        onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')}
+        className="pointer">
+        {
+          row.map(function (value, key) {
+            return <td key={key}>{value}</td>
+          })
+        }
       </tr>
     )
   }
@@ -142,5 +187,5 @@ export default class DeviceRow extends Component {
 DeviceRow.propTypes = {
   value: PropTypes.object,
   showOverlay: PropTypes.func.isRequired,
-  statusType: PropTypes.number.isRequired,
+  statusType: PropTypes.number.isRequired
 }
