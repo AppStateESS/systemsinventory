@@ -40,7 +40,7 @@ class SystemDevice extends \phpws2\Resource
      * 1 Assigned to staff
      * 2 Assigned to location
      * 3 Surplus
-     * 4 Stolen
+     * 4 Lost/Stolen
      * @var \phpws2\Variable\SmallInteger
      */
     protected $status;

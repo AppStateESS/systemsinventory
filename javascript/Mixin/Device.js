@@ -53,7 +53,7 @@ export default class Device {
       case 3:
         return 'Surplus'
       case 4:
-        return 'Stolen'
+        return 'Lost/Stolen'
     }
   }
 

@@ -53,7 +53,7 @@ export default class DeviceRow extends Component {
       case 3:
         return <span>Surplus</span>
       case 4:
-        return <span>Stolen</span>
+        return <span>Lost/Stolen</span>
     }
   }
 
@@ -90,7 +90,7 @@ export default class DeviceRow extends Component {
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'stolen')}
           className="pointer">
-          <i className="fa fa-thumbs-o-down"></i>&nbsp;Stolen</a>
+          <i className="fa fa-thumbs-o-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
       editAssign = <li>

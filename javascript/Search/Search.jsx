@@ -409,7 +409,7 @@ export default class Search extends FormBase {
           break
 
         case 'stolen':
-          overlayTitle = `Stolen device ${this.state.device.physical_id}`
+          overlayTitle = `Lost/Stolen device ${this.state.device.physical_id}`
           formType = <StolenDevice
             device={this.state.device}
             update={this.updateDeviceValue}

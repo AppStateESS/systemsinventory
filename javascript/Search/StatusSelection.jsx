@@ -37,7 +37,7 @@ export default class StatusSelection extends Component {
           className={classNames('btn', 'btn-default', {
             'btn-primary': this.props.active === 4
           })}
-          onClick={this.props.update.bind(null, 'statusType', 4)}>Stolen</button>
+          onClick={this.props.update.bind(null, 'statusType', 4)}>Lost/Stolen</button>
       </div>
     )
   }

@@ -6,9 +6,9 @@ const StolenDevice = (props) => {
 
   return (
     <div>
-      <p>You are about to set this device's status to stolen. It should not be deleted
+      <p>You are about to set this device's status to lost or stolen. It should not be deleted
         until investigated and signed off by an administrator.</p>
-      <p>Please append the notes below with information about the theft.</p>
+      <p>Please append the notes below with information about the loss or theft.</p>
       <textarea
         value={props.device.notes}
         className="form-control"

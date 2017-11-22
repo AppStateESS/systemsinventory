@@ -727,7 +727,7 @@ EOF;
                 $status = 'Waiting for surplus';
                 break;
             case 4:
-                $status = 'Stolen';
+                $status = 'Lost/Stolen';
                 break;
         }
         $new_values['Status'] = $status;
