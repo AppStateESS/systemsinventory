@@ -54,9 +54,8 @@ class Settings extends \phpws2\ResourceFactory
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_loc.js';
         \Layout::addLink("<script type='text/javascript' src='$script'></script>");
         $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-location-modal"><i class="fa fa-plus">&nbsp;</i>Add Location</a>';
-        \Pager::prepare();
-        $template = new \Template;
-        $template = new \Template($vars);
+        \phpws2\Pager::prepare();
+        $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('systemsinventory', 'Edit_Locations.html');
         return $template->get();
         
@@ -64,7 +63,7 @@ class Settings extends \phpws2\ResourceFactory
     public static function locationsList($data, $request){
         $rows = array();
         $no_location = 1;
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('display_name');
         $tbl->addField('description');
@@ -72,7 +71,7 @@ class Settings extends \phpws2\ResourceFactory
         $tbl->addField('id');
         $tbl->addFieldConditional('id', '1', '!=');
         $tbl->addOrderBy('display_name');
-        $pager = new \DatabasePager($db);
+        $pager = new \phpws2\DatabasePager($db);
         $pager->setCallback(array('\systemsinventory\Controller\Settings','formatLocationList'));
         $pager->setId('location-list');
         $pager->setRowIdColumn('id');
@@ -125,7 +124,7 @@ class Settings extends \phpws2\ResourceFactory
         return $data;
     }
     
-    public static function userPermissionsList($data, $request){
+    public static function userPermissionsList($data, \Canopy\Request $request){
         $users = Settings::getPHPWSUsers();
         $departments_result = SystemDevice::getSystemDepartments();
         // convert to associative array
