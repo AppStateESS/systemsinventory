@@ -1,3 +1,28 @@
+sudo: false
 language: php
 php:
 - 7
+
+install:
+- npm install
+
+script:
+- ".travis-build/phplint"
+- phpunit
+
+after_success:
+- npm run prod
+- rm -rf node_modules
+- tar -czf SystemsInventory.tar.gz *
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: VCq3tePfVZk5dSkwee7Gr+bMTI0ooLjHFRgzNfX1oFDcatreGrP7dTMq29caHXoM88bSlUq4HoaSIWDBf4JQWE+r8er9udx4wwE2yunIIaFLa0mGaXHzGE5FLZQWZ6LghMpmcLI+EThr11f4EzSlZs2NQHz3u9O7FKeExq5KH2tGNrOqwSOTdIv6O8W205jmxBx2cOeif0W4lYBkAnz+NTTmFWJfKOMvwR34K86WgF9lOKAZ+0rNdDUKmR4B5rbymuY+um8a1aWolZcD7XlCtRBfHhJzqAyX0OF34BvybYGudxgOGQfBxBXTU43KvYKCfDE/joo8lGxtMGECE4R7gLRT50XXZS6kSlvYSzHq8fswFlICI2yj4xMxDvXeLgxhI0wcXouxEge5KwLMzOvoDuHve2ikpkFi06t/lTh54nDJTHrHxokIOh84yrM4hBw66pGvuLEB1lJAw+RrXlHNB8RLSOKwNTYHeLxasL8hogrtpSDszo9iiN1uFdplO8B5iu27ZSkEQSGWUYtsPMqoZRx4oJBQzC6lqj+EfOgW/g5xuBBXUE8N8Rn+9BrQ7Uthv7p/TUFbsyKxwb+FFDKxj/zhpub5DL5klmCjhjuyk7XnTBYcHnWcCn9oCSLHLtWliNIGeSGevsp5ljW8N548orBfLe8nQDVCp0CkD1fFMEQ=
+  file: SystemsInventory.tar.gz
+  overwrite: true
+  on:
+    repo: AppStateESS/systemsinventory
+    branch: master
+    tags: true
