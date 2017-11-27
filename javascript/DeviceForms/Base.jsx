@@ -31,7 +31,6 @@ export default class Base extends Component {
 
   errorMessage(varname, label) {
     const {errors} = this.props
-    //console.log(errors); console.log(varname);
 
     if (errors.indexOf(varname) !== -1) {
       return `${label} may not be empty`
