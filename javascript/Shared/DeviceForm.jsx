@@ -26,8 +26,8 @@ export default class DeviceForm extends Component {
       overlay: false,
       message: {
         type: 'info',
-        content: ''
-      }
+        content: '',
+      },
     }
     this.errors = []
     this.save = this.save.bind(this)
@@ -62,9 +62,9 @@ export default class DeviceForm extends Component {
 
   addToProfiles(id, name) {
     if (!profiles[this.props.device.device_type_id]) {
-      profiles[this.props.device.device_type_id]=[]
+      profiles[this.props.device.device_type_id] = []
     }
-    profiles[this.props.device.device_type_id].push({id: id, name: name})
+    profiles[this.props.device.device_type_id].push({id: id, name: name,})
     this.setState({profile: id})
   }
 
@@ -102,7 +102,7 @@ export default class DeviceForm extends Component {
         }.bind(this),
         error: function () {
           this.setMessage('Profile deletion failed', 'danger')
-        }.bind(this)
+        }.bind(this),
       })
     }
   }
@@ -123,7 +123,7 @@ export default class DeviceForm extends Component {
     } else {
       let options
       options = profiles[device_type_id].map(function (value) {
-        return {value: value.id, label: value.name}
+        return {value: value.id, label: value.name,}
       })
       profileListing = (
         <div className="col-sm-6">
@@ -139,7 +139,10 @@ export default class DeviceForm extends Component {
     let deleteButton
     if (this.state.profile > 0) {
       deleteButton = (
-        <button className="btn btn-danger " onClick={this.deleteProfile}>
+        <button
+          className="btn btn-danger"
+          title="Delete profile"
+          onClick={this.deleteProfile}>
           <i className="fa fa-trash-o"></i>
         </button>
       )
@@ -154,6 +157,7 @@ export default class DeviceForm extends Component {
         <div className="col-sm-4">
           <div className="btn-group">
             <button
+              title="Create new profile"
               className="btn btn-success "
               onClick={this.addProfile}
               disabled={!Device.profileReady(this.props.device)}>
@@ -167,14 +171,16 @@ export default class DeviceForm extends Component {
   fillProfile(e) {
     this.setState({profile: e})
     let device = this.props.device
-    $.getJSON('./systemsinventory/system/getProfile', {profile_id: e}).done(function (data) {
-      acceptableFields.forEach(function (value) {
-        if (data[value] !== undefined && data[value] !== null) {
-          device[value] = data[value]
-        }
-      })
-      this.setState({device: device})
-    }.bind(this))
+    $.getJSON('./systemsinventory/system/getProfile', {profile_id: e}).done(
+      function (data) {
+        acceptableFields.forEach(function (value) {
+          if (data[value] !== undefined && data[value] !== null) {
+            device[value] = data[value]
+          }
+        })
+        this.setState({device: device})
+      }.bind(this)
+    )
   }
 
   save() {
@@ -267,5 +273,5 @@ export default class DeviceForm extends Component {
 DeviceForm.propTypes = {
   save: PropTypes.func.isRequired,
   update: PropTypes.func.isRequired,
-  device: PropTypes.object.isRequired
+  device: PropTypes.object.isRequired,
 }
