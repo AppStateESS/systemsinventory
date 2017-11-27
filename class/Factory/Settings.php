@@ -5,7 +5,7 @@ namespace systemsinventory\Factory;
 use systemsinventory\Resource\Settings as Resource;
 use systemsinventory\Resource\Department as DeptResource;
 use systemsinventory\Resource\Location as LocResource;
-
+use Canopy\Request;
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard
@@ -131,7 +131,7 @@ class Settings extends \phpws2\ResourceFactory
         return $data;
     }
 
-    public static function userPermissionsList($data, \Canopy\Request $request)
+    public static function userPermissionsList($data, Request $request)
     {
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('users');
@@ -194,7 +194,7 @@ class Settings extends \phpws2\ResourceFactory
         return $pager->getJson();
     }
 
-    public function saveLocation(\Request $request)
+    public function saveLocation(Request $request)
     {
         $resource = new LocResource;
         $vars = $request->getRequestVars();
@@ -211,7 +211,7 @@ class Settings extends \phpws2\ResourceFactory
         $resource->save();
     }
 
-    public function saveDepartment(\Request $request)
+    public function saveDepartment(Request $request)
     {
         $resource = new DeptResource;
         $vars = $request->getRequestVars();
@@ -230,7 +230,7 @@ class Settings extends \phpws2\ResourceFactory
         $resource->save();
     }
 
-    public function savePermissions(\Canopy\Request $request)
+    public function savePermissions(Request $request)
     {
         $vars = $request->getRequestVars();
         $users = $vars['users_multiselect'];
