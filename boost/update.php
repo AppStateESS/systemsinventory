@@ -9,7 +9,7 @@ function runDbMigration($fileName)
     }
 }
 
-function systemsinventory_update($content, $currentVersion)
+function systemsinventory_update(&$content, $currentVersion)
 {
     switch ($currentVersion) {
         case version_compare($currentVersion, '1.0.0', '<'):
@@ -30,6 +30,15 @@ function systemsinventory_update($content, $currentVersion)
 
         case version_compare($currentVersion, '1.1.0', '<'):
             runDbMigration('update_1_1_0.sql');
+
+        case version_compare($currentVersion, '1.2.0', '<'):
+            $content[] = <<<EOF
+<pre>
+1.2.0
+-----
+Overhaul of interfact and functionality.
+</pre>
+EOF;
     }
 
     return TRUE;
