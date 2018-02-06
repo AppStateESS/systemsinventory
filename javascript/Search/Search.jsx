@@ -248,9 +248,10 @@ export default class Search extends FormBase {
 
   reset() {
     let filters = this.state.filters
+    filters.systemType = ['all'],
     filters.department = 0
     filters.location = 0
-    filters.statusType = 0
+    filters.statusType = 2
     filters.physicalId = ''
     filters.macAddress = ''
     filters.purchaseDate = ''
