@@ -1,7 +1,5 @@
 sudo: false
-
 language: php
-
 php:
 - 7
 
