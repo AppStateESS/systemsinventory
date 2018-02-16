@@ -43,7 +43,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device->setStatus(3);
         self::saveResource($device);
     }
-    
+
     public function stolen(\Canopy\Request $request)
     {
         $device = new Resource;
@@ -526,10 +526,13 @@ class SystemDevice extends \phpws2\ResourceFactory
         if (empty($departments)) {
             $departments = self::getSystemDepartments();
         }
-        if (!isset($departments[$department_id])) {
-            throw new \Exception('Department not found');
+
+        foreach ($departments as $dept) {
+            if ($dept['id'] == $department_id) {
+                return $dept['display_name'];
+            }
         }
-        return $departments[$department_id]['display_name'];
+        throw new \Exception('Department not found or forbidden:' . $department_id);
     }
 
     public static function getSystemTypes()
@@ -646,10 +649,12 @@ class SystemDevice extends \phpws2\ResourceFactory
     {
         $restricted = self::currentUserRestricted() ? 'true' : 'false';
         $filter = self::getSearchFilterJson();
+        $deity = (int) \Current_User::isDeity();
         return <<<EOF
 <script>
     const restricted=$restricted;
-    const jsonFilters = $filter
+    const jsonFilters = $filter;
+    const deity = $deity;
 </script>
 EOF;
     }
