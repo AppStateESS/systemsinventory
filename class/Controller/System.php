@@ -12,6 +12,7 @@ use systemsinventory\Factory\React;
 use systemsinventory\Resource;
 
 require_once(PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/device_types.php');
+
 /**
  * @license http://opensource.org/licenses/lgpl-3.0.html
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
@@ -59,8 +60,8 @@ class System extends \phpws2\Http\Controller
 
     public function delete(\Canopy\Request $request)
     {
-        if (!\Current_User::allow('systemsinventory', 'edit')) {
-            return $this->permissionErrorView();
+        if (!\Current_User::isDeity()) {
+            throw new \Exception('No permission for device deletion');
         }
         $command = $request->shiftCommand();
         if (empty($command)) {
@@ -75,9 +76,6 @@ class System extends \phpws2\Http\Controller
                 break;
 
             case 'device':
-                if (!\Current_User::allow('systeminventory', 'edit')) {
-                    return $this->permissionErrorView();
-                }
                 SDFactory::deleteDevice($request->pullDeleteInteger('device_id'));
                 break;
         }
@@ -102,11 +100,11 @@ class System extends \phpws2\Http\Controller
             case 'unassign':
                 $factory->unassign($request);
                 break;
-            
+
             case 'surplus':
                 $factory->surplus($request);
                 break;
-            
+
             case 'stolen':
                 $factory->stolen($request);
                 break;
@@ -132,11 +130,11 @@ class System extends \phpws2\Http\Controller
         if (!\Current_User::allow('systemsinventory', 'edit')) {
             return $this->permissionErrorView();
         }
-        
+
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $device = $sdfactory->postDevice($request);
-        
+
         // Time clock doesn't have data outside the default device
         if ($device->getDeviceType() !== TIME_CLOCK) {
             $this->postSpecificDevice($request, $device);
