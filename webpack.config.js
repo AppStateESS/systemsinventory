@@ -20,6 +20,11 @@ module.exports = {
       proxy: 'localhost/phpwebsite'
     }),
   ],
+  resolve: {
+    extensions: [
+      '.js', '.jsx',
+    ],
+  },
   module: {
     rules: [
       {

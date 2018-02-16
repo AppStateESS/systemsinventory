@@ -9,7 +9,19 @@ module.exports = {
     path: setup.path.join(setup.APP_DIR, "build"),
     filename: "[name].js"
   },
-  plugins: [new webpack.optimize.CommonsChunkPlugin({name: 'vendor', filename: 'vendor.js'})],
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: 'vendor.js' }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: true
+      }
+    })
+  ],
   module: {
     rules: [
       {
@@ -31,16 +43,9 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: true
-      }
-    })
-  ]
+  resolve: {
+    extensions: [
+      '.js', '.jsx',
+    ],
+  },
 }
