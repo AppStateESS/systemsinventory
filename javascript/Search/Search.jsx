@@ -16,7 +16,7 @@ import FormBase from '../Shared/FormBase.jsx'
 import SurplusDevice from './SurplusDevice.jsx'
 import StolenDevice from './StolenDevice.jsx'
 
-/* global $, jsonFilters, restricted */
+/* global $, jsonFilters, restricted, deity */
 
 export default class Search extends FormBase {
   constructor() {
@@ -468,6 +468,7 @@ export default class Search extends FormBase {
         </div>
         <Listing
           showOverlay={this.showOverlay}
+          deity={deity}
           rows={this.state.listing}
           update={this.updateFilter}
           updateSelect={this.updateSelectFilter}

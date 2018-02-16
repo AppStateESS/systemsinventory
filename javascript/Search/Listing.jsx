@@ -110,13 +110,11 @@ export default class Listing extends Component {
         </th>)
         break
 
-
       case 1:
         this.columnNumber = 3
         headerColumns.push(<th className={this.highlight(filters.model.length > 0)} key="h5">Model&nbsp;&nbsp;<span>{modelSort}&nbsp;{modelSearch}</span>
         </th>)
         break
-
 
       case 2:
         this.columnNumber = 6
@@ -129,7 +127,6 @@ export default class Listing extends Component {
         headerColumns.push(<th className={this.highlight(filters.department > 0)} key="h8">Department&nbsp;&nbsp;<span>{departmentSort}&nbsp;{departmentSearch}</span>
         </th>)
         break
-
 
       case 3:
         this.columnNumber = 3
@@ -155,6 +152,7 @@ export default class Listing extends Component {
       columnHeader = this.columnHeader()
       rows = this.props.rows.map(function (val, key) {
         return <DeviceRow
+          deity={this.props.deity}
           statusType={this.props.filters.statusType}
           showOverlay={this.props.showOverlay}
           value={val}
@@ -184,6 +182,7 @@ export default class Listing extends Component {
 }
 
 Listing.propTypes = {
+  deity: PropTypes.number,
   rows: PropTypes.array,
   showOverlay: PropTypes.func,
   filters: PropTypes.object,

@@ -66,7 +66,7 @@ export default class DeviceRow extends Component {
       location_name,
       device_type_id,
       purchase_date,
-      status,
+      status
     } = this.props.value
     let assign
     let editAssign
@@ -107,9 +107,24 @@ export default class DeviceRow extends Component {
       </li>
     }
 
-    const red = {
-      color: 'red'
+    let separator
+    let deleteDevice
+    if (this.props.deity == 1) {
+      const red = {
+        color: 'red'
+      }
+      separator = <li role="separator" className="divider"></li>
+      deleteDevice = (
+        <li>
+          <a
+            onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
+            style={red}
+            className="pointer">
+            <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
+        </li>
+      )
     }
+
     const editButton = (
       <div
         className="dropdown"
@@ -131,14 +146,9 @@ export default class DeviceRow extends Component {
           {assign}
           {surplus}
           {stolen}
-          <li role="separator" className="divider"></li>
-          <li>
-            <a
-              onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
-              style={red}
-              className="pointer">
-              <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
-          </li>
+          {separator}
+          {deleteDevice}
+
         </ul>
       </div>
     )
@@ -186,6 +196,7 @@ export default class DeviceRow extends Component {
 
 DeviceRow.propTypes = {
   value: PropTypes.object,
+  deity: PropTypes.number,
   showOverlay: PropTypes.func.isRequired,
-  statusType: PropTypes.number.isRequired
+  statusType: PropTypes.number.isRequired,
 }
