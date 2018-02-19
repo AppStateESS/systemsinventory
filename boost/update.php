@@ -39,10 +39,10 @@ function systemsinventory_update(&$content, $currentVersion)
 Overhaul of interfact and functionality.
 </pre>
 EOF;
-        case version_compare($currentVersion, '1.2.1', '<'):
+        case version_compare($currentVersion, '1.2.5', '<'):
             $content[] = <<<EOF
 <pre>
-1.2.1
+1.2.5
 -----
 + Fixed permission issues with restricted users
 + Removed delete permission from normal users. Deity only.
