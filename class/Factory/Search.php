@@ -196,6 +196,8 @@ class Search extends \phpws2\ResourceFactory
                     $system_table->addOrderBy('purchase_date', $direction);
                     break;
             }
+        } else {
+            $system_table->addOrderBy('physical_id', 'asc');
         }
     }
 
