@@ -184,7 +184,7 @@ export default class DeviceForm extends Component {
   }
 
   save() {
-    if (Device.checkForErrors(this.props.device, this.errors)) {
+    if (Device.checkForErrors(this.props.device, this.errors, 0)) {
       this.props.save(this.props.device)
     } else {
       const message = 'Please complete all required fields'
