@@ -35,10 +35,10 @@ export default class TooltipSearch extends Component {
           onChange={this.update.bind(this)}/>
         <span className="input-group-btn">
           <button
-            className="btn btn-danger"
+            className="btn btn-info"
             type="button"
             onClick={this.props.change.bind(null, '')}>
-            <i className="fa fa-times"></i>
+            <i className="fa fa-eraser"></i>
           </button>
         </span>
       </div>
