@@ -475,6 +475,7 @@ export default class Search extends FormBase {
           filters={this.state.filters}
           toggleSort={this.toggleSort}
           options={jsonFilters}
+          reset={this.reset}
           sort={this.state.sort}/> {moreButtons}
       </div>
     )
