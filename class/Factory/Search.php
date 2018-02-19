@@ -14,6 +14,15 @@ class Search extends \phpws2\ResourceFactory
 {
 
     public $offset = 0;
+    /**
+     *  0 = all devices
+     *  1 = Unassigned
+     *  2 = Assigned
+     *  3 = Surplus
+     *  4 = Lost/Stolen
+     * @var integer
+     */
+    
     public $status_type = 0;
 
     public function getDevices($request)
@@ -95,15 +104,15 @@ class Search extends \phpws2\ResourceFactory
         }
 
         if (!empty($physical_id)) {
-            $tbl->addFieldConditional('physical_id', "%$physical_id%", 'like');
+            $tbl->addFieldConditional('physical_id', "%$physical_id%", 'ilike');
         }
 
         if (!empty($model)) {
-            $tbl->addFieldConditional('model', "%$model%", 'like');
+            $tbl->addFieldConditional('model', "%$model%", 'ilike');
         }
 
         if (!empty($username)) {
-            $tbl->addFieldConditional('username', "%$username%", 'LIKE');
+            $tbl->addFieldConditional('username', "%$username%", 'ilike');
         }
 
         if (!empty($purchase_date)) {
@@ -121,8 +130,8 @@ class Search extends \phpws2\ResourceFactory
         }
 
         if (!empty($search_vars['mac'])) {
-            $c1 = $tbl->getFieldConditional('mac', "%$mac%", 'like');
-            $c2 = $tbl->getFieldConditional('mac2', "%$mac%", 'like');
+            $c1 = $tbl->getFieldConditional('mac', "%$mac%", 'ilike');
+            $c2 = $tbl->getFieldConditional('mac2', "%$mac%", 'ilike');
             $c3 = $db->createConditional($c1, $c2, 'or');
             $db->addConditional($c3);
         }
