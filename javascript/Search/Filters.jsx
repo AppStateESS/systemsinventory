@@ -1,6 +1,5 @@
 'use strict'
 import React, {Component} from 'react'
-import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import InputField from '../FormMixin/InputField.jsx'
 import PropTypes from 'prop-types'
 import moment from 'moment'
@@ -24,7 +23,6 @@ export default class Filters extends Component {
 
   update(varname, e) {
     this.props.update(varname, e.target.value)
-    this.forceUpdate()
   }
 
   formatDate(datenum) {
