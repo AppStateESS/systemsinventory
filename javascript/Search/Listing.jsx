@@ -144,12 +144,10 @@ export default class Listing extends Component {
   getTable() {
     let table
     let rows
-    let columnHeader
-
+    const columnHeader = this.columnHeader()
     if (this.props.rows === null || this.props.rows.length === 0) {
-      return <p>No rows found. Change your search criteria or <a className="pointer" onClick={this.props.reset}>reset your filters</a>.</p>
+      rows = <tr><td colSpan={this.columnNumber}>No rows found. Change your search criteria or <a className="pointer" onClick={this.props.reset}>reset your filters</a>.</td></tr>
     } else {
-      columnHeader = this.columnHeader()
       rows = this.props.rows.map(function (val, key) {
         return <DeviceRow
           deity={this.props.deity}
@@ -158,18 +156,17 @@ export default class Listing extends Component {
           value={val}
           key={key}/>
       }.bind(this))
-
-      return (
-        <div>
-          <table className="table table-striped">
-            <tbody>
-              {columnHeader}
-              {rows}
-            </tbody>
-          </table>
-        </div>
-      )
     }
+    return (
+      <div>
+        <table className="table table-striped">
+          <tbody>
+            {columnHeader}
+            {rows}
+          </tbody>
+        </table>
+      </div>
+    )
   }
 
   render() {
