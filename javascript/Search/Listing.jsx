@@ -147,7 +147,7 @@ export default class Listing extends Component {
     let columnHeader
 
     if (this.props.rows === null || this.props.rows.length === 0) {
-      return <p>No rows found. Change your search criteria.</p>
+      return <p>No rows found. Change your search criteria or <a className="pointer" onClick={this.props.reset}>reset your filters</a>.</p>
     } else {
       columnHeader = this.columnHeader()
       rows = this.props.rows.map(function (val, key) {
@@ -184,6 +184,7 @@ export default class Listing extends Component {
 Listing.propTypes = {
   deity: PropTypes.number,
   rows: PropTypes.array,
+  reset: PropTypes.func,
   showOverlay: PropTypes.func,
   filters: PropTypes.object,
   toggleSort: PropTypes.func,
