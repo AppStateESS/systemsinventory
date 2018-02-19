@@ -46,7 +46,8 @@ EOF;
 -----
 + Fixed permission issues with restricted users
 + Removed delete permission from normal users. Deity only.
-+ Fixed error messages and checks in unassigned and assign forms.                
++ Fixed error messages and checks in unassigned and assign forms.     
++ Fixed null search locking out ui.
 </pre>
 EOF;
     }
