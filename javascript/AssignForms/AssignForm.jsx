@@ -86,14 +86,12 @@ export default class AssignForm extends Base {
 
     let statusTypeError
     let unassignedErrors
-
     if (this.state.unassignedErrors) {
       unassignedErrors = (
         <div className="alert alert-danger text-center">
           <div>
             <i className="fa fa-exclamation-circle marginRight"></i>
-            <strong>Notice!</strong>&nbsp;This device can not be assigned until&nbsp;
-            <strong>ALL</strong>&nbsp;device fields are complete.
+            <strong>Notice!</strong>&nbsp;This device can not be assigned until&nbsp;<strong>ALL</strong>&nbsp;device fields are complete.
           </div>
           <div className="marginTop">
             <button className="btn btn-default" onClick={this.props.edit}>Edit the device and fill in all required fields</button>
@@ -144,7 +142,7 @@ export default class AssignForm extends Base {
           <button
             className="marginTop btn btn-lg btn-primary"
             onClick={this.props.assign}
-            disabled={!Device.checkForErrors(device, this.errors)}>Assign device</button>
+            disabled={!Device.checkForErrors(device, this.errors, device.status)}>Assign device</button>
         </div>
       </div>
     )
