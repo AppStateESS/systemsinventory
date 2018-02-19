@@ -69,19 +69,18 @@ export default class Device {
     return dataExists
   }
 
-  static collectRequired(device, status = null) {
+  static collectRequired(device, status) {
     const allRequired = required.allRequired
     const {unassigned, assigned, user,} = required[this.getType(device.device_type_id)]
-    if (status === null) {
-      status = device.status
-    }
+    
     let errorChecks
     errorChecks = allRequired.concat(unassigned)
-    if (status == 1 || status == 2) {
+    if (status == 2) {
       errorChecks = errorChecks.concat(assigned)
-      if (status == 1) {
-        errorChecks = errorChecks.concat(user)
-      }
+    }
+    if (status == 1) {
+      errorChecks = errorChecks.concat(assigned)
+      errorChecks = errorChecks.concat(user)
     }
     return errorChecks
   }
@@ -90,7 +89,7 @@ export default class Device {
     return required[this.getType(device.device_type_id)].userAssigned
   }
 
-  static checkForErrors(device, errors, status = null) {
+  static checkForErrors(device, errors, status) {
     const errorChecks = this.collectRequired(device, status)
     let errorFound = false
     let foundIndex = -1
