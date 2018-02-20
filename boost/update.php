@@ -50,6 +50,14 @@ EOF;
 + Fixed null search locking out ui.
 </pre>
 EOF;
+        case version_compare($currentVersion, '1.2.6', '<'):
+            $content[] = <<<EOF
+<pre>
+1.2.6
+-----
++ Fixed delete
+</pre>
+EOF;
     }
 
     return TRUE;
