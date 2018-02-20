@@ -326,9 +326,18 @@ class SystemDevice extends \phpws2\ResourceFactory
                 }
             }
         }
-        if (!SystemDevice::deleteResource($systems_device)) {
+        self::deleteDeviceLog($systems_device->getId());
+        if (!parent::deleteResource($systems_device)) {
             throw new \Exception('Cannot delete resource. Query failed');
         }
+    }
+
+    private static function deleteDeviceLog($id)
+    {
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('systems_log');
+        $tbl->addFieldConditional('device_id', $id);
+        return $db->delete();
     }
 
     public static function markDeviceInventoried($device_id)
