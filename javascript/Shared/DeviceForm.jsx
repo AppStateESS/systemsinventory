@@ -143,7 +143,7 @@ export default class DeviceForm extends Component {
           className="btn btn-danger"
           title="Delete profile"
           onClick={this.deleteProfile}>
-          <i className="fa fa-trash-o"></i>
+          <i className="far fa-trash-alt"></i>
         </button>
       )
     }

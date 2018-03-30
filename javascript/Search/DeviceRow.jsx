@@ -120,7 +120,7 @@ export default class DeviceRow extends Component {
             onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
             style={red}
             className="pointer">
-            <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
+            <i className="far fa-trash-alt"></i>&nbsp;Delete</a>
         </li>
       )
     }
