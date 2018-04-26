@@ -25,7 +25,7 @@ class PC extends \phpws2\Resource
     protected $dual_monitor;
     protected $smart_room;
     protected $is_server;
-    protected $is_pc;
+    protected $is_laptop;
     protected $table = 'systems_pc';
 
     public function __construct()
