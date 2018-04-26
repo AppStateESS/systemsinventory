@@ -73,8 +73,8 @@ CREATE TABLE systems_pc (
        smart_room smallint default 0,
        check_in smallint default 0,
        is_server smallint default 0,
-       is_laptop smallint default 0,
        docking_stand smallint default 0,
+       is_laptop smallint default 0,
        PRIMARY KEY (id)
 );
 
