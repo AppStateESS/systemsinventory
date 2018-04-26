@@ -154,6 +154,7 @@ class System extends \phpws2\Http\Controller
     {
         $specific_device = SDFactory::loadSpecificByDevice($device);
         switch ($device->getDeviceType()) {
+            case LAPTOP;
             case SERVER:
             case PC:
                 $pcfactory = new PCFactory;

@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import PC from '../DeviceForms/PC.jsx'
+import Laptop from '../DeviceForms/Laptop.jsx'
 import Ipad from '../DeviceForms/Ipad.jsx'
 import Printer from '../DeviceForms/Printer.jsx'
 import Camera from '../DeviceForms/Camera.jsx'
@@ -227,6 +228,13 @@ export default class DeviceForm extends Component {
 
       case 7:
         return <Clock
+          device={device}
+          update={this.props.update}
+          options={jsonFilters}
+          errors={this.errors}/>
+
+      case 8:
+        return <Laptop
           device={device}
           update={this.props.update}
           options={jsonFilters}

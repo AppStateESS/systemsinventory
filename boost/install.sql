@@ -64,15 +64,16 @@ CREATE TABLE systems_pc (
        server_type character varying,
        os character varying,
        battery_backup smallint default 0,
-       redundant_backup smallint default 0,       
-       touch_screen smallint default 0,       
-       dual_monitor smallint default 0,       
+       redundant_backup smallint default 0,
+       touch_screen smallint default 0,
+       dual_monitor smallint default 0,
        system_usage character varying,
        rotation smallint default 0,
        stand smallint default 0,
        smart_room smallint default 0,
        check_in smallint default 0,
        is_server smallint default 0,
+       is_laptop smallint default 0,
        docking_stand smallint default 0,
        PRIMARY KEY (id)
 );
@@ -202,4 +203,3 @@ insert into systems_device_type ("id","description") values (6,'digital sign');
 insert into systems_device_type ("id","description") values (7,'time clock');
 
 COMMIT;
-       

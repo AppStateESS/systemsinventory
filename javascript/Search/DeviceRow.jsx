@@ -13,6 +13,9 @@ export default class DeviceRow extends Component {
 
   deviceType(device_id) {
     switch (device_id) {
+      case 8:
+        return <i className="fa fa-laptop"></i>
+        //return 'Laptop'
       case 1:
       case 2:
         return <i className="fa fa-desktop"></i>

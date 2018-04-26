@@ -68,6 +68,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             if ($device->isPC() && $request->pullPostInteger('is_server', true)) {
                 $device->setDeviceType(SERVER);
             }
+            else if ($device->isPC() && $request->pullPostInteger('is_laptop', true)) {
+              $device->setDeviceType(LAPTOP);
+            }
         }
 
         $notes = $request->pullPostString('notes', true);
@@ -146,6 +149,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $special_device = self::loadSpecificByDevice($device);
         switch ($device->getDeviceType()) {
             case PC:
+            case LAPTOP:
             case SERVER:
                 $factory = new PC;
                 break;
@@ -278,6 +282,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         switch ($device->getDeviceType()) {
             case '1':
             case '2':
+            case '8':
                 $specific_device = new PCResource;
                 break;
             case '3':
@@ -441,6 +446,7 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getDeviceAttributes($type_id)
     {
         $systems_pc = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
+        $systems_laptop = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
         $systems_server = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
         $systems_ipad = array("device_id" => NULL, "generation" => "Generation", "apple_id" => "Apple ID");
         $systems_printer = array("device_id" => NULL, "toner_cartridge" => "Toner Cartridge", "color" => "Color", "network" => "Network", "duplex" => "Duplex");
@@ -467,6 +473,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '7':
                 $attr = $systems_timeclock;
                 break;
+            case '8';
+                $attr = $systems_laptop;
+                break;
             default:
                 $attr = $systems_pc;
         }
@@ -476,8 +485,9 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getSystemTypeTable($type_id)
     {
         switch ($type_id) {
-            case '1':
-            case '2':
+            case '1': // PC
+            case '2': // Server
+            case '8'; // Laptop
                 $table = 'systems_pc';
                 break;
             case '3':
@@ -554,7 +564,18 @@ class SystemDevice extends \phpws2\ResourceFactory
             $tbl->addField('description');
             $result = $db->select();
             foreach ($result as $value) {
-                $system_types[$value['id']] = $value;
+                // If device is Laptop insert into the list in the second position.
+                if ($value['id'] == 8) {
+                  // Moves Laptop to the front of the list.
+                  array_unshift($system_types, $value);
+                  // Then moves PC in front of laptop.
+                  array_unshift($system_types, $system_types[1]);
+                  // Removes the duplicate of PC.
+                  unset($system_types[2]);
+                }
+                else {
+                  $system_types[$value['id']] = $value;
+                }
             }
         }
         if (empty($system_types)) {

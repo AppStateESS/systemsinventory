@@ -25,6 +25,7 @@ class PC extends \phpws2\Resource
     protected $dual_monitor;
     protected $smart_room;
     protected $is_server;
+    protected $is_pc;
     protected $table = 'systems_pc';
 
     public function __construct()
@@ -46,6 +47,7 @@ class PC extends \phpws2\Resource
         $this->system_usage = new \phpws2\Variable\IntegerVar(0, 'system_usage');
         $this->system_usage->allowNull(true);
         $this->is_server = new \phpws2\Variable\BooleanVar(0, 'is_server');
+        $this->is_laptop = new \phpws2\Variable\BooleanVar(0, 'is_laptop');
         $this->battery_backup = new \phpws2\Variable\BooleanVar(false,
                 'battery_backup');
         $this->redundant_backup = new \phpws2\Variable\BooleanVar(false,
@@ -147,5 +149,10 @@ class PC extends \phpws2\Resource
     {
         $this->is_server->set($server);
     }
-    
+
+    public function setIsLaptop($laptop)
+    {
+      $this->is_laptop->set($laptop);
+    }
+
 }

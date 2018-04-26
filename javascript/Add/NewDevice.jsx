@@ -51,6 +51,9 @@ export default class NewDevice extends Component {
       }, {
         value: 7,
         label: 'Clock'
+      }, {
+        value: 8,
+        label: 'Laptop'
       }
     ]
     let buttonClass

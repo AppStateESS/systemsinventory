@@ -22,13 +22,14 @@ class PC extends SystemDevice
         $pc->setStand((bool)$request->pullPostBoolean('stand', true));
         $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
         $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
+        $pc->setIsLaptop((bool)$request->pullPostBoolean('is_laptop', true));
 
         self::saveResource($pc);
     }
 
     public static function assignDevice(Resource $sdevice, $device, $request)
     {
-        // if the status is 2, device is assigned to a LOCATION and we can 
+        // if the status is 2, device is assigned to a LOCATION and we can
         // forgive missing names
         $device->setFirstName($request->pullPatchString('first_name'), $device->getStatus() == 2);
         $device->setLastName($request->pullPatchString('last_name', $device->getStatus() == 2));

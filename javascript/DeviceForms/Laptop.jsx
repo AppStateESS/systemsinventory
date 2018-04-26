@@ -6,11 +6,10 @@ import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
 import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import empty from '../Mixin/Empty.js'
 
-export default class PC extends Base {
+export default class Laptop extends Base {
   constructor(props) {
     super(props)
     this.deviceType = 'pc'
-    this.device.is_laptop = false;
   }
 
   render() {
@@ -20,6 +19,9 @@ export default class PC extends Base {
         <div className="row">
           <div className="col-sm-6">
             {this.inputField('mac', 'MAC address (wired)', false, 'XX:XX:XX:XX:XX:XX')}
+          </div>
+          <div className="col-sm-6">
+            {this.inputField('mac2', 'Secondary MAC address', false, 'XX:XX:XX:XX:XX:XX')}
           </div>
         </div>
         <div className="row">
@@ -54,7 +56,7 @@ export default class PC extends Base {
             {this.inputField('hd_size', 'Hard drive', false, 'GB or TB')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('primary_monitor', 'Primary monitor size')}
+            {this.inputField('primary_monitor', 'Screen size')}
           </div>
         </div>
         <div className="row">
@@ -85,24 +87,6 @@ export default class PC extends Base {
             </div>
           </div>
           <div className="col-sm-4">
-
-            <div>
-              <BigCheckbox
-                checked={device.is_server === 1}
-                handle={update.bind(null, 'is_server', device.is_server === 1
-                ? 0
-                : 1)}
-                label="Is server"/>
-            </div>
-            <InputField
-              disabled={empty(device.is_server)}
-              name="server_type"
-              placeholder="2u, 4u, towers, etc."
-              value={device.server_type}
-              label="Server type"
-              change={update.bind(null, 'server_type')}/>
-          </div>
-          <div className="col-sm-4">
             <div>
               <BigCheckbox
                 checked={device.touch_screen === 1}
@@ -110,6 +94,14 @@ export default class PC extends Base {
                 ? 0
                 : 1)}
                 label="Touch screen"/>
+            </div>
+            <div>
+              <BigCheckbox
+                checked={device.stand === 1}
+                handle={update.bind(null, 'stand', device.stand === 1
+                ? 0
+                : 1)}
+                label="Docking stand"/>
             </div>
           </div>
         </div>

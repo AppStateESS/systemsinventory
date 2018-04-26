@@ -4,6 +4,7 @@ export default class Device {
     switch (val) {
       case 1:
       case 2:
+      case 8:
         return 'pc'
       case 3:
         return 'ipad'
@@ -19,7 +20,7 @@ export default class Device {
   }
 
   static isPc(device) {
-    return device.device_type_id === 1 || device.device_type_id === 2
+    return device.device_type_id === 1 || device.device_type_id === 2 || device.device_type_id === 8
   }
 
   static isIpad(device) {
