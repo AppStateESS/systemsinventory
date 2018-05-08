@@ -19,7 +19,7 @@ const ButtonGroup = ({
 }) => {
   let buttonList = buttons.map(function (value, key) {
     const buttonColor = 'btn-' + activeColor
-    let cn = classnames('btn', 'btn-default')
+    let cn = classnames('btn', 'btn-outline-dark')
     if (match !== null && match !== undefined) {
       if (match.constructor === Array && (match.indexOf(value.value) !== -1)) {
         cn = classnames('btn', 'active', buttonColor)

@@ -45,9 +45,9 @@ export default class Shared extends Base {
     let buttonClass
 
     let deviceButtons = deviceList.map((value, key) => {
-      buttonClass = "btn btn-default"
+      buttonClass = "btn btn-outline-dark"
       if (this.props.device.device_type_id == value.value) {
-        buttonClass = "btn btn-default active"
+        buttonClass = "btn btn-outline-dark active"
       }
       return (
         <button

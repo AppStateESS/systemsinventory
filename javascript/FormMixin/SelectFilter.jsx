@@ -28,7 +28,7 @@ export default class SelectFilter extends Component {
         </span>
       )
       if (this.state.error) {
-        error = <div className="label label-danger">{`Select an option for ${this.props.label}`}</div>
+        error = <div className="badge badge-danger">{`Select an option for ${this.props.label}`}</div>
       }
     }
 

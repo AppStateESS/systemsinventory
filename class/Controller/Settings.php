@@ -91,7 +91,7 @@ class Settings extends \phpws2\Http\Controller {
         $tbl->addField('description');
         $tbl->addField('active');
         $tbl->addField('id');
-        $row['action'] = '<button id="edit-department" type="button" class="btn btn-sm btn-default" onclick="editDepartment('.$row['id'].')" >Edit</button>';
+        $row['action'] = '<button id="edit-department" type="button" class="btn btn-sm btn-outline-dark" onclick="editDepartment('.$row['id'].')" >Edit</button>';
         if($row['active'])
             $row['dept_active'] = 'Yes';
         else
@@ -108,7 +108,7 @@ class Settings extends \phpws2\Http\Controller {
     }
 
     public static function formatLocationList($row){
-        $row['action'] = '<button id="edit-location" type="button" class="btn btn-sm btn-default" onclick="editLocation('.$row['id'].')" >Edit</button>';
+        $row['action'] = '<button id="edit-location" type="button" class="btn btn-sm btn-outline-dark" onclick="editLocation('.$row['id'].')" >Edit</button>';
         if($row['active'])
             $row['location_active'] = 'Yes';
         else

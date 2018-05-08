@@ -30,7 +30,7 @@ export default class DeviceRow extends Component {
         return <i className="fa fa-map-signs"></i>
         //return 'Digital sign'
       case 7:
-        return <i className="fa fa-clock-o"></i>
+        return <i className="far fa-clock"></i>
         //return 'Time clock'
       default:
         'Unknown'
@@ -90,14 +90,14 @@ export default class DeviceRow extends Component {
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'stolen')}
           className="pointer">
-          <i className="fa fa-thumbs-o-down"></i>&nbsp;Lost/Stolen</a>
+          <i className="far fa-thumbs-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
       editAssign = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
           className="pointer">
-          <i className="fa fa-pencil"></i>&nbsp;Edit assignment</a>
+          <i className="fas fa-pencil-alt"></i>&nbsp;Edit assignment</a>
       </li>
       assign = <li>
         <a
@@ -132,7 +132,7 @@ export default class DeviceRow extends Component {
           e.stopPropagation()
         }}>
         <i
-          className="fa fa-gear fa-lg dropdown-toggle pointer"
+          className="fas fa-cog fa-lg dropdown-toggle pointer"
           id="dropdownMenu1"
           data-toggle="dropdown"></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">

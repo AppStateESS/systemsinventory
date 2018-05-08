@@ -335,8 +335,8 @@ export default class Search extends FormBase {
     if (this.state.more) {
       moreButtons = (
         <div>
-          <button className="btn btn-default" onClick={this.incrementOffset}>Show more</button>
-          <button className="btn btn-default" onClick={this.maxOffset}>Show all</button>
+          <button className="btn btn-outline-dark" onClick={this.incrementOffset}>Show more</button>
+          <button className="btn btn-outline-dark" onClick={this.maxOffset}>Show all</button>
         </div>
       )
     }
@@ -422,7 +422,7 @@ export default class Search extends FormBase {
         <Overlay close={this.closeOverlay} title={overlayTitle}>
           {formType}
           <div className="text-center marginTop">
-            <button className="btn btn-lg btn-default" onClick={this.closeOverlay}>
+            <button className="btn btn-lg btn-outline-dark" onClick={this.closeOverlay}>
               <i className="fa fa-times"></i>&nbsp;Close</button>
           </div>
         </Overlay>
@@ -460,7 +460,7 @@ export default class Search extends FormBase {
                     <i className="fa fa-download"></i>&nbsp; Download</button>
                 : null
             }
-            <button className="btn btn-default marginLeft" onClick={this.reset}>Reset filters</button>
+            <button className="btn btn-outline-dark marginLeft" onClick={this.reset}>Reset filters</button>
           </div>
         </div>
         <div className="alert alert-info">

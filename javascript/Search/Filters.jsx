@@ -49,8 +49,8 @@ export default class Filters extends Component {
             label="IP address"
             change={this.update.bind(this, 'ipAddress')}/>
         </div>
-        <button className="btn btn-default" onClick={this.props.reset}>Reset</button>
-        <button className="btn btn-default" onClick={this.props.close}>Close</button>
+        <button className="btn btn-outline-dark" onClick={this.props.reset}>Reset</button>
+        <button className="btn btn-outline-dark" onClick={this.props.close}>Close</button>
       </div>
     )
   }

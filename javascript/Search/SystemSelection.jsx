@@ -12,12 +12,12 @@ export default class SystemSelection extends Component {
 
   render() {
     let cn
-    const allCn  = this.props.active[0] === 'all' ? 'btn btn-primary' : 'btn btn-default'
+    const allCn  = this.props.active[0] === 'all' ? 'btn btn-primary' : 'btn btn-outline-dark'
     let buttons = this.props.jsonFilters.system_types.map(function (value, key) {
       if ($.inArray(value.value, this.props.active) > -1) {
         cn = 'btn btn-primary'
       } else {
-        cn = 'btn btn-default'
+        cn = 'btn btn-outline-dark'
       }
 
       return <button key={key}

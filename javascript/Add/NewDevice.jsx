@@ -55,9 +55,9 @@ export default class NewDevice extends Component {
     ]
     let buttonClass
     let deviceButtons = deviceList.map(function (value, key) {
-      buttonClass = "btn btn-default"
+      buttonClass = "btn btn-outline-dark"
       if (this.state.device.device_type_id == value.value) {
-        buttonClass = "btn btn-default active"
+        buttonClass = "btn btn-outline-dark active"
       }
       return (
         <button

@@ -94,7 +94,7 @@ export default class AssignForm extends Base {
             <strong>Notice!</strong>&nbsp;This device can not be assigned until&nbsp;<strong>ALL</strong>&nbsp;device fields are complete.
           </div>
           <div className="marginTop">
-            <button className="btn btn-default" onClick={this.props.edit}>Edit the device and fill in all required fields</button>
+            <button className="btn btn-outline-dark" onClick={this.props.edit}>Edit the device and fill in all required fields</button>
           </div>
         </div>
       )

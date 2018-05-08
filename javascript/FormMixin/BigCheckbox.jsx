@@ -34,8 +34,8 @@ export default class BigCheckbox extends Component {
 
     return (
       <div onClick={this.handle} style={point} className="big-checkbox">
-        <div className="fa-stack fa-lg pull-left">
-          <i className="fa fa-square-o fa-stack-2x" style={mute}></i>
+        <div className="fa-stack fa-lg float-left">
+          <i className="far fa-square fa-stack-2x" style={mute}></i>
           {this.empty(this.props.checked) ? null :
           <i className="fa fa-check text-success fa-stack-2x"></i>}
         </div>&nbsp;
