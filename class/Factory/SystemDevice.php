@@ -564,18 +564,7 @@ class SystemDevice extends \phpws2\ResourceFactory
             $tbl->addField('description');
             $result = $db->select();
             foreach ($result as $value) {
-                // If device is Laptop insert into the list in the second position.
-                if ($value['id'] == 8) {
-                  // Moves Laptop to the front of the list.
-                  array_unshift($system_types, $value);
-                  // Then moves PC in front of laptop.
-                  array_unshift($system_types, $system_types[1]);
-                  // Removes the duplicate of PC.
-                  unset($system_types[2]);
-                }
-                else {
                   $system_types[$value['id']] = $value;
-                }
             }
         }
         if (empty($system_types)) {

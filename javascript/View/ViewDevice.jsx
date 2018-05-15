@@ -22,6 +22,7 @@ export default class ViewDevice extends Component {
     switch (device.device_type_id) {
       case 1:
       case 2:
+      case 8:
         return <PC device={device}/>
       case 3:
         return <Ipad device={device}/>

@@ -10,7 +10,6 @@ export default class PC extends Base {
   constructor(props) {
     super(props)
     this.deviceType = 'pc'
-    this.device.is_laptop = false;
   }
 
   render() {
