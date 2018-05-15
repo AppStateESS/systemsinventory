@@ -39,6 +39,7 @@ export default class AssignForm extends Base {
     switch (device.device_type_id) {
       case 1:
       case 2:
+      case 8:
         assignForm = <PC {...this.props}/>
         break
 
