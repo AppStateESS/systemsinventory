@@ -139,7 +139,7 @@ class SystemDevice extends \phpws2\Resource
     {
         return $this->device_type_id->get();
     }
-    
+
     public function getStatus()
     {
         return $this->status->get();
@@ -243,7 +243,7 @@ class SystemDevice extends \phpws2\Resource
     {
         $this->status->set($status);
     }
-    
+
     public function getProfileName()
     {
         return $this->profile_name->get();
@@ -252,6 +252,11 @@ class SystemDevice extends \phpws2\Resource
     public function isPC()
     {
         return $this->device_type_id->get() === PC;
+    }
+
+    public function isLaptop()
+    {
+        return $this->device_type_id->get() === LAPTOP; 
     }
 
     public function isPrinter()

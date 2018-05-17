@@ -73,7 +73,27 @@ CREATE TABLE systems_pc (
        smart_room smallint default 0,
        check_in smallint default 0,
        is_server smallint default 0,
-       is_laptop smallint default 0,
+       PRIMARY KEY (id)
+);
+
+CREATE TABLE systems_laptop (
+       id    serial,
+       device_id integer REFERENCES systems_device(id),
+       primary_monitor character varying,
+       secondary_monitor character varying,
+       video_card character varying,
+       server_type character varying,
+       os character varying,
+       battery_backup smallint default 0,
+       redundant_backup smallint default 0,
+       touch_screen smallint default 0,
+       dual_monitor smallint default 0,
+       system_usage character varying,
+       rotation smallint default 0,
+       stand smallint default 0,
+       smart_room smallint default 0,
+       check_in smallint default 0,
+       is_server smallint default 0,
        PRIMARY KEY (id)
 );
 
@@ -194,6 +214,7 @@ insert into systems_department ("display_name","parent_department") values ('Out
 insert into systems_department ("display_name","parent_department") values ('Wellness Center',1);
 
 insert into systems_device_type ("id","description") values (1,'pc');
+insert into systems_device_type ("id", "description") values (8, 'laptop');
 insert into systems_device_type ("id","description") values (2,'server');
 insert into systems_device_type ("id","description") values (3,'ipad');
 insert into systems_device_type ("id","description") values (4,'printer');

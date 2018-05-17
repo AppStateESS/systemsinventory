@@ -9,7 +9,7 @@ import empty from '../Mixin/Empty.js'
 export default class Laptop extends Base {
   constructor(props) {
     super(props)
-    this.deviceType = 'pc'
+    this.deviceType = 'laptop'
   }
 
   render() {

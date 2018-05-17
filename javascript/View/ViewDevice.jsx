@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Assigned from './Assigned.jsx'
 import PC from './PC.jsx'
+import Laptop from './Laptop.jsx'
 import Ipad from './Ipad.jsx'
 import Printer from './Printer.jsx'
 import Camera from './Camera.jsx'
@@ -22,7 +23,6 @@ export default class ViewDevice extends Component {
     switch (device.device_type_id) {
       case 1:
       case 2:
-      case 8:
         return <PC device={device}/>
       case 3:
         return <Ipad device={device}/>
@@ -34,6 +34,8 @@ export default class ViewDevice extends Component {
         return <DigitalSign device={device}/>
       case 7:
         return <TimeClock device={device}/>
+      case 8:
+        return <Laptop device={device}/>
     }
   }
 

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Base from '../DeviceForms/Base.jsx'
 import Device from '../Mixin/Device.js'
 import PC from './PC.jsx'
+import Laptop from './Laptop.jsx'
 import Camera from './Camera.jsx'
 import Clock from './Clock.jsx'
 import Ipad from './Ipad.jsx'
@@ -39,7 +40,6 @@ export default class AssignForm extends Base {
     switch (device.device_type_id) {
       case 1:
       case 2:
-      case 8:
         assignForm = <PC {...this.props}/>
         break
 
@@ -61,6 +61,8 @@ export default class AssignForm extends Base {
       case 7:
         assignForm = <Clock {...this.props}/>
         break
+      case 8:
+        assignForm = <Laptop {...this.props}/>
     }
 
     let assignToggle

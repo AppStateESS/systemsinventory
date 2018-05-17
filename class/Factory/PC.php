@@ -22,7 +22,6 @@ class PC extends SystemDevice
         $pc->setStand((bool)$request->pullPostBoolean('stand', true));
         $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
         $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
-        $pc->setIsLaptop((bool)$request->pullPostBoolean('is_laptop', true));
 
         self::saveResource($pc);
     }

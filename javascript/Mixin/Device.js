@@ -4,7 +4,6 @@ export default class Device {
     switch (val) {
       case 1:
       case 2:
-      case 8:
         return 'pc'
       case 3:
         return 'ipad'
@@ -16,11 +15,13 @@ export default class Device {
         return 'sign'
       case 7:
         return 'clock'
+      case 8:
+        return 'laptop'
     }
   }
 
   static isPc(device) {
-    return device.device_type_id === 1 || device.device_type_id === 2 || device.device_type_id === 8
+    return device.device_type_id === 1 || device.device_type_id === 2
   }
 
   static isIpad(device) {
@@ -41,6 +42,10 @@ export default class Device {
 
   static isClock(device) {
     return device.device_type_id === 7
+  }
+
+  static isLaptop(device) {
+    return device.device_type_id === 8
   }
 
   static getStatus(device) {
@@ -73,7 +78,7 @@ export default class Device {
   static collectRequired(device, status) {
     const allRequired = required.allRequired
     const {unassigned, assigned, user,} = required[this.getType(device.device_type_id)]
-    
+
     let errorChecks
     errorChecks = allRequired.concat(unassigned)
     if (status == 2) {

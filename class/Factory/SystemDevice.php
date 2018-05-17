@@ -4,6 +4,7 @@ namespace systemsinventory\Factory;
 
 use systemsinventory\Resource\SystemDevice as Resource;
 use systemsinventory\Resource\PC as PCResource;
+use systemsinventory\Resource\Laptop as LaptopResource;
 use systemsinventory\Resource\Camera as CameraResource;
 use systemsinventory\Resource\DigitalSign as DigitalSignResource;
 use systemsinventory\Resource\IPAD as IPADResource;
@@ -67,9 +68,6 @@ class SystemDevice extends \phpws2\ResourceFactory
             $device->setDeviceType($request->pullPostInteger('device_type_id'));
             if ($device->isPC() && $request->pullPostInteger('is_server', true)) {
                 $device->setDeviceType(SERVER);
-            }
-            else if ($device->isPC() && $request->pullPostInteger('is_laptop', true)) {
-              $device->setDeviceType(LAPTOP);
             }
         }
 
@@ -149,11 +147,12 @@ class SystemDevice extends \phpws2\ResourceFactory
         $special_device = self::loadSpecificByDevice($device);
         switch ($device->getDeviceType()) {
             case PC:
-            case LAPTOP:
             case SERVER:
                 $factory = new PC;
                 break;
-
+            case LAPTOP:
+                $factory = new LAPTOP;
+                break;
             case IPAD:
                 $factory = new IPAD;
                 break;
@@ -282,7 +281,6 @@ class SystemDevice extends \phpws2\ResourceFactory
         switch ($device->getDeviceType()) {
             case '1':
             case '2':
-            case '8':
                 $specific_device = new PCResource;
                 break;
             case '3':
@@ -297,9 +295,11 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '6':
                 $specific_device = new DigitalSignResource;
                 break;
-
             case '7':
                 return;
+            case '8':
+                $specific_device = new LaptopResource;
+                break;
         }
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable(self::getSystemTypeTable($device->getDeviceType()));
@@ -487,7 +487,6 @@ class SystemDevice extends \phpws2\ResourceFactory
         switch ($type_id) {
             case '1': // PC
             case '2': // Server
-            case '8'; // Laptop
                 $table = 'systems_pc';
                 break;
             case '3':
@@ -505,6 +504,8 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '7':
                 $table = NULL;
                 break;
+            case '8';
+                $table = 'systems_laptop';
             default:
                 $table = 'systems_pc';
         }

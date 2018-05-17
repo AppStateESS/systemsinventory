@@ -11,5 +11,6 @@ DROP TABLE systems_device_history CASCADE;
 DROP TABLE systems_location CASCADE;
 DROP TABLE systems_department CASCADE;
 DROP TABLE systems_device_type CASCADE;
+DROP TABLE systems_device_laptop CASCADE;
 
 COMMIT;
