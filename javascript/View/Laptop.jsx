@@ -46,10 +46,6 @@ export default class Laptop extends Component {
           <td>{device.primary_monitor}</td>
         </tr>
         <tr>
-          <th>Secondary monitor</th>
-          <td>{device.secondary_monitor}</td>
-        </tr>
-        <tr>
           <th>Video card</th>
           <td>{device.video_card}</td>
         </tr>
@@ -70,16 +66,12 @@ export default class Laptop extends Component {
           <td>{this.YesNo(device.touch_screen)}</td>
         </tr>
         <tr>
-          <th>Dual monitor</th>
-          <td>{this.YesNo(device.dual_monitor)}</td>
-        </tr>
-        <tr>
           <th>Rotation</th>
           <td>{this.YesNo(device.rotation)}</td>
         </tr>
         <tr>
-          <th>Stand</th>
-          <td>{this.YesNo(device.stand)}</td>
+          <th>Docking station</th>
+          <td>{this.YesNo(device.docking_station)}</td>
         </tr>
         <tr>
           <th>Smart room</th>
@@ -88,14 +80,6 @@ export default class Laptop extends Component {
         <tr>
           <th>Check in</th>
           <td>{this.YesNo(device.check_in)}</td>
-        </tr>
-        <tr>
-          <th>Is server</th>
-          <td>{this.YesNo(device.is_server)}</td>
-        </tr>
-        <tr>
-          <th>Server type</th>
-          <td>{device.server_type}</td>
         </tr>
       </tbody>
     )

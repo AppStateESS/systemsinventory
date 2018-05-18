@@ -11,20 +11,16 @@ class Laptop extends \phpws2\Resource
 
     protected $device_id;
     protected $primary_monitor;
-    protected $secondary_monitor;
     protected $video_card;
     protected $os;
-    protected $server_type;
     protected $system_usage;
     protected $battery_backup;
     protected $redundant_backup;
     protected $rotation;
-    protected $stand;
+    protected $docking_station;
     protected $check_in;
     protected $touch_screen;
-    protected $dual_monitor;
     protected $smart_room;
-    protected $is_server;
     protected $table = 'systems_laptop';
 
     public function __construct()
@@ -34,28 +30,20 @@ class Laptop extends \phpws2\Resource
         $this->primary_monitor = new \phpws2\Variable\TextOnly(null,
                 'primary_monitor');
         $this->primary_monitor->allowNull(true);
-        $this->secondary_monitor = new \phpws2\Variable\TextOnly(null,
-                'secondary_monitor');
-        $this->secondary_monitor->allowNull(true);
         $this->video_card = new \phpws2\Variable\TextOnly(null, 'video_card');
         $this->video_card->allowNull(true);
         $this->os = new \phpws2\Variable\TextOnly(null, 'os');
         $this->os->allowNull(true);
-        $this->server_type = new \phpws2\Variable\TextOnly(null, 'server_type');
-        $this->server_type->allowNull(true);
         $this->system_usage = new \phpws2\Variable\IntegerVar(0, 'system_usage');
         $this->system_usage->allowNull(true);
-        $this->is_server = new \phpws2\Variable\BooleanVar(0, 'is_server');
         $this->battery_backup = new \phpws2\Variable\BooleanVar(false,
                 'battery_backup');
         $this->redundant_backup = new \phpws2\Variable\BooleanVar(false,
                 'redundant_backup');
         $this->rotation = new \phpws2\Variable\BooleanVar(false, 'rotation');
-        $this->stand = new \phpws2\Variable\BooleanVar(false, 'stand');
+        $this->docking_station = new \phpws2\Variable\BooleanVar(false, 'docking_station');
         $this->touch_screen = new \phpws2\Variable\BooleanVar(false,
                 'touch_screen');
-        $this->dual_monitor = new \phpws2\Variable\BooleanVar(false,
-                'dual_monitor');
         $this->check_in = new \phpws2\Variable\BooleanVar(false, 'check_in');
         $this->smart_room = new \phpws2\Variable\BooleanVar(false, 'smart_room');
     }
@@ -78,11 +66,6 @@ class Laptop extends \phpws2\Resource
         $this->primary_monitor->set($primary_monitor);
     }
 
-    public function setSecondaryMonitor($secondary_monitor)
-    {
-        $this->secondary_monitor->set($secondary_monitor);
-    }
-
     public function setVideoCard($video_card)
     {
         $this->video_card->set($video_card);
@@ -96,11 +79,6 @@ class Laptop extends \phpws2\Resource
     public function setSystemUsage($system_usage)
     {
         $this->system_usage->set($system_usage);
-    }
-
-    public function setServerType($server_type)
-    {
-        $this->server_type->set($server_type);
     }
 
     public function setBatteryBackup($battery_backup)
@@ -118,9 +96,9 @@ class Laptop extends \phpws2\Resource
         $this->rotation->set($rotation);
     }
 
-    public function setStand($stand)
+    public function setDockingStation($docking_station)
     {
-        $this->stand->set($stand);
+        $this->docking_station->set($docking_station);
     }
 
     public function setSmartRoom($smart)
@@ -133,19 +111,10 @@ class Laptop extends \phpws2\Resource
         $this->touch_screen->set($touch);
     }
 
-    public function setDual($dual)
-    {
-        $this->dual_monitor->set($dual);
-    }
-
     public function setCheckIn($check_in)
     {
         $this->check_in->set($check_in);
     }
 
-    public function setIsServer($server)
-    {
-        $this->is_server->set($server);
-    }
 
 }

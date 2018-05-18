@@ -14,14 +14,11 @@ class Laptop extends SystemDevice
                         FILTER_SANITIZE_STRING));
         $laptop->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));
 
-        $laptop->setServerType(filter_input(INPUT_POST, 'server_type',
-                        FILTER_SANITIZE_STRING));
         $laptop->setBatteryBackup((bool)$request->pullPostBoolean('battery_backup', true));
         $laptop->setRedundantBackup((bool)$request->pullPostBoolean('redundant_backup', true));
         $laptop->setRotation((bool)$request->pullPostBoolean('rotation', true));
-        $laptop->setStand((bool)$request->pullPostBoolean('stand', true));
+        $laptop->setDockingStation((bool)$request->pullPostBoolean('docking_station', true));
         $laptop->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
-        $laptop->setIsServer((bool)$request->pullPostBoolean('is_server', true));
 
         self::saveResource($laptop);
     }
@@ -42,8 +39,6 @@ class Laptop extends SystemDevice
         $sdevice->setSystemUsage($request->pullPatchInteger('system_usage'));
         $sdevice->setSmartRoom((bool)$request->pullPatchBoolean('smart_room', true));
         $sdevice->setCheckIn((bool)$request->pullPatchBoolean('check_in', true));
-        $sdevice->setDual((bool)$request->pullPatchBoolean('dual_monitor', true));
-        $sdevice->setSecondaryMonitor($request->pullPatchString('secondary_monitor', true));
     }
 
 }

@@ -151,7 +151,7 @@ class SystemDevice extends \phpws2\ResourceFactory
                 $factory = new PC;
                 break;
             case LAPTOP:
-                $factory = new LAPTOP;
+                $factory = new Laptop;
                 break;
             case IPAD:
                 $factory = new IPAD;
@@ -283,6 +283,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '2':
                 $specific_device = new PCResource;
                 break;
+            case '8':
+                $specific_device = new LaptopResource;
+                break;
             case '3':
                 $specific_device = new IPADResource;
                 break;
@@ -297,9 +300,6 @@ class SystemDevice extends \phpws2\ResourceFactory
                 break;
             case '7':
                 return;
-            case '8':
-                $specific_device = new LaptopResource;
-                break;
         }
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable(self::getSystemTypeTable($device->getDeviceType()));
@@ -446,7 +446,7 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getDeviceAttributes($type_id)
     {
         $systems_pc = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
-        $systems_laptop = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
+        $systems_laptop = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "video_card" => "Video Card", "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room",  "system_usage" => NULL, "rotation" => "Rotation", "docking_station" => "Docking Station", "check_in" => "Check In");
         $systems_server = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
         $systems_ipad = array("device_id" => NULL, "generation" => "Generation", "apple_id" => "Apple ID");
         $systems_printer = array("device_id" => NULL, "toner_cartridge" => "Toner Cartridge", "color" => "Color", "network" => "Network", "duplex" => "Duplex");
@@ -473,7 +473,7 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '7':
                 $attr = $systems_timeclock;
                 break;
-            case '8';
+            case '8':
                 $attr = $systems_laptop;
                 break;
             default:
@@ -504,8 +504,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '7':
                 $table = NULL;
                 break;
-            case '8';
+            case '8':
                 $table = 'systems_laptop';
+                break;
             default:
                 $table = 'systems_pc';
         }

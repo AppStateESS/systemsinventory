@@ -46,14 +46,6 @@ export default class Laptop extends Base {
         <div className="row">
           <div className="col-sm-4">
             <BigCheckbox
-              checked={device.dual_monitor === 1}
-              handle={update.bind(null, 'dual_monitor', device.dual_monitor === 1
-              ? 0
-              : 1)}
-              label="Dual monitor"/> {this.inputField('secondary_monitor', 'Secondary monitor size', device.dual_monitor === 0)}
-          </div>
-          <div className="col-sm-4">
-            <BigCheckbox
               checked={device.smart_room === 1}
               handle={update.bind(null, 'smart_room', device.smart_room === 1
               ? 0

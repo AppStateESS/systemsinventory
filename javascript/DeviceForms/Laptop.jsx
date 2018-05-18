@@ -97,11 +97,11 @@ export default class Laptop extends Base {
             </div>
             <div>
               <BigCheckbox
-                checked={device.stand === 1}
-                handle={update.bind(null, 'stand', device.stand === 1
+                checked={device.docking_station === 1}
+                handle={update.bind(null, 'docking_station', device.docking_station === 1
                 ? 0
                 : 1)}
-                label="Docking stand"/>
+                label="Docking station"/>
             </div>
           </div>
         </div>

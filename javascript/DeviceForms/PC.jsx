@@ -110,6 +110,14 @@ export default class PC extends Base {
                 : 1)}
                 label="Touch screen"/>
             </div>
+            <div>
+              <BigCheckbox
+                checked={device.stand === 1}
+                handle={update.bind(null, 'stand', device.stand === 1
+                ? 0
+                : 1)}
+                label="Stand"/>
+            </div>
           </div>
         </div>
       </div>

@@ -148,6 +148,15 @@ var runOnLoad = function()
                 break;
             case 7:
                 break;
+            case 8:
+                $("#battery-backup").prop("checked",jsondata['battery_backup']);
+                $("#redundant-backup").prop("checked",jsondata['redundant_backup']);
+                $("#touch-screen").prop("checked",jsondata['touch_screen']);
+                $("#rotation").prop("checked",jsondata['rotation']);
+                $("#docking_station").prop("checked",jsondata['docking_station']);
+                $("#smart-room").prop("checked",jsondata['smart_room']);
+                $("#check-in").prop("checked",jsondata['check_in']);
+                break;
             default:
                 break;
 
@@ -191,7 +200,8 @@ function inventoryDevice(){
 }
 
  function enableFormFields(){
-       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
+       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
+       var laptop_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","purchase-date","manufacturer","vlan", "touch-screen","docking_station","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","primary-ip","apple-id","purchase-date","case"];
        var printer_attributes = ["physical-id","model","toner-cartridge","manufacturer","purchase-date","color","duplex","network"];
        var camera_attributes = ["physical-id","model","megapixels","manufacturer","purchase-date","room-number","department","location","notes","sd-support","exterior","covert","is-on"];
@@ -202,6 +212,10 @@ function inventoryDevice(){
        $.each(pc_attributes, function(index, d){
         $("#"+d).prop("disabled", false);
     });
+
+      $.each(laptop_attributes, function(index, d){
+       $("#"+d).prop("disabled", false);
+   });
 
     $.each(ipad_attributes, function(index, d){
         $("#"+d).prop("disabled", false);
