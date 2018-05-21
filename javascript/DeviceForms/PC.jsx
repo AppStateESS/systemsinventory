@@ -20,6 +20,9 @@ export default class PC extends Base {
           <div className="col-sm-6">
             {this.inputField('mac', 'MAC address (wired)', false, 'XX:XX:XX:XX:XX:XX')}
           </div>
+          <div className="col-sm-6">
+            {this.inputField('mac2', 'Secondary MAC address', false, 'XX:XX:XX:XX:XX:XX')}
+          </div>
         </div>
         <div className="row">
           <div className="col-sm-6">
@@ -58,22 +61,6 @@ export default class PC extends Base {
         </div>
         <div className="row">
           <div className="col-sm-4">
-            <div>
-              <BigCheckbox
-                checked={device.battery_backup === 1}
-                handle={update.bind(null, 'battery_backup', device.battery_backup === 1
-                ? 0
-                : 1)}
-                label="Battery backup"/>
-            </div>
-            <div>
-              <BigCheckbox
-                checked={device.redundant_backup === 1}
-                handle={update.bind(null, 'redundant_backup', device.redundant_backup === 1
-                ? 0
-                : 1)}
-                label="Redundant backup"/>
-            </div>
             <div>
               <BigCheckbox
                 checked={device.rotation === 1}

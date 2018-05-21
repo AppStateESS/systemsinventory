@@ -1,6 +1,4 @@
-/* TODO: Don't forget to remve is_pc from device_laptop */
 INSERT INTO systems_device_type VALUES (8, 'laptop');
-ALTER TABLE systems_pc DROP COLUMN docking_stand;
 CREATE TABLE systems_laptop (
        id    serial,
        device_id integer REFERENCES systems_device(id),
@@ -17,8 +15,4 @@ CREATE TABLE systems_laptop (
        check_in smallint default 0,
        PRIMARY KEY (id)
 );
-/* This will pull laptops from PC table and put them in systems_laptop
-INSERT INTO systems_laptop (corresponding columns)
-SELECT columns FROM systems_pc
-WHERE *They are alike*
-*/
+ALTER TABLE systems_pc DROP COLUMN docking_stand;

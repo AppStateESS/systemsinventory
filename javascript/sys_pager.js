@@ -200,8 +200,8 @@ function inventoryDevice(){
 }
 
  function enableFormFields(){
-       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
-       var laptop_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","purchase-date","manufacturer","vlan", "touch-screen","docking_station","dual-monitor","check-in"];
+       var pc_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","server","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","secondary-monitor","purchase-date","server-type","manufacturer","vlan", "touch-screen","stand","dual-monitor","check-in"];
+       var laptop_attributes = ["physical-id","model","processor","ram","hd","video-card","os","vlan","battery-backup","redundant-backup","rotation","smart-room","mac","mac2","primary-ip","secondary-ip","primary-monitor","purchase-date","manufacturer","vlan", "touch-screen","docking_station","dual-monitor","check-in"];
        var ipad_attributes = ["physical-id","hd","generation","mac","primary-ip","apple-id","purchase-date","case"];
        var printer_attributes = ["physical-id","model","toner-cartridge","manufacturer","purchase-date","color","duplex","network"];
        var camera_attributes = ["physical-id","model","megapixels","manufacturer","purchase-date","room-number","department","location","notes","sd-support","exterior","covert","is-on"];

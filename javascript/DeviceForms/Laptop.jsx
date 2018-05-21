@@ -56,7 +56,7 @@ export default class Laptop extends Base {
             {this.inputField('hd_size', 'Hard drive', false, 'GB or TB')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('primary_monitor', 'Screen size')}
+
           </div>
         </div>
         <div className="row">
@@ -103,6 +103,12 @@ export default class Laptop extends Base {
                 : 1)}
                 label="Docking station"/>
             </div>
+              <InputField
+                disabled={empty(device.docking_station)}
+                name="primary_monitor"
+                value={device.primary_monitor}
+                label="Primary Monitor Size"
+                change={update.bind(null, 'primary_monitor')}/>
           </div>
         </div>
       </div>
