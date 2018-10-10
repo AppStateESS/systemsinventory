@@ -1,5 +1,5 @@
 <script type="text/javascript" src="mod/systemsinventory/javascript/format_mac.js"></script>
-<div class="systems-pc-section systems-section">
+<div class="systems-laptop-section systems-section">
         <input id="device-id" name="device_id" type="hidden">
         <input id="row-index" name="row_index" type="hidden">
         <input id="specific-device-id" name="specific_device_id" type="hidden">
@@ -38,10 +38,6 @@
                     <div class="form-group">
                         <label for="manufacturer">Manufacturer</label>
                         <input id="manufacturer" name="manufacturer" type="text" class="form-control"  disabled />
-                    </div>
-                    <div>
-                        <label for="server">Is Server?</label>
-			<input id="server" name="server" type="checkbox" disabled/>
                     </div>
                     <div>
                         <label for="battery_bk">Battery Backup?</label>
@@ -84,16 +80,8 @@
                         <input id="primary-monitor" name="primary_monitor" type="text" class="form-control"  disabled />
                     </div>
                     <div class="form-group">
-                        <label for="secondary_monitor">Secondary Monitor Size</label>
-                        <input id="secondary-monitor" name="secondary_monitor" type="text" class="form-control"  disabled />
-                    </div>
-                    <div class="form-group">
                         <label for="purchase_date">Purchase Date <i title="Required input" class="required fa fa-asterisk"></i></label>
                         <input required id="purchase-date" name="purchase_date" type="date" class="form-control" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="server-type">Server Type</label>
-                        <input id="server-type" name="server_type" type="text" class="form-control"  disabled placeholder="2u, 4u, tower, etc..."/>
                     </div>
                     <div>
                             <label for="vlan">VLAN</label>
@@ -110,8 +98,8 @@
 			<input id="touch-screen" name="touch_screen" type="checkbox" disabled/>
                     </div>
                     <div>
-                        <label for="dual_monitor">Dual Monitor?</label>
-			<input id="dual-monitor" name="dual_monitor" type="checkbox" disabled/>
+                        <label for="docking_station">Docking Station?</label>
+      <input id="docking_station" name="docking_station" type="checkbox" disabled/>
                     </div>
                     <div>
                         <label for="checkin">Check-in System?</label>

@@ -17,6 +17,9 @@ export default class DeviceRow extends Component {
       case 2:
         return <i className="fa fa-desktop"></i>
         //return 'PC' return 'Server'
+      case 8:
+        return <i className="fa fa-laptop"></i>
+        //return 'Laptop'
       case 3:
         return <i className="fa fa-tablet"></i>
         //return 'iPad'

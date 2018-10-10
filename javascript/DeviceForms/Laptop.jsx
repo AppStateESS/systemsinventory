@@ -6,10 +6,10 @@ import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
 import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import empty from '../Mixin/Empty.js'
 
-export default class PC extends Base {
+export default class Laptop extends Base {
   constructor(props) {
     super(props)
-    this.deviceType = 'pc'
+    this.deviceType = 'laptop'
   }
 
   render() {
@@ -56,11 +56,27 @@ export default class PC extends Base {
             {this.inputField('hd_size', 'Hard drive', false, 'GB or TB')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('primary_monitor', 'Primary monitor size')}
+
           </div>
         </div>
         <div className="row">
           <div className="col-sm-4">
+            <div>
+              <BigCheckbox
+                checked={device.battery_backup === 1}
+                handle={update.bind(null, 'battery_backup', device.battery_backup === 1
+                ? 0
+                : 1)}
+                label="Battery backup"/>
+            </div>
+            <div>
+              <BigCheckbox
+                checked={device.redundant_backup === 1}
+                handle={update.bind(null, 'redundant_backup', device.redundant_backup === 1
+                ? 0
+                : 1)}
+                label="Redundant backup"/>
+            </div>
             <div>
               <BigCheckbox
                 checked={device.rotation === 1}
@@ -69,24 +85,6 @@ export default class PC extends Base {
                 : 1)}
                 label="Exclude from rotation"/>
             </div>
-          </div>
-          <div className="col-sm-4">
-
-            <div>
-              <BigCheckbox
-                checked={device.is_server === 1}
-                handle={update.bind(null, 'is_server', device.is_server === 1
-                ? 0
-                : 1)}
-                label="Is server"/>
-            </div>
-            <InputField
-              disabled={empty(device.is_server)}
-              name="server_type"
-              placeholder="2u, 4u, towers, etc."
-              value={device.server_type}
-              label="Server type"
-              change={update.bind(null, 'server_type')}/>
           </div>
           <div className="col-sm-4">
             <div>
@@ -99,12 +97,18 @@ export default class PC extends Base {
             </div>
             <div>
               <BigCheckbox
-                checked={device.stand === 1}
-                handle={update.bind(null, 'stand', device.stand === 1
+                checked={device.docking_station === 1}
+                handle={update.bind(null, 'docking_station', device.docking_station === 1
                 ? 0
                 : 1)}
-                label="Stand"/>
+                label="Docking station"/>
             </div>
+              <InputField
+                disabled={empty(device.docking_station)}
+                name="primary_monitor"
+                value={device.primary_monitor}
+                label="Primary Monitor Size"
+                change={update.bind(null, 'primary_monitor')}/>
           </div>
         </div>
       </div>

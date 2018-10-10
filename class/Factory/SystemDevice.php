@@ -4,6 +4,7 @@ namespace systemsinventory\Factory;
 
 use systemsinventory\Resource\SystemDevice as Resource;
 use systemsinventory\Resource\PC as PCResource;
+use systemsinventory\Resource\Laptop as LaptopResource;
 use systemsinventory\Resource\Camera as CameraResource;
 use systemsinventory\Resource\DigitalSign as DigitalSignResource;
 use systemsinventory\Resource\IPAD as IPADResource;
@@ -149,7 +150,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case SERVER:
                 $factory = new PC;
                 break;
-
+            case LAPTOP:
+                $factory = new Laptop;
+                break;
             case IPAD:
                 $factory = new IPAD;
                 break;
@@ -280,6 +283,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '2':
                 $specific_device = new PCResource;
                 break;
+            case '8':
+                $specific_device = new LaptopResource;
+                break;
             case '3':
                 $specific_device = new IPADResource;
                 break;
@@ -292,7 +298,6 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '6':
                 $specific_device = new DigitalSignResource;
                 break;
-
             case '7':
                 return;
         }
@@ -441,6 +446,7 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getDeviceAttributes($type_id)
     {
         $systems_pc = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
+        $systems_laptop = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "video_card" => "Video Card", "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room",  "system_usage" => NULL, "rotation" => "Rotation", "docking_station" => "Docking Station", "check_in" => "Check In");
         $systems_server = array("device_id" => NULL, "os" => "OS", "primary_monitor" => "Primary Monitor", "secondary_monitor" => "Secondary Monitor", "video_card" => "Video Card", "server_type" => NULL, "battery_backup" => NULL, "redundant_backup" => NULL, "touch_screen" => "Touch Screen", "smart_room" => "Smart Room", "dual_monitor" => "Dual Monitor", "system_usage" => NULL, "rotation" => "Rotation", "stand" => "Stand", "check_in" => "Check In");
         $systems_ipad = array("device_id" => NULL, "generation" => "Generation", "apple_id" => "Apple ID");
         $systems_printer = array("device_id" => NULL, "toner_cartridge" => "Toner Cartridge", "color" => "Color", "network" => "Network", "duplex" => "Duplex");
@@ -467,6 +473,9 @@ class SystemDevice extends \phpws2\ResourceFactory
             case '7':
                 $attr = $systems_timeclock;
                 break;
+            case '8':
+                $attr = $systems_laptop;
+                break;
             default:
                 $attr = $systems_pc;
         }
@@ -476,8 +485,8 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getSystemTypeTable($type_id)
     {
         switch ($type_id) {
-            case '1':
-            case '2':
+            case '1': // PC
+            case '2': // Server
                 $table = 'systems_pc';
                 break;
             case '3':
@@ -494,6 +503,9 @@ class SystemDevice extends \phpws2\ResourceFactory
                 break;
             case '7':
                 $table = NULL;
+                break;
+            case '8':
+                $table = 'systems_laptop';
                 break;
             default:
                 $table = 'systems_pc';
@@ -554,7 +566,7 @@ class SystemDevice extends \phpws2\ResourceFactory
             $tbl->addField('description');
             $result = $db->select();
             foreach ($result as $value) {
-                $system_types[$value['id']] = $value;
+                  $system_types[$value['id']] = $value;
             }
         }
         if (empty($system_types)) {

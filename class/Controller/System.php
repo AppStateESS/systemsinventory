@@ -3,6 +3,7 @@
 namespace systemsinventory\Controller;
 
 use systemsinventory\Factory\PC as PCFactory;
+use systemsinventory\Factory\Laptop as LaptopFactory;
 use systemsinventory\Factory\IPAD as IPADFactory;
 use systemsinventory\Factory\Printer as PrinterFactory;
 use systemsinventory\Factory\Camera as CameraFactory;
@@ -158,6 +159,10 @@ class System extends \phpws2\Http\Controller
             case PC:
                 $pcfactory = new PCFactory;
                 $pcfactory->postNewPC($request, $specific_device);
+                break;
+            case LAPTOP:
+                $laptopfactory = new LaptopFactory;
+                $laptopfactory->postNewLaptop($request, $specific_device);
                 break;
             case IPAD:
                 $ipadfactory = new IPADFactory;

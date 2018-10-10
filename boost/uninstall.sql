@@ -1,6 +1,7 @@
 BEGIN;
 
 DROP TABLE systems_pc CASCADE;
+DROP TABLE systems_device_laptop CASCADE;
 DROP TABLE systems_camera CASCADE;
 DROP TABLE systems_ipad CASCADE;
 DROP TABLE systems_digital_sign CASCADE;
