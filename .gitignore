@@ -1,5 +1,7 @@
 \#*
 *~
+*.log
+package-lock.json
 .#*
 \#*\#
 /nbproject/private/

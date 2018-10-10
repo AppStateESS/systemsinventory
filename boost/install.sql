@@ -201,5 +201,5 @@ insert into systems_device_type ("id","description") values (5,'camera');
 insert into systems_device_type ("id","description") values (6,'digital sign');
 insert into systems_device_type ("id","description") values (7,'time clock');
 
+
 COMMIT;
-       
