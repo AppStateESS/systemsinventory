@@ -26,6 +26,9 @@ export default class Shared extends Base {
         value: 1,
         label: 'PC'
       }, {
+        value: 8,
+        label: 'Laptop'
+      }, {
         value: 3,
         label: 'Tablet'
       }, {

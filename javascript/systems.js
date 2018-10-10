@@ -2,7 +2,7 @@ var systems_pc_tab = new SystemsTab;
 
 $(window).load(function() {
     systems_pc_tab.start();
-    
+
    $('#system-profile').change(function() {
        var profile_id = $("#system-profile option:selected").val();
        $.getJSON('systemsinventory/system/getProfile/',{
@@ -11,7 +11,7 @@ $(window).load(function() {
     });
 
    });
-   
+
    $('#printer-profile').change(function() {
        var profile_id = $("#printer-profile option:selected").val();
        $.getJSON('systemsinventory/system/getProfile/',{
@@ -20,13 +20,13 @@ $(window).load(function() {
     });
 
    });
-   
-            
+
+
     formatMAC("#mac");
     formatMAC("#mac2");
     formatMAC("#ipad-mac");
     formatMAC("#camera-mac")
-        
+
 /** Can use this keyup search if I can get all users into database or get api to do wildcard search */
 $("input#pc-username").on("keyup", function( event ){
     var element_id = 'pc';
@@ -56,10 +56,10 @@ $("input#printer-username").on("keyup", function( event ){
      $("#add-system-error").empty();
      $("#add-system-error").fadeOut("slow",function(){
          $("#add-system-error").css("display","none");
-     });         
+     });
 
  });
- 
+
  $("input#physical-id").on("focusout", function(event){
     var physical_id = $(this).val();
     $.getJSON('systemsinventory/system/searchPhysicalID/',{
@@ -82,7 +82,7 @@ function formatMAC(elementname){
             length = content1.length;
             if(((length % 2) == 0) && length < 17 && length > 1){
                 $(elementname).val($(elementname).val() + ':');
-            }    
+            }
             $(elementname).val($(elementname).val().slice(0, 16));
             $(elementname).val($(elementname).val().toUpperCase());
         });
@@ -96,7 +96,7 @@ function loadProfile(jsondata){
     var prefix = '';
     if(device_type_id == 4)
         prefix = 'printer-';
-    
+
         $.each(jsondata, function(index, d){
             var element_id = index.replace("_","-");
             element_id = prefix+element_id;
@@ -133,19 +133,28 @@ function loadProfile(jsondata){
                 $("#exterior").prop("checked",jsondata['exterior']);
                 $("#covert").prop("checked",jsondata['covert']);
                 $("#is-on").prop("checked",jsondata['is_on']);
-                break;    
+                break;
             case 6:
                 $("#hi-def").prop("checked",jsondata['hi_def']);
-                break;    
+                break;
             case 7:
-                break;    
+                break;
+            case 8:
+                $("#battery-backup").prop("checked",jsondata['battery_backup']);
+                $("#redundant-backup").prop("checked",jsondata['redundant_backup']);
+                $("#touch-screen").prop("checked",jsondata['touch_screen']);
+                $("#rotation").prop("checked",jsondata['rotation']);
+                $("#docking_station").prop("checked",jsondata['docking_station']);
+                $("#smart-room").prop("checked",jsondata['smart_room']);
+                $("#check-in").prop("checked",jsondata['check_in']);
+                break;
             default:
                 break;
-            
+
         }
-    
+
     }
-    
+
 function searchInputAction(length,input_val,element_id){
     if(length >= 4) {
         $("#"+element_id+"-button-group").addClass("open");
@@ -163,11 +172,11 @@ function searchInputAction(length,input_val,element_id){
                 user_list = '<ul class="dropdown-menu" id="'+element_id+'-username-dropdown"><li>No user found!<li></ul>';
             }
             $("#"+element_id+"-username-dropdown").replaceWith(user_list);
-            
+
         });
     }else{
         $("#"+element_id+"-button-group").removeClass("open");
-    }    
+    }
 }
 
 function systemGetUser(el,element_id){
@@ -186,7 +195,7 @@ function systemGetUser(el,element_id){
 }
 
  function toggleNetwork(checked){
-        if(checked) {           
+        if(checked) {
         $('#printer-username').prop("disabled", true);
         $("#printer-username").removeAttr('required');
         $("#printer-username-required").css("display", "none");
@@ -202,7 +211,7 @@ function systemGetUser(el,element_id){
         $("#printer-phone").prop("disabled", false);
     }
 }
-    
+
 function SystemsTab() {
     var $this = this;
     this.active = active_tab;
@@ -212,6 +221,9 @@ function SystemsTab() {
         this.changeTab();
         $('li.systems-pc-tab').click(function() {
             $this.setActive('systems-pc');
+        });
+        $('li.systems-laptop-tab').click(function() {
+            $this.setActive('systems-laptop');
         });
         $('li.ipad-tab').click(function() {
             $this.setActive('ipad');
@@ -248,11 +260,9 @@ function SystemsTab() {
         this.resetSections();
         $(class_tab_section).show();
         $(class_tab).addClass('active');
-        
+
         if(this.active == 'systems-pc' || this.active == 'systems-ipad'){
             $(".systems-user-section").show();
         }
     };
 }
-
-

@@ -35,6 +35,39 @@ const required = {
     ],
     user: ['username', 'first_name', 'last_name', 'phone']
   },
+  laptop: {
+    userAssigned: true,
+    profile: [
+      'model',
+      'manufacturer',
+      'processor',
+      'video_card',
+      'os',
+      'ram',
+      'hd_size',
+      'primary_monitor'
+    ],
+    unassigned: [
+      'model',
+      'mac',
+      'model',
+      'manufacturer',
+      'processor',
+      'os',
+      'ram',
+      'hd_size',
+      'primary_monitor'
+    ],
+    assigned: [
+      'department_id',
+      'location_id',
+      'room_number',
+      'primary_ip',
+      'vlan',
+      'system_usage'
+    ],
+    user: ['username', 'first_name', 'last_name', 'phone']
+  },
   ipad: {
     userAssigned: true,
     profile: [

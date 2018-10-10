@@ -2,28 +2,25 @@
 
 namespace systemsinventory\Factory;
 
-use systemsinventory\Resource\PC as Resource;
+use systemsinventory\Resource\Laptop as Resource;
 
-class PC extends SystemDevice
+class Laptop extends SystemDevice
 {
 
-    public function postNewPC(\Canopy\Request $request, Resource $pc)
+    public function postNewLaptop(\Canopy\Request $request, Resource $laptop)
     {
-        $pc->setPrimaryMonitor($request->pullPostString('primary_monitor'));
-        $pc->setVideoCard(filter_input(INPUT_POST, 'video_card',
+        $laptop->setPrimaryMonitor($request->pullPostString('primary_monitor'));
+        $laptop->setVideoCard(filter_input(INPUT_POST, 'video_card',
                         FILTER_SANITIZE_STRING));
-        $pc->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));
+        $laptop->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));
 
-        $pc->setServerType(filter_input(INPUT_POST, 'server_type',
-                        FILTER_SANITIZE_STRING));
-        $pc->setBatteryBackup((bool)$request->pullPostBoolean('battery_backup', true));
-        $pc->setRedundantBackup((bool)$request->pullPostBoolean('redundant_backup', true));
-        $pc->setRotation((bool)$request->pullPostBoolean('rotation', true));
-        $pc->setStand((bool)$request->pullPostBoolean('stand', true));
-        $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
-        $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
+        $laptop->setBatteryBackup((bool)$request->pullPostBoolean('battery_backup', true));
+        $laptop->setRedundantBackup((bool)$request->pullPostBoolean('redundant_backup', true));
+        $laptop->setRotation((bool)$request->pullPostBoolean('rotation', true));
+        $laptop->setDockingStation((bool)$request->pullPostBoolean('docking_station', true));
+        $laptop->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
 
-        self::saveResource($pc);
+        self::saveResource($laptop);
     }
 
     public static function assignDevice(Resource $sdevice, $device, $request)
@@ -42,8 +39,6 @@ class PC extends SystemDevice
         $sdevice->setSystemUsage($request->pullPatchInteger('system_usage'));
         $sdevice->setSmartRoom((bool)$request->pullPatchBoolean('smart_room', true));
         $sdevice->setCheckIn((bool)$request->pullPatchBoolean('check_in', true));
-        $sdevice->setDual((bool)$request->pullPatchBoolean('dual_monitor', true));
-        $sdevice->setSecondaryMonitor($request->pullPatchString('secondary_monitor', true));
     }
 
 }

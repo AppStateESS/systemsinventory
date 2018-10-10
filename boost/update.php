@@ -46,7 +46,7 @@ EOF;
 -----
 + Fixed permission issues with restricted users
 + Removed delete permission from normal users. Deity only.
-+ Fixed error messages and checks in unassigned and assign forms.     
++ Fixed error messages and checks in unassigned and assign forms.
 + Fixed null search locking out ui.
 </pre>
 EOF;
@@ -58,6 +58,8 @@ EOF;
 + Fixed delete
 </pre>
 EOF;
+        case version_compare($currentVersion, '1.3.0', '<'):
+            runDbMigration('update_1_3_0.sql');
     }
 
     return TRUE;
