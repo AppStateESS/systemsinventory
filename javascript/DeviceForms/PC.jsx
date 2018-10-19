@@ -18,7 +18,7 @@ export default class PC extends Base {
       <div>
         <div className="row">
           <div className="col-sm-6">
-            {this.inputField('mac', 'MAC address (wired)', false, 'XX:XX:XX:XX:XX:XX')}
+            {this.inputField('mac', 'MAC address (wired)', false, 'XX:XX:XX:XX:XX:XX')}        
           </div>
           <div className="col-sm-6">
             {this.inputField('mac2', 'Secondary MAC address', false, 'XX:XX:XX:XX:XX:XX')}
