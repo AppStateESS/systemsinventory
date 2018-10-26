@@ -31,6 +31,7 @@ $(document).ready(function() {
             $('#location-id').val(jsondata['id']);
             $('#display-name').val(jsondata['display_name']);
             $('#description').val(jsondata['description']);
+            $('#parent-location').val(jsondata['parent_location']);
             if(jsondata['active'])
                 $('#location-active').prop('checked',true);
             else

@@ -108,11 +108,26 @@ class Settings extends \phpws2\Http\Controller {
     }
 
     public static function formatLocationList($row){
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('systems_location');
+        $tbl->addField('display_name');
+        $tbl->addField('parent_location');
+        $tbl->addField('description');
+        $tbl->addField('active');
+        $tbl->addField('id');
         $row['action'] = '<button id="edit-location" type="button" class="btn btn-sm btn-default" onclick="editLocation('.$row['id'].')" >Edit</button>';
         if($row['active'])
             $row['location_active'] = 'Yes';
         else
             $row['location_active'] = 'No';
+        if($row['parent_location']){
+            $loc_id = $row['parent_location'];
+            $tbl->addFieldConditional('id', $loc_id, '=');
+            $loc_result = $db->select();
+            if($loc_result){
+                $row['parent_location'] = $loc_result[0]['display_name'];
+            }
+        }
         return $row;
     }
     

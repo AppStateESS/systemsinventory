@@ -4,6 +4,7 @@ CREATE TABLE systems_location (
        id serial,
        description character varying,
        display_name character varying,
+       parent_location integer default NULL,
        active smallint default 1,
        PRIMARY KEY (id)
 );

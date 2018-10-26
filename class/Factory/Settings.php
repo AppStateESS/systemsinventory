@@ -71,6 +71,7 @@ class Settings extends \phpws2\ResourceFactory
         $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('display_name');
+        $tbl->addField('parent_location');
         $tbl->addField('description');
         $tbl->addField('active');
         $tbl->addField('id');
@@ -80,7 +81,7 @@ class Settings extends \phpws2\ResourceFactory
         $pager->setCallback(array('\systemsinventory\Controller\Settings', 'formatLocationList'));
         $pager->setId('location-list');
         $pager->setRowIdColumn('id');
-        $pager->setHeaders(array('display_name' => 'Name', 'description' => 'Description', 'location_active' => 'Is Active'));
+        $pager->setHeaders(array('display_name' => 'Name', 'description' => 'Description', 'parent_location' => 'Parent Location', 'location_active' => 'Is Active'));
         $data = $pager->getJson();
         return $data;
     }
@@ -203,6 +204,8 @@ class Settings extends \phpws2\ResourceFactory
         if (isset($vars['description']))
             $resource->setDescription($vars['description']);
         $resource->setDisplayName($vars['display_name']);
+        if (isset($vars['parent_location']))
+            $resource->setParentLocation($vars['parent_location']);
         if (isset($vars['location_active']))
             $resource->setActive($vars['location_active']);
         if ($location_id) {
@@ -256,10 +259,11 @@ class Settings extends \phpws2\ResourceFactory
 
     public static function getLocationByID($location_id)
     {
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_location');
         $tbl->addField('id');
         $tbl->addField('display_name');
+        $tbl->addField('parent_location');
         $tbl->addField('description');
         $tbl->addField('active');
         $tbl->addFieldConditional('id', $location_id, '=');

@@ -60,7 +60,15 @@ EOF;
 EOF;
         case version_compare($currentVersion, '1.3.0', '<'):
             runDbMigration('update_1_3_0.sql');
+        case version_compare($currentVersion, '1.3.2', '<'):
+            runDbMigration('update_1_3_2.sql', '1.3.2', '<');
+            $content[] = <<<EOF
+<pre>
+1.3.1
+-----
++ Added parent location
+</pre>
+EOF;
     }
-
     return TRUE;
 }

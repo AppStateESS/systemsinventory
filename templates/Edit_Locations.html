@@ -9,6 +9,7 @@
       <tr>
         <th class="pager-header display_name"></th>
         <th class="pager-header description"></th>
+        <th class="pager-header parent_location"
         <th class="pager-header location_active"></th>
         <th class="pager-header action"></th>
       </tr>
@@ -17,6 +18,7 @@
       <tr class="pager-row">
         <td class="pager-column display_name"></td>
         <td class="pager-column description"></td>
+        <td class="pager-column parent_location"
         <td class="pager-column location_active"></td>
         <td class="pager-column action"></td>
       </tr>
@@ -45,6 +47,10 @@
           <div class="form-group">
             <label for="description">Description</label>
             <input type="text" name="description" value="" id="description" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <label for="parent-locaton">Parent Location</label>
+            <select id="parent-location" name="parent_location"><?=$locations?></select>
           </div>
           <div class="form-group">
             <label for="location-active">Is Active</label>
