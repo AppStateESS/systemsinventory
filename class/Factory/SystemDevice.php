@@ -234,7 +234,6 @@ class SystemDevice extends \phpws2\ResourceFactory
                     break;
             }
         }
-
         return $device;
     }
 

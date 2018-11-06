@@ -58,11 +58,11 @@ import React, {Component} from 'react'
             let content = value
             let content1 = content.replace(/\:/g, '')
             length = content1.length;
-            if (((length % 2) == 0) && length < 12 && length > 1 && content[content.length -1] != ":") {
+            if (((length % 2) == 0) && length < 12 && length > 1 && content[content.length - 1] != ":") {
                 content = content + ":"
             }
-            if(content.length > 17)
-                content = content.substring(0,17)
+            if (content.length > 17)
+                content = content.substring(0, 17)
             this.setState({value: content})
         }
         this.props.change(e)
@@ -84,7 +84,7 @@ import React, {Component} from 'react'
             id={this.props.iid}
             type={this.props.type}
             name={this.props.name}
-            value={this.props.value === null ? '' : this.state.value}
+            value={this.props.value}
             className={inputClass}
             onChange={this.handleChange}
             onBlur={this.handleBlur}
