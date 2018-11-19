@@ -35,7 +35,7 @@ export default class AssignForm extends Base {
 
   render() {
     const {device, update,} = this.props
-
+    
     let assignForm
     switch (device.device_type_id) {
       case 1:
@@ -145,7 +145,7 @@ export default class AssignForm extends Base {
           <button
             className="marginTop btn btn-lg btn-primary"
             onClick={this.props.assign}
-            disabled={!Device.checkForErrors(device, this.errors, device.status)}>Assign device</button>
+            disabled={device.status === 0 ? true : !Device.checkForErrors(device, this.errors, device.status)}>Assign device</button>
         </div>
       </div>
     )

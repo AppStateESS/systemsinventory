@@ -64,9 +64,18 @@ EOF;
             runDbMigration('update_1_3_2.sql', '1.3.2', '<');
             $content[] = <<<EOF
 <pre>
-1.3.1
+1.3.2
 -----
 + Added parent location
+</pre>
+EOF;
+            case version_compare($currentVersion, '1.3.3', '<'):
+            runDbMigration('update_1_3_3.sql', '1.3.3', '<');
+            $content[] = <<<EOF
+<pre>
+1.3.3
+-----
++ Mac data type changed
 </pre>
 EOF;
     }
