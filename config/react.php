@@ -16,4 +16,4 @@
  * @license http://opensource.org/licenses/lgpl-3.0.html
  */
 
-define('SYSTEMS_REACT_DEV', true);
+define('SYSTEMS_REACT_DEV', false);
