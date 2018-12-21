@@ -230,6 +230,7 @@ class System extends \phpws2\Http\Controller
             switch ($command) {
                 case 'searchUser':
                     $result = SDFactory::searchUserByUsername($vars['username']);
+                    //var_dump($result);
                     break;
                 case 'getUser':
                     $result = SDFactory::getUserByUsername($vars['username']);

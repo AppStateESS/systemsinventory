@@ -4,13 +4,22 @@ import PropTypes from 'prop-types'
 import InputField from '../FormMixin/InputField.jsx'
 import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import Device from '../Mixin/Device.js'
+import UserSearch from '../Search/UserSearch.jsx'
 
 export default class Base extends Component {
   constructor(props) {
     super(props)
     this.inputField = this.inputField.bind(this)
+    this.updateName = this.updateName.bind(this)
   }
 
+  updateName(name){
+      this.setState({
+          firstName: name.firstName,
+          lastName: name.lastName
+      })
+  }
+  
   select(varname, label = null, optionName = null) {
     const {device, update, options} = this.props
     if (optionName === null) {
@@ -47,18 +56,32 @@ export default class Base extends Component {
     return label
   }
 
-  inputField(varname, label = null, disabled = false, placeholder = null) {
+  inputField(varname, label = null, disabled = false, placeholder = null, inputvalue=null) {
     const {device, update} = this.props
     label = this.getLabel(label, varname)
     return (<InputField
+      name={varname}
+      disabled={disabled}
+      value={inputvalue ? inputvalue : device[varname]}
+      placeholder={placeholder}
+      errorMessage={this.errorMessage(varname, label)}
+      required={Device.isRequired(device, varname)}
+      label={label}
+      change={update.bind(null, varname)}/>)
+  }
+  
+  userSearch(varname, label = null, disabled = false, placeholder = null) {
+      const {device, update} = this.props
+      label = this.getLabel(label, varname)
+      return (<UserSearch
       name={varname}
       disabled={disabled}
       value={device[varname]}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
       required={Device.isRequired(device, varname)}
-      label={label}
-      change={update.bind(null, varname)}/>)
+      setName={this.updateName}
+      label={label}/>)
   }
 
   render() {

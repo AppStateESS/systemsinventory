@@ -11,13 +11,13 @@
         constructor(props) {
         super(props)
 
-                this.state = {
-                empty: false,
-                        value: ''
-                }
+        this.state = {
+            empty: false,
+            value: ''
+        }
 
         this.handleBlur = this.handleBlur.bind(this)
-                this.handleChange = this.handleChange.bind(this)
+        this.handleChange = this.handleChange.bind(this)
         }
 
         handleBlur(e) {
@@ -49,7 +49,7 @@
 
         handleChange(e) {
         const value = e.target.value
-                if (value.length > 0) {
+        if (value.length > 0) {
         this.setState({empty: false})
         }
 
