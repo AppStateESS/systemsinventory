@@ -195,6 +195,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $tbl = $db->addTable('systems_device');
         $tbl->addFieldConditional('id', $system_id);
         $device = $db->selectOneRow();
+        
         // get the device specific attributes
         $table = SystemDevice::getSystemTypeTable($device['device_type_id']);
         if (!empty($table)) {

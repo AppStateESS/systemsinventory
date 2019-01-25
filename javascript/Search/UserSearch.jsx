@@ -90,7 +90,7 @@ export default class UserSearch extends Component {
         
     render() {
     const { value, suggestions } = this.state;
-    
+
     // Autosuggest will pass through all these props to the input.
         
     let errorMessage
@@ -108,7 +108,7 @@ export default class UserSearch extends Component {
         }
     const inputProps = {
       placeholder: 'Search by username',
-      value,
+      value: this.state.value ? this.state.value : this.props.value,
       onChange: this.onChange,
       className: inputClass
     };
@@ -118,7 +118,7 @@ export default class UserSearch extends Component {
     return (
       <div className="form-group">
         {this.props.label.length > 0
-            ? <label htmlFor={this.props.iid}>{this.props.label} {required}</label> : undefined}
+            ? <label htmlFor={this.props.id}>{this.props.label} {required}</label> : undefined}
         <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}

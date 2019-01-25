@@ -6,10 +6,13 @@ import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
 export default class PC extends Base {
   constructor(props) {
     super(props)
-    this.state = {
-        firstName: '',
-        lastName: ''
-    }
+    this.updateName = this.updateName.bind(this)    
+  }
+
+  updateName(name){
+      this.props.update('first_name', name.firstName)
+      this.props.update('last_name', name.lastName)
+      this.props.update('username', name.userName)
   }
 
   render() {
@@ -32,10 +35,10 @@ export default class PC extends Base {
             {this.userSearch('username', 'Username')}
           </div>          
           <div className="col-sm-4">
-            {this.inputField('first_name', 'First Name', false, null, this.state.firstName)}
+            {this.inputField('first_name', 'First Name')}
           </div>
           <div className="col-sm-4">
-            {this.inputField('last_name', 'Last Name', false, null, this.state.lastName)}
+            {this.inputField('last_name', 'Last Name')}
           </div>
         </div>
         <div className="row">

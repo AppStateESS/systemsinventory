@@ -10,16 +10,8 @@ export default class Base extends Component {
   constructor(props) {
     super(props)
     this.inputField = this.inputField.bind(this)
-    this.updateName = this.updateName.bind(this)
   }
-
-  updateName(name){
-      this.setState({
-          firstName: name.firstName,
-          lastName: name.lastName
-      })
-  }
-  
+ 
   select(varname, label = null, optionName = null) {
     const {device, update, options} = this.props
     if (optionName === null) {
@@ -70,13 +62,13 @@ export default class Base extends Component {
       change={update.bind(null, varname)}/>)
   }
   
-  userSearch(varname, label = null, disabled = false, placeholder = null) {
+  userSearch(varname, label = null, disabled = false, placeholder = null, inputvalue=null) {
       const {device, update} = this.props
       label = this.getLabel(label, varname)
       return (<UserSearch
       name={varname}
       disabled={disabled}
-      value={device[varname]}
+      value={device[varname] ? device[varname] : ''}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
       required={Device.isRequired(device, varname)}

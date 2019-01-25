@@ -30,6 +30,7 @@ class PC extends SystemDevice
     {
         // if the status is 2, device is assigned to a LOCATION and we can
         // forgive missing names
+        
         $device->setFirstName($request->pullPatchString('first_name'), $device->getStatus() == 2);
         $device->setLastName($request->pullPatchString('last_name', $device->getStatus() == 2));
         $device->setUsername($request->pullPatchString('username', $device->getStatus() == 2));

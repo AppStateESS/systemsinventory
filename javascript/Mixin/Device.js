@@ -113,6 +113,7 @@ export default class Device {
         }
       }
     }.bind(this))
+    errorFound = false
     return !errorFound
   }
 
