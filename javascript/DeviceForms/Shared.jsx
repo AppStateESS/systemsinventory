@@ -78,7 +78,7 @@ export default class Shared extends Base {
         {selectDevice}
         <div className="row">
           <div className="col-sm-6">
-            {this.inputField('physical_id')}
+            {this.inputField('physical_id', 'Physical id', this.props.device.status)}
           </div>
           <div className="col-sm-6">
             <label>Purchase date</label>&nbsp;<i className="fa fa-asterisk text-danger"></i><br/>
@@ -86,6 +86,7 @@ export default class Shared extends Base {
               className="form-control"
               dateFormat="YYYY-MM-DD"
               todayButton="Today"
+              disabled={this.props.device.status}
               showYearDropdown
               onChange={this.updatePurchaseDate.bind(this)}
               selected={moment(this.props.device.purchase_date)}/>
@@ -94,6 +95,7 @@ export default class Shared extends Base {
         <label>Notes</label>
         <textarea
           className="form-control"
+          disabled={this.props.device.status}
           value={this.props.device.notes === null
           ? ''
           : this.props.device.notes}

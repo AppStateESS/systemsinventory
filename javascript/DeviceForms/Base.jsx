@@ -76,6 +76,11 @@ export default class Base extends Component {
       label={label}/>)
   }
 
+  canEdit() {
+    const {device, update} = this.props
+    return device.status
+  }
+  
   render() {
     return (
       <div></div>
