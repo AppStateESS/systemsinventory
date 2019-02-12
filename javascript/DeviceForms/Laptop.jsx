@@ -14,27 +14,28 @@ import React from 'react'
 
     render() {
         const {device, update, options} = this.props
+        let disabled = this.canEdit()
         return (
                 <div>
                     <div className="row">
                         <div className="col-sm-6">
-                            {this.inputField('mac', 'MAC address (wired)', false, 'XX:XX:XX:XX:XX:XX')}
+                            {this.inputField('mac', 'MAC address (wired)', disabled, 'XX:XX:XX:XX:XX:XX')}
                         </div>
                         <div className="col-sm-6">
-                            {this.inputField('mac2', 'Secondary MAC address', false, 'XX:XX:XX:XX:XX:XX')}
+                            {this.inputField('mac2', 'Secondary MAC address', disabled, 'XX:XX:XX:XX:XX:XX')}
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-sm-6">
-                            {this.inputField('manufacturer')}
+                            {this.inputField('manufacturer', 'Manufacturer', disabled)}
                         </div>
                         <div className="col-sm-6">
-                            {this.inputField('model')}
+                            {this.inputField('model', 'Model', disabled)}
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-sm-4">
-                            {this.inputField('processor', null, false, 'Intel core 5')}
+                            {this.inputField('processor', null, disabled, 'Intel core 5')}
                         </div>
                         <div className="col-sm-4">
                             {this.inputField('video_card', null, false, 'Nvidia, ATI, Onboard')}

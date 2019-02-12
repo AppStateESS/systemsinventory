@@ -12,14 +12,15 @@ export default class Printer extends Base {
 
   render() {
     const {device, update} = this.props
+    let disabled = this.canEdit()
     return (
       <div>
         <div className="row">
           <div className="col-sm-4">
-            {this.inputField('manufacturer')}
+            {this.inputField('manufacturer', 'Manufacturer', disabled)}
           </div>
           <div className="col-sm-4">
-            {this.inputField('model')}
+            {this.inputField('model', 'Model', disabled)}
           </div>
           <div className="col-sm-4">
             {this.inputField('toner_cartridge')}
