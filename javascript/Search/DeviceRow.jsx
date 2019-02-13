@@ -75,6 +75,7 @@ export default class DeviceRow extends Component {
     let editAssign
     let surplus
     let stolen
+    let unSurplus
 
     if (status === 0) {
       surplus = <li>
@@ -96,7 +97,7 @@ export default class DeviceRow extends Component {
           <i className="fa fa-thumbs-o-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
-      editAssign = <li>
+        editAssign = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
           className="pointer">
@@ -107,6 +108,13 @@ export default class DeviceRow extends Component {
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
           className="pointer">
           <i className="fa fa-recycle"></i>&nbsp;Unassign</a>
+      </li>
+    } else if (status === 3) {
+      unSurplus = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unsurplus')}
+          className="pointer">
+          <i className="fa fa-truck"></i>&nbsp;Return to service</a>
       </li>
     }
 
@@ -148,6 +156,7 @@ export default class DeviceRow extends Component {
           {editAssign}
           {assign}
           {surplus}
+          {unSurplus}
           {stolen}
           {separator}
           {deleteDevice}

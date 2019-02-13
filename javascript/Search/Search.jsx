@@ -15,6 +15,7 @@ import ViewDevice from '../View/ViewDevice.jsx'
 import FormBase from '../Shared/FormBase.jsx'
 import SurplusDevice from './SurplusDevice.jsx'
 import StolenDevice from './StolenDevice.jsx'
+import UnSurplusDevice from './UnSurplusDevice.jsx'
 
 /* global $, jsonFilters, restricted, deity */
 
@@ -58,6 +59,7 @@ export default class Search extends FormBase {
     this.surplus = this.surplus.bind(this)
     this.download = this.download.bind(this)
     this.unassign = this.unassign.bind(this)
+    this.unsurplus = this.unsurplus.bind(this)
     this.maxOffset = this.maxOffset.bind(this)
     this.openModal = this.openModal.bind(this)
     this.editSwitch = this.editSwitch.bind(this)
@@ -245,6 +247,22 @@ export default class Search extends FormBase {
       error: function () {}.bind(this)
     })
   }
+  
+  unsurplus() {
+    $.ajax({
+      url: './systemsinventory/system/unassign',
+      data: {
+        device_id: this.state.device.id
+      },
+      dataType: 'json',
+      type: 'patch',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
+    })
+  }
 
   reset() {
     let filters = this.state.filters
@@ -384,6 +402,14 @@ export default class Search extends FormBase {
           formType = <UnassignDevice
             device={this.state.device}
             unassign={this.unassign}
+            close={this.closeOverlay}/>
+          break
+          
+          case 'unsurplus':
+          overlayTitle = `Return device ${this.state.device.physical_id} to service`
+          formType = <UnSurplusDevice
+            device={this.state.device}
+            unassign={this.unsurplus}
             close={this.closeOverlay}/>
           break
 
