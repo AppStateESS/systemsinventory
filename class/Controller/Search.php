@@ -108,8 +108,8 @@ class Search extends \phpws2\Http\Controller
 
             if ($result) {
                 // Total number of rows not adjusted for limit
-                if (isset($result[1])) {
-                    $total = $result[1]['full_count'];
+                if (isset($result[0])) {
+                    $total = $result[0]['full_count'];
                 }
 
                 $row_count = count($result);
