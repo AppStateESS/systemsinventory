@@ -26,7 +26,7 @@ export default class Filters extends Component {
   }
 
   formatDate(datenum) {
-    return String(moment(datenum * 1000).format('YYYY-MM-DD'))
+    return String(moment(datenum * 1000).format('MM-DD-YYYY'))
   }
 
   render() {

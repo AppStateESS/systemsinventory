@@ -168,7 +168,7 @@ export default class DeviceRow extends Component {
     row.push(<span>{editButton}</span>)
     row.push(<span className="text-center">{this.deviceType(device_type_id)}</span>)
     row.push(<span>{physical_id}</span>)
-    row.push(<span>{moment.unix(purchase_date).format('YYYY-MM-DD')}</span>)
+    row.push(<span>{moment.unix(purchase_date).format('MM-DD-YYYY')}</span>)
 
     switch (this.props.statusType) {
       case 0:

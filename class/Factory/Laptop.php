@@ -9,7 +9,9 @@ class Laptop extends SystemDevice
 
     public function postNewLaptop(\Canopy\Request $request, Resource $laptop)
     {
-        $laptop->setPrimaryMonitor($request->pullPostString('primary_monitor'));
+        if($request->isVar('primary_monitor')){
+            $laptop->setPrimaryMonitor($request->pullPostString('primary_monitor'));
+        }
         $laptop->setVideoCard(filter_input(INPUT_POST, 'video_card',
                         FILTER_SANITIZE_STRING));
         $laptop->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));

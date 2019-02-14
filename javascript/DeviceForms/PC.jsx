@@ -62,17 +62,14 @@ export default class PC extends Base {
         </div>
         <div className="row">
           <div className="col-sm-4">
-            <div>
-              <BigCheckbox
-                checked={device.rotation === 1}
-                handle={update.bind(null, 'rotation', device.rotation === 1
-                ? 0
-                : 1)}
-                label="Exclude from rotation"/>
-            </div>
+            <BigCheckbox
+              checked={device.dual_monitor === 1}
+              handle={update.bind(null, 'dual_monitor', device.dual_monitor === 1
+              ? 0
+              : 1)}
+              label="Dual monitor"/> {this.inputField('secondary_monitor', 'Secondary monitor size', device.dual_monitor === 0)}
           </div>
           <div className="col-sm-4">
-
             <div>
               <BigCheckbox
                 checked={device.is_server === 1}
@@ -106,7 +103,15 @@ export default class PC extends Base {
                 : 1)}
                 label="Stand"/>
             </div>
-          </div>
+             <div>
+              <BigCheckbox
+                checked={device.rotation === 1}
+                handle={update.bind(null, 'rotation', device.rotation === 1
+                ? 0
+                : 1)}
+                label="Exclude from rotation"/>
+            </div>
+           </div>
         </div>
       </div>
     )

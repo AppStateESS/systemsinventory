@@ -22,7 +22,8 @@ class PC extends SystemDevice
         $pc->setStand((bool)$request->pullPostBoolean('stand', true));
         $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
         $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
-
+        $pc->setDual((bool)$request->pullPostBoolean('dual_monitor', true));
+        $pc->setSecondaryMonitor($request->pullPostString('secondary_monitor', true));
         self::saveResource($pc);
     }
 
@@ -43,8 +44,7 @@ class PC extends SystemDevice
         $sdevice->setSystemUsage($request->pullPatchInteger('system_usage'));
         $sdevice->setSmartRoom((bool)$request->pullPatchBoolean('smart_room', true));
         $sdevice->setCheckIn((bool)$request->pullPatchBoolean('check_in', true));
-        $sdevice->setDual((bool)$request->pullPatchBoolean('dual_monitor', true));
-        $sdevice->setSecondaryMonitor($request->pullPatchString('secondary_monitor', true));
+
     }
 
 }
