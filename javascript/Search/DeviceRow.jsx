@@ -76,6 +76,8 @@ export default class DeviceRow extends Component {
     let surplus
     let stolen
     let unSurplus
+    let deleteDevice
+    let separator
 
     if (status === 0) {
       surplus = <li>
@@ -116,26 +118,23 @@ export default class DeviceRow extends Component {
           className="pointer">
           <i className="fa fa-truck"></i>&nbsp;Return to service</a>
       </li>
+        if (this.props.deity == 1) {
+        const red = {
+            color: 'red'
+        }
+        separator = <li role="separator" className="divider"></li>
+        deleteDevice = (
+            <li>
+            <a
+                onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
+                style={red}
+                className="pointer">
+                <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
+            </li>
+        )
+        }
     }
-
-    let separator
-    let deleteDevice
-    if (this.props.deity == 1) {
-      const red = {
-        color: 'red'
-      }
-      separator = <li role="separator" className="divider"></li>
-      deleteDevice = (
-        <li>
-          <a
-            onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
-            style={red}
-            className="pointer">
-            <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
-        </li>
-      )
-    }
-
+    
     const editButton = (
       <div
         className="dropdown"
