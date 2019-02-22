@@ -78,6 +78,7 @@ export default class DeviceRow extends Component {
     let unSurplus
     let deleteDevice
     let separator
+    let inventory
 
     if (status === 0) {
       surplus = <li>
@@ -99,18 +100,24 @@ export default class DeviceRow extends Component {
           <i className="fa fa-thumbs-o-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
+        inventory = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
+          className="pointer">
+          <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
+        </li>
         editAssign = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
           className="pointer">
           <i className="fa fa-pencil"></i>&nbsp;Edit assignment</a>
-      </li>
-      assign = <li>
-        <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
-          className="pointer">
-          <i className="fa fa-recycle"></i>&nbsp;Unassign</a>
-      </li>
+        </li>
+        assign = <li>
+            <a
+            onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
+            className="pointer">
+            <i className="fa fa-recycle"></i>&nbsp;Unassign</a>
+        </li>
     } else if (status === 3) {
       unSurplus = <li>
         <a
@@ -152,6 +159,7 @@ export default class DeviceRow extends Component {
               className="pointer">
               <i className="fa fa-cogs"></i>&nbsp;Edit device</a>
           </li>
+          {inventory}
           {editAssign}
           {assign}
           {surplus}

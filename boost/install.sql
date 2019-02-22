@@ -56,6 +56,15 @@ CREATE TABLE systems_device (
 
 CREATE TABLE systems_device_history (LIKE systems_device);
 
+CREATE TABLE systems_log (
+       id serial,
+       username character varying,
+       device_id integer REFERENCES systems_device(id),
+       log_type integer,
+       timestamp integer,
+       PRIMARY KEY (id)
+);
+
 CREATE TABLE systems_pc (
        id    serial,
        device_id integer REFERENCES systems_device(id),

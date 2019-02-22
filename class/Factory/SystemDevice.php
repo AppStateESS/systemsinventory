@@ -351,7 +351,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $timestamp = time();
         $log_type = INVENTORY_AUDIT;
         $username = \Current_User::getUsername();
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $query = "INSERT INTO systems_log (username, device_id, log_type, timestamp) VALUES('$username', '$device_id', '$log_type', '$timestamp')";
         $result = $db->query($query);
         if (empty($result)) {
@@ -366,7 +366,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/log_types.php");
         $current_time = time();
         $one_year = 31536000;
-        $db = \Database::getDB();
+        $db = \phpws2\Database::getDB();
         $tbl = $db->addTable('systems_log');
         $tbl->addField('username');
         $tbl->addField('timestamp');

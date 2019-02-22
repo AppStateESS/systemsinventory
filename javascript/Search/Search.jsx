@@ -16,6 +16,7 @@ import FormBase from '../Shared/FormBase.jsx'
 import SurplusDevice from './SurplusDevice.jsx'
 import StolenDevice from './StolenDevice.jsx'
 import UnSurplusDevice from './UnSurplusDevice.jsx'
+import InventoryDevice from './InventoryDevice.jsx'
 
 /* global $, jsonFilters, restricted, deity */
 
@@ -60,6 +61,7 @@ export default class Search extends FormBase {
     this.download = this.download.bind(this)
     this.unassign = this.unassign.bind(this)
     this.unsurplus = this.unsurplus.bind(this)
+    this.inventory = this.inventory.bind(this)
     this.maxOffset = this.maxOffset.bind(this)
     this.openModal = this.openModal.bind(this)
     this.editSwitch = this.editSwitch.bind(this)
@@ -263,6 +265,22 @@ export default class Search extends FormBase {
       error: function () {}.bind(this)
     })
   }
+  
+  inventory() {
+    $.ajax({
+      url: './systemsinventory/system/inventory',
+      data: {
+        device_id: this.state.device.id
+      },
+      dataType: 'json',
+      type: 'get',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
+    })
+  }
 
   reset() {
     let filters = this.state.filters
@@ -405,11 +423,19 @@ export default class Search extends FormBase {
             close={this.closeOverlay}/>
           break
           
-          case 'unsurplus':
+        case 'unsurplus':
           overlayTitle = `Return device ${this.state.device.physical_id} to service`
           formType = <UnSurplusDevice
             device={this.state.device}
             unassign={this.unsurplus}
+            close={this.closeOverlay}/>
+          break
+          
+        case 'inventory':
+          overlayTitle = `Inventory device ${this.state.device.physical_id}`
+          formType = <InventoryDevice
+            device={this.state.device}
+            update={this.inventory}
             close={this.closeOverlay}/>
           break
 
