@@ -55,11 +55,7 @@ export default class UserSearch extends Component {
         $.getJSON('./systemsinventory/system/searchUser', {username: value.value}).done(function (data) {
         this.setState({suggestions: data})
         }.bind(this))
-        /**
-            this.setState({
-            suggestions: this.getSuggestions(value.value)
-        })
-        */
+        
     }
     
     onSuggestionsClearRequested() {

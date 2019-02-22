@@ -125,6 +125,9 @@ class Search extends \phpws2\Http\Controller
                     $more = false;
                     $total_shown = $row_count;
                 }
+                foreach($result as $key=>$row){
+                    $result[$key]['audits'] = SystemDevice::getDeviceAudits($row['id']);
+                }
             }
         }
         return parent::getJsonView(array('restricted' => $restricted, 'listing' => $result, 'total' => $total, 'shown' => $total_shown, 'more' => $more),

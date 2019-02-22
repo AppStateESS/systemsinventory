@@ -6,7 +6,9 @@ import moment from 'moment'
 export default class DeviceRow extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+        overdue:0
+    }
     this.verboseStatus = this.verboseStatus.bind(this)
     this.deviceForm = this.deviceForm.bind(this)
   }
@@ -39,7 +41,7 @@ export default class DeviceRow extends Component {
         'Unknown'
     }
   }
-
+  
   deviceForm(e) {
     e.preventDefault()
     this.props.showOverlay.bind(null, this.props.value.id, 'edit')
@@ -81,6 +83,12 @@ export default class DeviceRow extends Component {
     let inventory
 
     if (status === 0) {
+      inventory = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
+          className="pointer">
+          <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
+        </li>
       surplus = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'surplus')}
@@ -172,6 +180,11 @@ export default class DeviceRow extends Component {
       </div>
     )
 
+    let rowClass = "pointer"
+    if(this.props.auditOverdue){
+        rowClass = "danger table-danger pointer"
+    }
+    
     let row = []
     row.push(<span>{editButton}</span>)
     row.push(<span className="text-center">{this.deviceType(device_type_id)}</span>)
@@ -202,7 +215,7 @@ export default class DeviceRow extends Component {
     return (
       <tr
         onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')}
-        className="pointer">
+        className={rowClass}>
         {
           row.map(function (value, key) {
             return <td key={key}>{value}</td>

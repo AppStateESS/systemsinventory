@@ -370,18 +370,18 @@ class SystemDevice extends \phpws2\ResourceFactory
         $tbl = $db->addTable('systems_log');
         $tbl->addField('username');
         $tbl->addField('timestamp');
-        $condition0 = new \Database\Conditional($db, 'device_id', $device_id,
+        $condition0 = new \phpws2\Database\Conditional($db, 'device_id', $device_id,
                 '=');
-        $condition1 = new \Database\Conditional($db, 'log_type',
+        $condition1 = new \phpws2\Database\Conditional($db, 'log_type',
                 INVENTORY_AUDIT, '=');
-        $conditional = new \Database\Conditional($db, $condition0, $condition1,
+        $conditional = new \phpws2\Database\Conditional($db, $condition0, $condition1,
                 'AND');
         $db->addConditional($conditional);
         $tbl->addOrderBy('timestamp', 'DESC');
         $result = $db->select();
 
         if (empty($result)) {
-            return;
+            $result['audit_overdue'] = 1;
         } else {
             if (($current_time - $result[0]['timestamp']) > $one_year) {
                 $overdue = 1;
@@ -394,6 +394,7 @@ class SystemDevice extends \phpws2\ResourceFactory
                         $value['timestamp']);
             }
             $result['audit_overdue'] = $overdue;
+            //$result['audit_overdue'] = 1;
         }
 
         return $result;

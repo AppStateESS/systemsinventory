@@ -153,13 +153,14 @@ export default class Listing extends Component {
           deity={this.props.deity}
           statusType={this.props.filters.statusType}
           showOverlay={this.props.showOverlay}
+          auditOverdue={val.audits.audit_overdue}          
           value={val}
           key={key}/>
       }.bind(this))
     }
     return (
       <div>
-        <table className="table table-striped">
+        <table className="table table-hover">
           <tbody>
             {columnHeader}
             {rows}
