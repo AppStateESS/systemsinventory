@@ -219,8 +219,12 @@ class SystemDevice extends \phpws2\ResourceFactory
             if (isset($device['system_usage'])) {
                 $device['system_usage'] = (int) $device['system_usage'];
             }
-            $device['location'] = self::getLocationByID($device['location_id']);
-            $device['department'] = self::getDepartmentByID($device['department_id']);
+            if(isset($device['location_id'])){
+                $device['location'] = self::getLocationByID($device['location_id']);
+            }
+            if(isset($device['department_id'])){
+                $device['department'] = self::getDepartmentByID($device['department_id']);
+            }
             switch ($device['vlan']) {
                 case 1:
                     $device['vlan_full'] = 'Admin';
@@ -306,6 +310,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $tbl = $db->addTable(self::getSystemTypeTable($device->getDeviceType()));
         $tbl->addFieldConditional('device_id', $device->getId());
         $row = $db->selectOneRow();
+
         if ($row) {
             $specific_device->setVars($row);
         } else {

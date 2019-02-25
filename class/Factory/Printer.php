@@ -9,7 +9,7 @@ class Printer extends SystemDevice
 
     public function postNewPrinter(\Canopy\Request $request, $printer)
     {
-        $printer->setTonerCartridge($request->pullPostBoolean('toner_cartridge', true));
+        $printer->setTonerCartridge($request->pullPostString('toner_cartridge'));
         $printer->setColor($request->pullPostBoolean('color', true));
         $printer->setNetwork($request->pullPostBoolean('network', true));
         $printer->setDuplex($request->pullPostBoolean('duplex', true));

@@ -140,7 +140,6 @@ CREATE TABLE systems_printer (
        toner_cartridge character varying,
        duplex smallint default 0,
        network smallint default 0,
-       phone character varying,
        PRIMARY KEY (id)
 );
 

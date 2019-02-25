@@ -22,8 +22,11 @@ class Printer extends \phpws2\Resource
       $this->device_id = new \phpws2\Variable\IntegerVar(0,'device_id');
       $this->toner_cartridge = new \phpws2\Variable\TextOnly(NULL, 'toner_cartridge');
       $this->color = new \phpws2\Variable\BooleanVar(false,'color');
+      $this->color->allowNull(true);
       $this->network = new \phpws2\Variable\BooleanVar(false,'network');
+      $this->network->allowNull(true);
       $this->duplex = new \phpws2\Variable\BooleanVar(false,'duplex');
+      $this->duplex->allowNull(true);      
     }
 
     public function setDeviceID($device_id){
@@ -35,7 +38,7 @@ class Printer extends \phpws2\Resource
     }
     
     public function setColor($color){
-        $this->color->set($color);
+            $this->color->set($color);
     }
     
     public function setNetwork($network){

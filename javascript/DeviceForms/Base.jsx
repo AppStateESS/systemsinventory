@@ -68,7 +68,7 @@ export default class Base extends Component {
       return (<UserSearch
       name={varname}
       disabled={disabled}
-      value={device[varname] ? device[varname] : ''}
+      value={device[varname] ? device[varname] : ""}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
       required={Device.isRequired(device, varname)}
@@ -78,7 +78,11 @@ export default class Base extends Component {
 
   canEdit() {
     const {device, update} = this.props
-    return device.status
+    if(device.status != 0){
+        return true
+    }else{
+        return false
+    }
   }
   
   render() {
