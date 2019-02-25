@@ -16,7 +16,6 @@ class Laptop extends \phpws2\Resource
     protected $system_usage;
     protected $battery_backup;
     protected $redundant_backup;
-    protected $rotation;
     protected $docking_station;
     protected $check_in;
     protected $touch_screen;
@@ -40,7 +39,6 @@ class Laptop extends \phpws2\Resource
                 'battery_backup');
         $this->redundant_backup = new \phpws2\Variable\BooleanVar(false,
                 'redundant_backup');
-        $this->rotation = new \phpws2\Variable\BooleanVar(false, 'rotation');
         $this->docking_station = new \phpws2\Variable\BooleanVar(false, 'docking_station');
         $this->touch_screen = new \phpws2\Variable\BooleanVar(false,
                 'touch_screen');
@@ -89,11 +87,6 @@ class Laptop extends \phpws2\Resource
     public function setRedundantBackup($redundant_backup)
     {
         $this->redundant_backup->set($redundant_backup);
-    }
-
-    public function setRotation($rotation)
-    {
-        $this->rotation->set($rotation);
     }
 
     public function setDockingStation($docking_station)

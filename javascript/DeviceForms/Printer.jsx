@@ -25,7 +25,7 @@ export default class Printer extends Base {
           <div className="col-sm-4">
             {this.inputField('toner_cartridge')}
           </div>
-        </div>
+        </div>   
         <div className="row">
           <div className="col-sm-4">
             <BigCheckbox
@@ -51,6 +51,14 @@ export default class Printer extends Base {
               : 1)}
               label="Network"/>
           </div>
+        </div>
+        <div className="row">
+            <div className="col-sm-4">
+                <BigCheckbox
+                    checked={device.rotation === 1}
+                    handle={update.bind(null, 'rotation', device.rotation === 1 ? 0 : 1)}
+                    label="Exclude from rotation"/>
+            </div>
         </div>
       </div>
     )

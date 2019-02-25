@@ -51,6 +51,7 @@ CREATE TABLE systems_device (
        notes character varying default NULL,
        sys_period tstzrange not null,
        status smallint default 0,
+       rotation smallint default 0,
        PRIMARY KEY (id)
 );
 
@@ -78,7 +79,6 @@ CREATE TABLE systems_pc (
        touch_screen smallint default 0,
        dual_monitor smallint default 0,
        system_usage character varying,
-       rotation smallint default 0,
        stand smallint default 0,
        smart_room smallint default 0,
        check_in smallint default 0,
@@ -96,7 +96,6 @@ CREATE TABLE systems_laptop (
        redundant_backup smallint default 0,
        touch_screen smallint default 0,
        system_usage character varying,
-       rotation smallint default 0,
        docking_station smallint default 0,
        smart_room smallint default 0,
        check_in smallint default 0,

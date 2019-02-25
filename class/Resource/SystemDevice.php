@@ -33,6 +33,7 @@ class SystemDevice extends \phpws2\Resource
     protected $purchase_date;
     protected $profile;
     protected $profile_name;
+    protected $rotation;
     protected $sys_period = null;
 
     /**
@@ -54,8 +55,7 @@ class SystemDevice extends \phpws2\Resource
         $this->location_id->allowNull(true);
         $this->room_number = new \phpws2\Variable\TextOnly(null, 'room_number');
         $this->room_number->allowNull(true);
-        $this->department_id = new \phpws2\Variable\IntegerVar(null,
-                'department');
+        $this->department_id = new \phpws2\Variable\IntegerVar(null, 'department');
         $this->department_id->allowNull(true);
         $this->physical_id = new \phpws2\Variable\TextOnly(null, 'physical_id');
         $this->physical_id->allowNull(true);
@@ -88,8 +88,7 @@ class SystemDevice extends \phpws2\Resource
         $this->username->allowNull(true);
         $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
         $this->phone->allowNull(true);
-        $this->purchase_date = new \phpws2\Variable\DateVar(null,
-                'purchase_date');
+        $this->purchase_date = new \phpws2\Variable\DateVar(null, 'purchase_date');
         $this->purchase_date->allowNull(true);
         $this->profile = new \phpws2\Variable\BooleanVar(false, 'profile');
         $this->profile_name = new \phpws2\Variable\TextOnly(null, 'profile_name');
@@ -97,6 +96,7 @@ class SystemDevice extends \phpws2\Resource
         $this->notes = new \phpws2\Variable\TextOnly(null, 'notes');
         $this->notes->allowNull(true);
         $this->status = new \phpws2\Variable\SmallInteger(0, 'status');
+        $this->rotation = new \phpws2\Variable\BooleanVar(false, 'rotation');
     }
 
     public function setName($first_name, $last_name)
@@ -237,6 +237,11 @@ class SystemDevice extends \phpws2\Resource
     public function setLastName($name)
     {
         $this->last_name->set($name);
+    }
+
+    public function setRotation($rotation)
+    {
+        $this->rotation->set($rotation);
     }
 
     public function setStatus($status)

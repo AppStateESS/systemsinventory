@@ -93,7 +93,8 @@ class SystemDevice extends \phpws2\ResourceFactory
             $device->setManufacturer($request->pullPostString('manufacturer',
                             true));
         }
-
+        
+        $device->setRotation((bool)$request->pullPostBoolean('rotation', true));
         $profile_name = $request->pullPostString('profile_name', true);
         if (!empty($profile_name)) {
             $device->setProfile(TRUE);

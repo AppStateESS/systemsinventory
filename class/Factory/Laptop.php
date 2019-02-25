@@ -18,7 +18,6 @@ class Laptop extends SystemDevice
 
         $laptop->setBatteryBackup((bool)$request->pullPostBoolean('battery_backup', true));
         $laptop->setRedundantBackup((bool)$request->pullPostBoolean('redundant_backup', true));
-        $laptop->setRotation((bool)$request->pullPostBoolean('rotation', true));
         $laptop->setDockingStation((bool)$request->pullPostBoolean('docking_station', true));
         $laptop->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
 

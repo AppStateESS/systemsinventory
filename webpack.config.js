@@ -6,7 +6,7 @@ var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 module.exports = {
   entry: setup.entry,
   output: {
-    path: setup.path.join(setup.APP_DIR, "dev"),
+    path: setup.path.join(setup.APP_DIR, "build"),
     filename: "[name].js",
   },
   plugins: [
@@ -16,7 +16,7 @@ module.exports = {
     new BrowserSyncPlugin({
       host: 'localhost',
       port: 3000,
-      files: ['./javascript/dev/*.js'],
+      files: ['./javascript/build/*.js'],
       proxy: 'localhost/phpwebsite'
     }),
   ],
@@ -32,7 +32,7 @@ module.exports = {
         enforce: 'pre',
         loader: 'jshint-loader',
         exclude: '/node_modules/',
-        include: setup.APP_DIR + "/dev",
+        include: setup.APP_DIR + "/build",
       }, {
         test: /\.jsx?/,
         include: setup.APP_DIR,

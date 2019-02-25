@@ -1,5 +1,7 @@
 <?php
 
+use phpws2\Database;
+
 function runDbMigration($fileName)
 {
     $db = new PHPWS_DB();
@@ -7,6 +9,30 @@ function runDbMigration($fileName)
     if (PEAR::isError($result)) {
         throw new \Exception($result->toString());
     }
+}
+
+function v1_3_4Update(){
+    $results = $pcResults = $laptopResults = array();
+    
+    $db = \phpws2\Database::getDB();
+    $query = 'ALTER TABLE systems_device ADD COLUMN rotation smallint default 0';
+    $result = $db->exec($query);
+    $query = "select device_id from systems_pc where rotation = 1";
+    $db->loadStatement($query);
+    $pcResults = $db->fetchAll();
+    $query = "select device_id from systems_laptop where rotation = 1";
+    $db->loadStatement($query);
+    $laptopResults = $db->fetchAll();
+    $results = array_merge($pcResults, $laptopResults);
+    
+    foreach($results as $device){
+        $id = $device['device_id'];
+        $update_query = "update systems_device set rotation = 1 where id = $id";
+        $db->exec($update_query);
+    }
+    
+    $query = 'ALTER TABLE systems_device_history ADD COLUMN rotation smallint default 0';
+    $db->exec($query);
 }
 
 function systemsinventory_update(&$content, $currentVersion)
@@ -78,6 +104,17 @@ EOF;
 + Mac data type changed
 </pre>
 EOF;
-    }
+            case version_compare($currentVersion, '1.3.4', '<'):
+            v1_3_4Update();
+            runDbMigration('update_1_3_4.sql', '1.3.4', '<');
+            $content[] = <<<EOF
+<pre>
+1.3.4
+-----
++ Moved rotation to device table
+</pre>
+EOF;
+
+            }
     return TRUE;
 }

@@ -18,7 +18,7 @@ class PC extends SystemDevice
                         FILTER_SANITIZE_STRING));
         $pc->setBatteryBackup((bool)$request->pullPostBoolean('battery_backup', true));
         $pc->setRedundantBackup((bool)$request->pullPostBoolean('redundant_backup', true));
-        $pc->setRotation((bool)$request->pullPostBoolean('rotation', true));
+        
         $pc->setStand((bool)$request->pullPostBoolean('stand', true));
         $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
         $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
