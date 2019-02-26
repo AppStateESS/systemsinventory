@@ -25,6 +25,7 @@ class DigitalSign extends \phpws2\Resource
       $this->screen_manufacturer = new \phpws2\Variable\TextOnly(null,'screen_manufacturer');
       $this->screen_manufacturer->allowNull(true);
       $this->hi_def = new \phpws2\Variable\BooleanVar(false,'hi_def');
+      $this->hi_def->allowNull(true);
     }
 
     public function setDeviceID($device_id){

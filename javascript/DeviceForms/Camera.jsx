@@ -29,7 +29,7 @@ export default class Camera extends Base {
           </div>
         </div>
         <div className="row">
-          <div className="col-sm-6">
+          <div className="col-sm-3">
             <BigCheckbox
               checked={device.hi_def === 1}
               handle={update.bind(null, 'hi_def', device.hi_def === 1
@@ -37,7 +37,7 @@ export default class Camera extends Base {
               : 1)}
               label="High definition"/>
           </div>
-          <div className="col-sm-6">
+          <div className="col-sm-3">
             <div>
               <BigCheckbox
                 checked={device.sd_support === 1}
@@ -47,6 +47,12 @@ export default class Camera extends Base {
                 label="SD Card support"/>
             </div>
           </div>
+          <div className="col-sm-3">
+            <BigCheckbox
+            checked={device.rotation === 1}
+            handle={update.bind(null, 'rotation', device.rotation === 1 ? 0 : 1)}
+            label="Exclude from rotation"/>
+          </div>          
         </div>
       </div>
     )

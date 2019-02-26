@@ -13,7 +13,7 @@ class DigitalSign extends SystemDevice
                         FILTER_SANITIZE_STRING));
         $digital_sign->setScreenManufacturer(filter_input(INPUT_POST,
                         'screen_manufacturer', FILTER_SANITIZE_STRING));
-        $digital_sign->setHiDef($request->pullPostBoolean('hi_def'));
+        $digital_sign->setHiDef($request->pullPostBoolean('hi_def',true));
 
         self::saveResource($digital_sign);
     }

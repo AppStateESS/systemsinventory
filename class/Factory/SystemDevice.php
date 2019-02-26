@@ -93,8 +93,13 @@ class SystemDevice extends \phpws2\ResourceFactory
             $device->setManufacturer($request->pullPostString('manufacturer',
                             true));
         }
+        // if this is a new device servers, printers, signs, and clocks are set to exclude rotation by default
+        if(!$id && ($device->isServer() || $device->isPrinter() || $device->isSign() || $device->isClock())){
+            $device->setRotation(true);
+        }else{
+            $device->setRotation((bool)$request->pullPostBoolean('rotation', true));
+        }
         
-        $device->setRotation((bool)$request->pullPostBoolean('rotation', true));
         $profile_name = $request->pullPostString('profile_name', true);
         if (!empty($profile_name)) {
             $device->setProfile(TRUE);

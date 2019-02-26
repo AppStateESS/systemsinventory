@@ -47,11 +47,6 @@ class IPAD extends \phpws2\Resource
     {
         $this->protective_case->set($case);
     }
-
-    public function setPhone($phone)
-    {
-        $this->phone->set($phone);
-    }
     
     public function setSystemUsage($system_usage)
     {

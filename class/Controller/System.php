@@ -135,7 +135,9 @@ class System extends \phpws2\Http\Controller
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $sdfactory = new SDFactory;
         $device = $sdfactory->postDevice($request);
-
+        if(!$request->pullPostInteger('id', true)){
+            $sdfactory->markDeviceInventoried($device->getId());
+        }
         // Time clock doesn't have data outside the default device
         if ($device->getDeviceType() !== TIME_CLOCK) {
             $this->postSpecificDevice($request, $device);

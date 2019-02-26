@@ -258,6 +258,11 @@ class SystemDevice extends \phpws2\Resource
     {
         return $this->device_type_id->get() === PC;
     }
+    
+    public function isServer()
+    {
+        return $this->device_type_id->get() === SERVER;
+    }
 
     public function isLaptop()
     {

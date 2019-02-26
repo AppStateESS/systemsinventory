@@ -2,6 +2,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Base from './Base.jsx'
+import BigCheckbox from '../FormMixin/BigCheckbox.jsx'
 
 export default class Clock extends Base {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class Clock extends Base {
   }
 
   render() {
+    const {device, update} = this.props
     return (
       <div>
         <div className="row">
@@ -22,6 +24,14 @@ export default class Clock extends Base {
           <div className="col-sm-4">
             {this.inputField('model')}
           </div>
+        </div>
+        <div className='row'>
+        <div className='col-sm-4'>
+          <BigCheckbox
+            checked={device.rotation === 1}
+            handle={update.bind(null, 'rotation', device.rotation === 1 ? 0 : 1)}
+            label="Exclude from rotation"/>
+        </div>            
         </div>
       </div>
     )
