@@ -283,6 +283,11 @@ class SystemDevice extends \phpws2\Resource
     {
         return $this->device_type_id->get() === IPAD;
     }
+    
+    public function isCamera()
+    {
+        return $this->device_type_id->get() === CAMERA;
+    }
 
     public function isSign()
     {
