@@ -130,6 +130,7 @@ CREATE TABLE systems_digital_sign (
        screen_size character varying,
        hi_def smallint,
        screen_manufacturer character varying,
+       content_creator charater varying,
        PRIMARY KEY (id)
 );
 

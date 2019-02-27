@@ -114,6 +114,15 @@ EOF;
 + Moved rotation to device table
 </pre>
 EOF;
+            case version_compare($currentVersion, '1.4', '<'):
+            runDbMigration('update_1_4.sql', '1.4', '<');
+            $content[] = <<<EOF
+<pre>
+1.3.4
+-----
++ Add content creator to digital sign
+</pre>
+EOF;
 
             }
     return TRUE;

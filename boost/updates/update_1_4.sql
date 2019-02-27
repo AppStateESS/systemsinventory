@@ -1,0 +1,1 @@
+ALTER TABLE systems_digital_sign ADD COLUMN content_creator character varying;

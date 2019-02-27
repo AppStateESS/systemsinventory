@@ -12,44 +12,49 @@ import React from 'react'
 
     render() {
         const {device, update} = this.props
-                        return (
+        return (
 <div>
     <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('mac', 'MAC address', false, 'XX:XX:XX:XX:XX:XX')}
         </div>
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('model')}
         </div>
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('screen_manufacturer')}
-        </div>
-        <div className="col-sm-3">
-            {this.inputField('manufacturer', 'Player manufacturer')}
         </div>
     </div>
     <div className="row">
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('screen_size')}
         </div>
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('processor', null, false, 'e.g. Intel core i5')}
         </div>
-        <div className="col-sm-3">
+        <div className="col-sm-4">
             {this.inputField('ram', 'RAM', false, 'in gigabytes (GB)')}
-        </div>
-        <div className="col-sm-3">
-            {this.inputField('hd_size', 'Hard drive size', false, 'TB or GB')}
         </div>
     </div>
     <div className='row'>
-         <div className='col-sm-6'>
+        <div className="col-sm-4">
+            {this.inputField('hd_size', 'Hard drive size', false, 'TB or GB')}
+        </div>
+        <div className="col-sm-4">
+            {this.inputField('manufacturer', 'Player manufacturer')}
+        </div>
+        <div className="col-sm-4">
+            {this.inputField('content_creator', 'Content Creator', false, 'Name')}
+        </div>
+    </div>
+    <div className='row'>
+         <div className='col-sm-4'>
             <BigCheckbox
                 checked={device.hi_def === 1}
                 handle={update.bind(null, 'hi_def', device.hi_def === 1 ? 0 : 1)}
                 label="High Definition"/>
         </div>
-        <div className='col-sm-6'>            
+        <div className='col-sm-4'>            
                 <BigCheckbox
                     checked={device.rotation === 1}
                     handle={update.bind(null, 'rotation', device.rotation === 1 ? 0 : 1)}

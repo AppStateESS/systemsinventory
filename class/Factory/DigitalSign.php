@@ -14,7 +14,7 @@ class DigitalSign extends SystemDevice
         $digital_sign->setScreenManufacturer(filter_input(INPUT_POST,
                         'screen_manufacturer', FILTER_SANITIZE_STRING));
         $digital_sign->setHiDef($request->pullPostBoolean('hi_def',true));
-
+        $digital_sign->setContentCreator(filter_input(INPUT_POST, 'content_creator', FILTER_SANITIZE_STRING));
         self::saveResource($digital_sign);
     }
 

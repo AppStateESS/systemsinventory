@@ -14,6 +14,7 @@ class DigitalSign extends \phpws2\Resource
   protected $screen_size;
   protected $screen_manufacturer;
   protected $hi_def;
+  protected $content_creator;
   protected $table = 'systems_digital_sign';
 
     public function __construct()
@@ -24,6 +25,8 @@ class DigitalSign extends \phpws2\Resource
       $this->screen_size->allowNull(true);
       $this->screen_manufacturer = new \phpws2\Variable\TextOnly(null,'screen_manufacturer');
       $this->screen_manufacturer->allowNull(true);
+      $this->content_creator = new \phpws2\Variable\TextOnly(null,'content_creator');
+      $this->content_creator->allowNull(true);
       $this->hi_def = new \phpws2\Variable\BooleanVar(false,'hi_def');
       $this->hi_def->allowNull(true);
     }
@@ -44,5 +47,8 @@ class DigitalSign extends \phpws2\Resource
       $this->hi_def->set($hd);
     }
 
+    public function setContentCreator($creator){
+        $this->content_creator = $creator;
+    }
 }
 
