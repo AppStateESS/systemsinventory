@@ -66,7 +66,7 @@ export default class Laptop extends Component {
           <td>{this.YesNo(device.touch_screen)}</td>
         </tr>
         <tr>
-          <th>Rotation</th>
+          <th>Exclude from Rotation</th>
           <td>{this.YesNo(device.rotation)}</td>
         </tr>
         <tr>

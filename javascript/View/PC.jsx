@@ -74,7 +74,7 @@ export default class PC extends Component {
           <td>{this.YesNo(device.dual_monitor)}</td>
         </tr>
         <tr>
-          <th>Rotation</th>
+          <th>Exclude from Rotation</th>
           <td>{this.YesNo(device.rotation)}</td>
         </tr>
         <tr>

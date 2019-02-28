@@ -7,6 +7,12 @@ export default class Printer extends Component {
     super(props)
   }
 
+YesNo(val) {
+    return val
+      ? <span>Yes</span>
+      : <span>No</span>
+  }
+  
   render() {
     const {device} = this.props
     return (
@@ -34,6 +40,10 @@ export default class Printer extends Component {
         <tr>
           <th>Networked</th>
           <td>{device.network === 1 ? 'Yes' : 'No'}</td>
+        </tr>
+        <tr>
+          <th>Exclude from Rotation</th>
+          <td>{this.YesNo(device.rotation)}</td>
         </tr>
       </tbody>
     )

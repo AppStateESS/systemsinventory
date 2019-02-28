@@ -34,6 +34,10 @@ export default class Ipad extends Component {
           </td>
         </tr>
         <tr>
+          <th>Exclude from Rotation</th>
+          <td>{this.YesNo(device.rotation)}</td>
+        </tr>
+        <tr>
           <th>
             Tablet account
           </th>

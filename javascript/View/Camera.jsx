@@ -6,7 +6,7 @@ export default class Camera extends Component {
   constructor(props) {
     super(props)
   }
-
+  
   render() {
     const {device} = this.props
     return (
@@ -59,6 +59,15 @@ export default class Camera extends Component {
             Currently enabled
           </th>
           <td>{device.is_on === 1
+              ? 'Yes'
+              : 'No'}
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Exclude from Rotation
+          </th>
+          <td>{device.rotation === 1
               ? 'Yes'
               : 'No'}
           </td>
