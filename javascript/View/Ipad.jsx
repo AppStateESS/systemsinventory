@@ -38,6 +38,14 @@ export default class Ipad extends Component {
           <td>{this.YesNo(device.rotation)}</td>
         </tr>
         <tr>
+          <th>Has a keyboard</th>
+          <td>{this.YesNo(device.keyboard)}</td>
+        </tr>
+        <tr>
+          <th>Wireless plan</th>
+          <td>{this.YesNo(device.wireless_plan)}</td>
+        </tr>
+        <tr>
           <th>
             Tablet account
           </th>

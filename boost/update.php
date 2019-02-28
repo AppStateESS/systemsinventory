@@ -118,9 +118,18 @@ EOF;
             runDbMigration('update_1_4.sql', '1.4', '<');
             $content[] = <<<EOF
 <pre>
-1.3.4
+1.4
 -----
 + Add content creator to digital sign
+</pre>
+EOF;
+            case version_compare($currentVersion, '1.4.1', '<'):
+            runDbMigration('update_1_4_1.sql', '1.4.1', '<');
+            $content[] = <<<EOF
+<pre>
+1.4.1
+-----
++ Add fields to tablet for keyboard and wireless plan
 </pre>
 EOF;
 

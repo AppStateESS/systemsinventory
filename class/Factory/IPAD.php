@@ -10,7 +10,10 @@ class IPAD extends SystemDevice
     public function postNewIPAD(\Canopy\Request $request, $ipad)
     {
         $ipad->setGeneration($request->pullPostString('generation'));
+        $ipad->setAppleID($request->pullPostString('apple_id'));
         $ipad->setProtectiveCase((bool)$request->pullPostBoolean('protective_case', true));
+        $ipad->setKeyboard((bool)$request->pullPostBoolean('keyboard', true));        
+        $ipad->setWirelessPlan((bool)$request->pullPostBoolean('wireless_plan', true));        
 
         self::saveResource($ipad);
     }

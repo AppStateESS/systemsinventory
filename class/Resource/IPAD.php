@@ -13,6 +13,8 @@ class IPAD extends \phpws2\Resource
     protected $generation;
     protected $apple_id;
     protected $protective_case;
+    protected $keyboard;
+    protected $wireless_plan;
     protected $table = 'systems_ipad';
     protected $system_usage;
 
@@ -25,6 +27,8 @@ class IPAD extends \phpws2\Resource
         $this->apple_id = new \phpws2\Variable\TextOnly(null, 'apple_id');
         $this->apple_id->allowNull(true);
         $this->protective_case = new \phpws2\Variable\BooleanVar(false, 'protective_case');
+        $this->keyboard = new \phpws2\Variable\BooleanVar(false, 'keyboard');
+        $this->wireless_plan = new \phpws2\Variable\BooleanVar(false, 'wireless_plan');
         $this->system_usage = new \phpws2\Variable\TextOnly(null, 'system_usage');
     }
 
@@ -46,6 +50,14 @@ class IPAD extends \phpws2\Resource
     public function setProtectiveCase($case)
     {
         $this->protective_case->set($case);
+    }
+    
+    public function setWirelessPlan($plan){
+        $this->wireless_plan = $plan;
+    }
+    
+    public function setKeyboard($keyboard){
+        $this->keyboard = $keyboard;
     }
     
     public function setSystemUsage($system_usage)
