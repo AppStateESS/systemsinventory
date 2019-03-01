@@ -375,6 +375,7 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function getDeviceAudits($device_id)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/log_types.php");
+        include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/device_types.php");
         $current_time = time();
         $one_year = 31536000;
         $db = \phpws2\Database::getDB();
@@ -390,13 +391,17 @@ class SystemDevice extends \phpws2\ResourceFactory
         $db->addConditional($conditional);
         $tbl->addOrderBy('timestamp', 'DESC');
         $result = $db->select();
-
-        if (empty($result)) {
-            $result['audit_overdue'] = 1;
-        } else {
-            if (($current_time - $result[0]['timestamp']) > $one_year) {
+        $device = self::getSystemDetails($device_id);
+        $device_type = $device['device_type_id'];
+        $inventory_device = false;
+        if($device_type === PC || $device_type === SERVER || $device_type === IPAD || $device_type === LAPTOP){
+            $inventory_device = true;
+        }
+        
+        if(!empty($result)){
+            if(($current_time - $result[0]['timestamp']) > $one_year){
                 $overdue = 1;
-            } else {
+            }else{
                 $overdue = 0;
             }
 
@@ -404,10 +409,13 @@ class SystemDevice extends \phpws2\ResourceFactory
                 $result[$key]["timestamp"] = date("F j, Y, g:i a",
                         $value['timestamp']);
             }
-            $result['audit_overdue'] = $overdue;
-            //$result['audit_overdue'] = 1;
+        }else if ($inventory_device){
+            $overdue = 1;
+        }else{
+            $overdue = 0;
         }
 
+        $result['audit_overdue'] = $overdue;
         return $result;
     }
 
