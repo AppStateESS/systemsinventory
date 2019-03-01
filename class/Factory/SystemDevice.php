@@ -391,8 +391,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         $db->addConditional($conditional);
         $tbl->addOrderBy('timestamp', 'DESC');
         $result = $db->select();
-        $device = self::getSystemDetails($device_id);
-        $device_type = $device['device_type_id'];
+        $device_type = self::getDeviceTypeID($device_id);
         $inventory_device = false;
         if($device_type === PC || $device_type === SERVER || $device_type === IPAD || $device_type === LAPTOP){
             $inventory_device = true;
@@ -419,6 +418,18 @@ class SystemDevice extends \phpws2\ResourceFactory
         return $result;
     }
 
+    public static function getDeviceTypeID($device_id){
+        if (empty($device_id)) {
+            throw new \Exception("System ID invalid.");
+        }
+        // get the common device attributes
+        $db = \phpws2\Database::getDB();
+        $tbl = $db->addTable('systems_device');
+        $tbl->addFieldConditional('id', $device_id);
+        $device = $db->selectOneRow();
+        return $device['device_type_id'];
+    }
+    
     public static function getUserByUsername($username)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
