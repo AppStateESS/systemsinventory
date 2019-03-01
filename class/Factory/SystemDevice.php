@@ -398,7 +398,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         }
         
         if(!empty($result)){
-            if(($current_time - $result[0]['timestamp']) > $one_year){
+            if(($current_time - $result[0]['timestamp']) > $one_year && $inventory_device){
                 $overdue = 1;
             }else{
                 $overdue = 0;
