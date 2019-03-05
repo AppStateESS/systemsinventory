@@ -23,7 +23,7 @@ export default class DeviceRow extends Component {
         return <i className="fa fa-laptop"></i>
         //return 'Laptop'
       case 3:
-        return <i className="fa fa-tablet"></i>
+        return <i className="fas fa-tablet"></i>
         //return 'iPad'
       case 4:
         return <i className="fa fa-print"></i>
@@ -35,7 +35,7 @@ export default class DeviceRow extends Component {
         return <i className="fa fa-map-signs"></i>
         //return 'Digital sign'
       case 7:
-        return <i className="fa fa-clock-o"></i>
+        return <i className="far fa-clock"></i>
         //return 'Time clock'
       default:
         'Unknown'
@@ -86,51 +86,51 @@ export default class DeviceRow extends Component {
       inventory = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
-          className="pointer">
+          className="pointer dropdown-item">
           <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
         </li>
       surplus = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'surplus')}
-          className="pointer">
+          className="pointer dropdown-item">
           <i className="fa fa-truck"></i>&nbsp;Surplus</a>
       </li>
       assign = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
-          className="pointer">
+          className="pointer dropdown-item">
           <i className="fa fa-user"></i>&nbsp;Assign</a>
       </li>
       stolen = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'stolen')}
-          className="pointer">
-          <i className="fa fa-thumbs-o-down"></i>&nbsp;Lost/Stolen</a>
+          className="pointer dropdown-item">
+          <i className="far fa-thumbs-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
         inventory = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
-          className="pointer">
+          className="pointer dropdown-item">
           <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
         </li>
         editAssign = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
-          className="pointer">
-          <i className="fa fa-pencil"></i>&nbsp;Edit assignment</a>
+          className="pointer dropdown-item">
+          <i className="fas fa-pencil-alt"></i>&nbsp;Edit assignment</a>
         </li>
         assign = <li>
             <a
             onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
-            className="pointer">
-            <i className="fa fa-recycle"></i>&nbsp;Unassign</a>
+            className="pointer dropdown-item">
+            <i className="fas fa-recycle"></i>&nbsp;Unassign</a>
         </li>
     } else if (status === 3) {
       unSurplus = <li>
         <a
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unsurplus')}
-          className="pointer">
+          className="pointer dropdown-item">
           <i className="fa fa-truck"></i>&nbsp;Return to service</a>
       </li>
         if (this.props.deity == 1) {
@@ -143,8 +143,8 @@ export default class DeviceRow extends Component {
             <a
                 onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
                 style={red}
-                className="pointer">
-                <i className="fa fa-trash-o"></i>&nbsp;Delete</a>
+                className="pointer dropdown-item">
+                <i className="far fa-trash-alt"></i>&nbsp;Delete</a>
             </li>
         )
         }
@@ -157,14 +157,14 @@ export default class DeviceRow extends Component {
           e.stopPropagation()
         }}>
         <i
-          className="fa fa-gear fa-lg dropdown-toggle pointer"
+          className="fa fa-cog fa-lg dropdown-toggle pointer"
           id="dropdownMenu1"
           data-toggle="dropdown"></i>
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li>
             <a
               onClick={this.props.showOverlay.bind(null, this.props.value.id, 'edit')}
-              className="pointer">
+              className="pointer dropdown-item">
               <i className="fa fa-cogs"></i>&nbsp;Edit device</a>
           </li>
           {inventory}

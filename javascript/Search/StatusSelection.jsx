@@ -14,29 +14,19 @@ export default class StatusSelection extends Component {
     return (
       <div className="btn-group" role="group">
         <button
-          className={classNames('btn', 'btn-default', {
-            'btn-primary': this.props.active === 0
-          })}
+          className={this.props.active === 0 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 0)}>All</button>
         <button
-          className={classNames('btn', 'btn-default', {
-            'btn-primary': this.props.active === 1
-          })}
+          className={this.props.active === 1 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 1)}>Unassigned</button>
         <button
-          className={classNames('btn', 'btn-default', {
-            'btn-primary': this.props.active === 2
-          })}
+          className={this.props.active === 2 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 2)}>Assigned</button>
         <button
-          className={classNames('btn', 'btn-default', {
-            'btn-primary': this.props.active === 3
-          })}
+          className={this.props.active === 3 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 3)}>Surplus</button>
         <button
-          className={classNames('btn', 'btn-default', {
-            'btn-primary': this.props.active === 4
-          })}
+          className={this.props.active === 4 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 4)}>Lost/Stolen</button>
       </div>
     )

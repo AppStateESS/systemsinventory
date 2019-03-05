@@ -61,7 +61,7 @@ module.exports = (env, argv) => {
   if (inDevelopment) {
     const BrowserSyncPlugin = require('browser-sync-webpack-plugin')
     settings.plugins.push(
-      new BrowserSyncPlugin({host: 'localhost', notify: false, port: 3000, files: ['./javascript/dev/*.js'], proxy: 'localhost/phpwebsite'})
+      new BrowserSyncPlugin({host: 'localhost', notify: false, port: 3000, files: ['./javascript/dev/*.js'], proxy: 'localhost/canopy'})
     )
     settings.devtool = 'inline-source-map'
     settings.output = {

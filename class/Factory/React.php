@@ -22,8 +22,8 @@ class React
         $react = implode("\n", $script);
         $content = <<<EOF
 <div id="$view_name"></div>
-$react
 EOF;
+        \Layout::addJSHeader($react);
         return $content;
     }
 
