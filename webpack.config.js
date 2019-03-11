@@ -83,8 +83,8 @@ module.exports = (env, argv) => {
     // prettyPrint: true,}) )
     settings.output = {
       path: setup.path.join(setup.APP_DIR, 'build'),
-      filename: '[name].min.js',
-      chunkFilename: '[name].chunk.js'
+      filename: '[name].js',
+      chunkFilename: '[name].js'
     }
   }
   return settings
