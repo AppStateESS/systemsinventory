@@ -12,7 +12,7 @@ script:
 - ".travis-build/phplint"
 
 after_success:
-- npm run prod
+- npm run build
 - rm -rf node_modules
 - tar -czf systemsinventory.tar.gz *
 
