@@ -132,6 +132,14 @@ EOF;
 + Add fields to tablet for keyboard and wireless plan
 </pre>
 EOF;
+            case version_compare($currentVersion, '1.4.2', '<'):
+            $content[] = <<<EOF
+<pre>
+1.4.2
+-----
++ Fix datepicker and big check boxes
+</pre>
+EOF;
 
             }
     return TRUE;

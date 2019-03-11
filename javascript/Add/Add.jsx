@@ -12,7 +12,7 @@ export default class Add extends FormBase {
       device: {
         id: 0,
         device_type_id: 1,
-        purchase_date: moment().format('YYYY-MM-DD'),
+        purchase_date: new Date(),
         status: 0
       }
     }

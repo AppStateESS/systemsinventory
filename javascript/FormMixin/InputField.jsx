@@ -94,8 +94,7 @@ let required = this.props.required
     disabled={this.props.disabled}
     size={this.props.size}
     maxLength={this.props.maxLength}
-    placeholder={this.props.placeholder}
-    autoComplete={this.props.autocomplete}/>)
+    placeholder={this.props.placeholder}/>)
 
         if (this.props.wrap) {
 input = this.props.wrap(input)

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import moment from 'moment'
 import Base from './Base.jsx'
 import DatePicker from 'react-datepicker'
-import '../Mixin/react-datepicker.css'
+import "react-datepicker/dist/react-datepicker.css"
 
 export default class Shared extends Base {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class Shared extends Base {
   }
 
   updatePurchaseDate(purchaseDate) {
-    const dateString = purchaseDate.format('YYYY-MM-DD')
+    const dateString = purchaseDate.toDateString()
     this.props.update('purchase_date', dateString)
   }
 
@@ -46,7 +46,7 @@ export default class Shared extends Base {
       }
     ]
     let buttonClass
-
+    let purchaseDate = new Date(this.props.device.purchase_date)
     let deviceButtons = deviceList.map((value, key) => {
       buttonClass = "btn btn-default"
       if (this.props.device.device_type_id == value.value) {
@@ -84,12 +84,12 @@ export default class Shared extends Base {
             <label>Purchase date</label>&nbsp;<i className="fa fa-asterisk text-danger"></i><br/>
             <DatePicker
               className="form-control"
-              dateFormat="YYYY-MM-DD"
               todayButton="Today"
-              disabled={this.props.device.status}
+              disabled={this.canEdit()}
               showYearDropdown
+              showTimeSelected
               onChange={this.updatePurchaseDate.bind(this)}
-              selected={moment(this.props.device.purchase_date)}/>
+              selected={purchaseDate}/>
           </div>
         </div>
         <label>Notes</label>
