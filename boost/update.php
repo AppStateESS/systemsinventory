@@ -140,6 +140,14 @@ EOF;
 + Fix datepicker and big check boxes
 </pre>
 EOF;
+            case version_compare($currentVersion, '1.4.3', '<'):
+            $content[] = <<<EOF
+<pre>
+1.4.3
+-----
++ Fix big check box icons by adding react-fontawesome
+</pre>
+EOF;
 
             }
     return TRUE;

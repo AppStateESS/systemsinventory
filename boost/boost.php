@@ -4,7 +4,7 @@
  * @author Ted Eberhard <eberhardtm at appstate dot edu>
  */
 $proper_name  = 'Systems Inventory';
-$version      = '1.4.2';
+$version      = '1.4.3';
 $version_http = null;
 $import_sql   = true;
 $about        = false;
