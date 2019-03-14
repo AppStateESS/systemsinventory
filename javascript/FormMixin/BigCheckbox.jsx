@@ -1,6 +1,8 @@
 'use strict'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 export default class BigCheckbox extends Component {
   constructor(props) {
@@ -32,12 +34,13 @@ export default class BigCheckbox extends Component {
       marginTop: '4px'
     }
 
+    const check = <FontAwesomeIcon icon={['fas','check']} className='text-success fa-stack-2x'/>
+
     return (
       <div onClick={this.handle} style={point} className="big-checkbox">
         <div className="fa-stack fa-lg pull-left">
           <i className="far fa-square fa-stack-2x" style={mute}></i>
-          {this.empty(this.props.checked) ? null :
-          <i className="fa fa-check text-success fa-stack-2x"></i>}
+          {this.empty(this.props.checked) ? null : check}
         </div>&nbsp;
         <div style={labelText} className={!this.empty(this.props.checked) ? 'text-success' : 'text-muted'}>{this.props.label}</div>
       </div>

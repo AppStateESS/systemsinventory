@@ -13,8 +13,8 @@ export default class DeviceRow extends Component {
     this.deviceForm = this.deviceForm.bind(this)
   }
 
-  deviceType(device_id) {
-    switch (device_id) {
+  deviceType(type) {
+    switch (type) {
       case 1:
       case 2:
         return <i className="fa fa-desktop"></i>
@@ -29,7 +29,7 @@ export default class DeviceRow extends Component {
         return <i className="fa fa-print"></i>
         //return 'Printer'
       case 5:
-        return <i className="fa fa-video-camera"></i>
+        return <i className="fas fa-camera"></i>
         //return 'Camera'
       case 6:
         return <i className="fa fa-map-signs"></i>
@@ -81,6 +81,21 @@ export default class DeviceRow extends Component {
     let deleteDevice
     let separator
     let inventory
+    if (this.props.deity == 1) {
+        const red = {
+            color: 'red'
+        }
+        separator = <li role="separator" className="divider"></li>
+        deleteDevice = (
+            <li>
+            <a
+                onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
+                style={red}
+                className="pointer dropdown-item">
+                <i className="far fa-trash-alt"></i>&nbsp;Delete</a>
+            </li>
+        )
+        }
 
     if (status === 0) {
       inventory = <li>
@@ -133,21 +148,7 @@ export default class DeviceRow extends Component {
           className="pointer dropdown-item">
           <i className="fa fa-truck"></i>&nbsp;Return to service</a>
       </li>
-        if (this.props.deity == 1) {
-        const red = {
-            color: 'red'
-        }
-        separator = <li role="separator" className="divider"></li>
-        deleteDevice = (
-            <li>
-            <a
-                onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
-                style={red}
-                className="pointer dropdown-item">
-                <i className="far fa-trash-alt"></i>&nbsp;Delete</a>
-            </li>
-        )
-        }
+        
     }
     
     const editButton = (
@@ -187,7 +188,7 @@ export default class DeviceRow extends Component {
     
     let row = []
     row.push(<span>{editButton}</span>)
-    row.push(<span className="text-center">{this.deviceType(device_type_id)}</span>)
+    row.push(<span className="text-center">{this.deviceType(this.props.value.device_type_id)}</span>)
     row.push(<span>{physical_id}</span>)
     row.push(<span>{moment.unix(purchase_date).format('MM-DD-YYYY')}</span>)
 

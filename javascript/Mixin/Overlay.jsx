@@ -64,7 +64,7 @@ export default class Overlay extends Component {
       <div style={overlayStyle}>
         <div style={headerStyle}>
             <span className="fa-stack pointer" onClick={this.close} style={closeButton} onMouseEnter={this.lighten} onMouseLeave={this.normal}>
-              <i style={{color:'#BFBFBF'}} ref="closebutton" className="fa fa-circle text-muted fa-stack-2x" onMouseEnter={this.lighten} onMouseLeave={this.normal}></i>
+              <i style={{color:'red'}} ref="closebutton" className="fa fa-circle fa-stack-2x" onMouseEnter={this.lighten} onMouseLeave={this.normal}></i>
               <i className="fa fa-times fa-stack-1x fa-inverse"></i>
             </span>
           <div style={titleStyle}>{this.props.title}</div>

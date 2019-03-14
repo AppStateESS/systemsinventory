@@ -78,7 +78,7 @@ export default class Shared extends Base {
         {selectDevice}
         <div className="row">
           <div className="col-sm-6">
-            {this.inputField('physical_id', 'Physical id', this.props.device.status)}
+            {this.inputField('physical_id', 'Physical id', this.canEdit())}
           </div>
           <div className="col-sm-6">
             <label>Purchase date</label>&nbsp;<i className="fa fa-asterisk text-danger"></i><br/>

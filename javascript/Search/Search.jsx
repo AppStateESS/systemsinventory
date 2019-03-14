@@ -512,7 +512,7 @@ export default class Search extends FormBase {
                     <i className="fa fa-download"></i>&nbsp; Download</button>
                 : null
             }
-            <button className="btn btn-default marginLeft" onClick={this.reset}>Reset filters</button>
+            <button className="btn btn-danger marginLeft" onClick={this.reset}>Reset filters</button>
           </div>
         </div>
         <div className="alert alert-info">
