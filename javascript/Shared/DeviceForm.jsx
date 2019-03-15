@@ -247,7 +247,8 @@ export default class DeviceForm extends Component {
           device={device}
           update={this.props.update}
           options={jsonFilters}
-          errors={this.errors}/>
+          errors={this.errors}
+          edit={this.props.edit}/>
     }
   }
 

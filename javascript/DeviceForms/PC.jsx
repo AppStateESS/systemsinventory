@@ -15,6 +15,12 @@ export default class PC extends Base {
   render() {
     const {device, update, options} = this.props
     let disabled = this.canEdit()
+    let primaryIP,secondaryIP,vlan = null
+    if(this.props.edit){
+        primaryIP = this.inputField('primary_ip', 'Primary IP')
+        secondaryIP = this.inputField('secondary_ip', 'Secondary IP')
+        vlan = this.select('vlan', 'VLAN') 
+   }
     return (
       <div>
         <div className="row">
@@ -31,6 +37,17 @@ export default class PC extends Base {
           </div>
           <div className="col-sm-6">
             {this.inputField('model', 'Model', disabled)}
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-sm-4">
+            {primaryIP}
+          </div>
+          <div className="col-sm-4">
+            {secondaryIP}
+          </div>
+          <div className="col-sm-4">
+            {vlan}
           </div>
         </div>
         <div className="row">

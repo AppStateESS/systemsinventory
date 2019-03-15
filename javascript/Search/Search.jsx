@@ -401,7 +401,8 @@ export default class Search extends FormBase {
             save={this.save}
             options={jsonFilters}
             update={this.updateDeviceValue}
-            device={this.state.device}/>
+            device={this.state.device}
+            edit={true}/>
           break
 
         case 'assign':
