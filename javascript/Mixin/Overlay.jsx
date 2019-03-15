@@ -37,7 +37,7 @@ export default class Overlay extends Component {
       bottom: '0px',
       left: '0px',
       backgroundColor: 'white',
-      zIndex: '100',
+      zIndex: '1050',
       overflowY: 'scroll',
       overflowX: 'hidden',
       padding: '10px'
