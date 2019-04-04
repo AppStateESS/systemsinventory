@@ -2,6 +2,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 
 export default class DeviceRow extends Component {
   constructor(props) {
@@ -17,25 +19,25 @@ export default class DeviceRow extends Component {
     switch (type) {
       case 1:
       case 2:
-        return <i className="fa fa-desktop"></i>
+        return <FontAwesomeIcon icon={["fas", "desktop"]}/>
         //return 'PC' return 'Server'
       case 8:
-        return <i className="fa fa-laptop"></i>
+        return <FontAwesomeIcon icon={["fas", "laptop"]}/>
         //return 'Laptop'
       case 3:
-        return <i className="fas fa-tablet"></i>
+        return <FontAwesomeIcon icon={["fas", "tablet"]}/>
         //return 'iPad'
       case 4:
-        return <i className="fa fa-print"></i>
+        return <FontAwesomeIcon icon={["fas", "print"]}/>
         //return 'Printer'
       case 5:
-        return <i className="fas fa-camera"></i>
+        return <FontAwesomeIcon icon={["fas", "camera"]}/>
         //return 'Camera'
       case 6:
-        return <i className="fa fa-map-signs"></i>
+        return <FontAwesomeIcon icon={["fas", "sign"]}/>
         //return 'Digital sign'
       case 7:
-        return <i className="far fa-clock"></i>
+        return <FontAwesomeIcon icon={["fas", "clock"]}/>
         //return 'Time clock'
       default:
         'Unknown'

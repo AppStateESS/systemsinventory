@@ -1,7 +1,7 @@
 <?php
 namespace systemsinventory\Factory;
 
-require_once PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/react.php';
+require_once PHPWS_SOURCE_DIR . 'mod/systemsinventory/config/defines.php';
 
 
 /**

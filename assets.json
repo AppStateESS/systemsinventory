@@ -1,11 +1,11 @@
 {
   "vendor": {
-    "js": "vendor.d4412575.chunk.js"
+    "js": "vendor.8f0c268a.chunk.js"
   },
   "add": {
-    "js": "add.c1f8097d.min.js"
+    "js": "add.649ef0ec.min.js"
   },
   "search": {
-    "js": "search.2e1d3d6d.min.js"
+    "js": "search.2f8d0773.min.js"
   }
 }
