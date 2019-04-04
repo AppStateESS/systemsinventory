@@ -148,6 +148,14 @@ EOF;
 + Fix big check box icons by adding react-fontawesome
 </pre>
 EOF;
+            case version_compare($currentVersion, '1.5.0', '<'):
+            $content[] = <<<EOF
+<pre>
+1.5.0
+-----
++ Add font-awesome icons to search list. Fixes icon bug
+</pre>
+EOF;
 
             }
     return TRUE;
