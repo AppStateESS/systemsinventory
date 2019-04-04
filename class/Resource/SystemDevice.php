@@ -200,11 +200,19 @@ class SystemDevice extends \phpws2\Resource
         $this->vlan->set($vlan);
     }
 
-    public function setPurchaseDate($purchase_date)
+    public function setPurchaseDate($purchase_date, $format_string=false)
     {
         if (!empty($purchase_date)) {
-            $this->purchase_date->set(strtotime($purchase_date));
+            if($format_string){
+                $this->purchase_date->set(strtotime($purchase_date));
+            }else{
+                $this->purchase_date->set($purchase_date);
+            }
         }
+    }
+    
+    public function getPurchaseDate(){
+        return $this->purchase_date->get();
     }
 
     public function setProfile($profile)

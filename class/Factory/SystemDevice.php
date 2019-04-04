@@ -106,7 +106,7 @@ class SystemDevice extends \phpws2\ResourceFactory
             $device->setProfileName($profile_name);
         } else {
             $device->setPurchaseDate($request->pullPostString('purchase_date',
-                            true));
+                            true), true);
             $device->setPhysicalID($request->pullPostString('physical_id'));
             if (!$device->isPrinter()) {
                 $device->setMac($request->pullPostString('mac'));
