@@ -33,10 +33,24 @@ EOF;
         if (SYSTEMS_REACT_DEV) {
             $path = "dev/$filename.js";
         } else {
-            $path = "build/$filename.js";
+            $path = "build/" . React::getAssetPath($filename);
         }
         $script = "<script type='text/javascript' src='{$root_directory}$path'></script>";
         return $script;
+    }
+    
+    public static function getAssetPath($scriptName)
+    {
+        $rootDirectory = PHPWS_SOURCE_DIR . "mod/systemsinventory/";
+        if (!is_file($rootDirectory . 'assets.json')) {
+            exit('Missing assets.json file. Run "npm run build" in the systemsinventory directory.');
+        }
+        $jsonRaw = file_get_contents($rootDirectory . 'assets.json');
+        $json = json_decode($jsonRaw, true);
+        if (!isset($json[$scriptName]['js'])) {
+            throw new \Exception('Script file not found among assets.');
+        }
+        return $json[$scriptName]['js'];
     }
 
 }

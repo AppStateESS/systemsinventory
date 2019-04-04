@@ -75,17 +75,18 @@ module.exports = (env, argv) => {
     // require('webpack-bundle-analyzer').BundleAnalyzerPlugin
     // settings.plugins.push(new BundleAnalyzerPlugin()) const AssetsPlugin =
     // require('assets-webpack-plugin')
-    settings.plugins.push(
-      new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')})
-    )
+    const AssetsPlugin = require('assets-webpack-plugin')
+      settings.plugins.push(
+	  new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('production')})
+      )
 
-    // settings.plugins.push(  new AssetsPlugin({filename: 'assets.json',
-    // prettyPrint: true,}) )
-    settings.output = {
-      path: setup.path.join(setup.APP_DIR, 'build'),
-      filename: '[name].js',
-      chunkFilename: '[name].js'
-    }
+      settings.plugins.push(  new AssetsPlugin({filename: 'assets.json',
+						prettyPrint: true,}) )
+      settings.output = {
+	  path: setup.path.join(setup.APP_DIR, 'build'),
+	  filename: '[name].[chunkhash:8].min.js',
+	  chunkFilename: '[name].[chunkhash:8].chunk.js'
+      }
   }
   return settings
 }

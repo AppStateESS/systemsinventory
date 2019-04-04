@@ -1,0 +1,11 @@
+{
+  "vendor": {
+    "js": "vendor.d4412575.chunk.js"
+  },
+  "add": {
+    "js": "add.c1f8097d.min.js"
+  },
+  "search": {
+    "js": "search.2e1d3d6d.min.js"
+  }
+}
