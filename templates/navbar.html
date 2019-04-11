@@ -1,26 +1,32 @@
 <!-- Brand and toggle get grouped for better mobile display -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light border rounded">
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-        <span class="navbar-toggler-icon">Toggle navigation</span>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="./systemsinventory">Systems Inventory</a>
 <!-- Collect the nav links, forms, and other content for toggling -->
-<div class="collapse navbar-collapse">
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-cog"></i>&nbsp;Systems options<span class="caret"></span></a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-cog"></i>&nbsp;Systems options<span class="caret"></span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <?php if(isset($add))echo $add;?>
                 <?php if(isset($search))echo $search;?>
                 <?php if(isset($reports))echo $reports;?>
-                <?php if($is_deity):?>
-                <span><strong>Settings</strong></span><hr/>               
+            </div>
+        </li>
+        <?php if($is_deity):?>
+        <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Settings<span class="caret"></span></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink2">
                     <a class="dropdown-item" href="systemsinventory/settings/editPermissions">Edit Permissions</a>
                     <a class="dropdown-item" href="systemsinventory/settings/editDepartments">Edit Departments</a>
                     <a class="dropdown-item" href="systemsinventory/settings/editLocations">Edit Locations</a>                    
-                <?php endif;?>
             </div>
         </li>
+        <?php endif;?>        
         <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?=$username ?><span class="caret"></span></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">          
