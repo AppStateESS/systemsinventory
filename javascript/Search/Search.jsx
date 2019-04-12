@@ -503,9 +503,12 @@ export default class Search extends FormBase {
               jsonFilters={jsonFilters}
               active={this.state.filters.systemType}/>
           </div>
+        </div>
+        <div className="row">
           {statusSelection}
 
           <div className="col-sm-6 marginBottom">
+          <div className="btn-group" role="group">
             <button className="btn btn-primary" onClick={this.openModal}>More filters</button>
             {
               this.state.listing !== null && this.state.listing.length > 0
@@ -514,6 +517,7 @@ export default class Search extends FormBase {
                 : null
             }
             <button className="btn btn-danger marginLeft" onClick={this.reset}>Reset filters</button>
+            </div>
           </div>
         </div>
         <div className="alert alert-info">
