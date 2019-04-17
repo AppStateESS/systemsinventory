@@ -167,7 +167,8 @@ export default class Search extends FormBase {
       model,
       ipAddress,
       username,
-      statusType
+      statusType,
+      audit
     } = this.state.filters
 
     $.getJSON('./systemsinventory/search', {
@@ -181,6 +182,7 @@ export default class Search extends FormBase {
       model,
       ipAddress,
       username,
+      audit,
       sort: this.state.sort.direction !== 0
         ? this.state.sort
         : null,
@@ -294,6 +296,7 @@ export default class Search extends FormBase {
     filters.model = ''
     filters.ipAddress = ''
     filters.username = ''
+    filters.audit = false
     this.setState({filters: filters})
     this.load()
   }
@@ -510,6 +513,7 @@ export default class Search extends FormBase {
           <div className="col-sm-6 marginBottom">
           <div className="btn-group" role="group">
             <button className="btn btn-primary" onClick={this.openModal}>More filters</button>
+            <button className="btn btn-warning marginLeft" onClick={this.updateFilter.bind(null,'audit',true)}>Audit Systems</button>            
             {
               this.state.listing !== null && this.state.listing.length > 0
                 ? <button className="btn btn-info marginLeft" onClick={this.download}>

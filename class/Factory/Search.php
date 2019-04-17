@@ -38,6 +38,7 @@ class Search extends \phpws2\ResourceFactory
             $loctbl = $db->addTable('systems_location');
             $deptbl->addField('display_name', 'department_name');
             $loctbl->addField('display_name', 'location_name');
+            
             $db->joinResources($sd, $deptbl,
                     new Conditional($db, $sd->getField('department_id'),
                     $deptbl->getField('id'), '='));
@@ -45,6 +46,22 @@ class Search extends \phpws2\ResourceFactory
                     new Conditional($db, $sd->getField('location_id'),
                     $loctbl->getField('id'), '='));
         }
+        
+        //$audit = $request->pullGetBoolean('audit', true);
+        $audit = false;
+        if($audit){
+            $logtbl = $db->addTable('systems_log');    
+            $logtbl->addField('timestamp', 'timestamp');
+            $year_ago = strtotime('-1 year');
+            $c1 = $logtbl->getFieldConditional('timestamp', $year_ago, '>');
+            $c2 = $logtbl->getFieldConditional('device_id', null, 'is');
+            $c3 = $db->createConditional($c1, $c2, 'or');
+            $db->addConditional($c3);
+            $db->joinResources($sd, $logtbl,
+                new Conditional($db, $sd->getField('id'),
+                $logtbl->getField('device_id'), '=', 'left outer join'));
+        }
+        
         $this->createSearchConditional($db, $sd, $request);
 
         // -1 means show everything at once
@@ -80,7 +97,7 @@ class Search extends \phpws2\ResourceFactory
 
         // Don't pull profiles
         $tbl->addFieldConditional('profile', 0);
-
+                
         if ($system_type[0] !== 'all') {
             $tbl->addFieldConditional('device_type_id', $system_type, 'in');
         }

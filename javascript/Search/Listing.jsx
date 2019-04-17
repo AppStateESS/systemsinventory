@@ -148,7 +148,9 @@ export default class Listing extends Component {
     if (this.props.rows === null || this.props.rows.length === 0) {
       rows = <tr><td colSpan={this.columnNumber}>No rows found. Change your search criteria or <a className="pointer" onClick={this.props.reset}>reset your filters</a>.</td></tr>
     } else {
+      let audit_filter = this.props.filters.audit
       rows = this.props.rows.map(function (val, key) {
+        if(!audit_filter || val.audits.audit_overdue ){
         return <DeviceRow
           deity={this.props.deity}
           statusType={this.props.filters.statusType}
@@ -156,6 +158,7 @@ export default class Listing extends Component {
           auditOverdue={val.audits.audit_overdue}          
           value={val}
           key={key}/>
+      }
       }.bind(this))
     }
     return (
