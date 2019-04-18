@@ -156,7 +156,15 @@ EOF;
 + Add font-awesome icons to search list. Fixes icon bug
 </pre>
 EOF;
-
+            case version_compare($currentVersion, '1.5.1', '<'):
+                runDbMigration('update_1_5_1.sql', '1.5.1', '<');
+                $content[] = <<<EOF
+<pre>
+1.5.1
+-----
++ Add fields to pc for teriary monitor and secondary video card
+</pre>
+EOF;
             }
     return TRUE;
 }

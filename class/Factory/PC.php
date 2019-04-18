@@ -10,7 +10,11 @@ class PC extends SystemDevice
     public function postNewPC(\Canopy\Request $request, Resource $pc)
     {
         $pc->setPrimaryMonitor($request->pullPostString('primary_monitor'));
+        $pc->setSecondaryMonitor($request->pullPostString('secondary_monitor', true));
+        $pc->setTertiaryMonitor($request->pullPostString('tertiary_monitor', true));
         $pc->setVideoCard(filter_input(INPUT_POST, 'video_card',
+                        FILTER_SANITIZE_STRING));
+        $pc->setSecondaryVideoCard(filter_input(INPUT_POST, 'secondary_video_card',
                         FILTER_SANITIZE_STRING));
         $pc->setOS(filter_input(INPUT_POST, 'os', FILTER_SANITIZE_STRING));
 
@@ -22,7 +26,7 @@ class PC extends SystemDevice
         $pc->setTouchScreen((bool)$request->pullPostBoolean('touch_screen', true));
         $pc->setIsServer((bool)$request->pullPostBoolean('is_server', true));
         $pc->setDual((bool)$request->pullPostBoolean('dual_monitor', true));
-        $pc->setSecondaryMonitor($request->pullPostString('secondary_monitor', true));
+        
         self::saveResource($pc);
     }
 

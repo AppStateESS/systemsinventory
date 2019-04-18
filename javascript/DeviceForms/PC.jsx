@@ -78,13 +78,24 @@ export default class PC extends Base {
           </div>
         </div>
         <div className="row">
+            <div className="col-sm-4">
+                {this.inputField('secondary_monitor', 'Secondary monitor size', device.dual_monitor === 0)}
+            </div>
+            <div className="col-sm-4">
+                {this.inputField('tertiary_monitor', 'Tertiary monitor size', false)}
+            </div>
+            <div className="col-sm-4">
+                {this.inputField('secondary_video_card', 'Secondary Video Card', false)}
+            </div>
+        </div>
+        <div className="row">
           <div className="col-sm-4">
             <BigCheckbox
               checked={device.dual_monitor === 1}
               handle={update.bind(null, 'dual_monitor', device.dual_monitor === 1
               ? 0
               : 1)}
-              label="Dual monitor"/> {this.inputField('secondary_monitor', 'Secondary monitor size', device.dual_monitor === 0)}
+              label="Dual monitor"/> 
           </div>
           <div className="col-sm-4">
             <div>

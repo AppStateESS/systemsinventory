@@ -12,7 +12,9 @@ class PC extends \phpws2\Resource
     protected $device_id;
     protected $primary_monitor;
     protected $secondary_monitor;
+    protected $tertiary_monitor;
     protected $video_card;
+    protected $secondary_video_card;
     protected $os;
     protected $server_type;
     protected $system_usage;
@@ -36,8 +38,13 @@ class PC extends \phpws2\Resource
         $this->secondary_monitor = new \phpws2\Variable\TextOnly(null,
                 'secondary_monitor');
         $this->secondary_monitor->allowNull(true);
+        $this->tertiary_monitor = new \phpws2\Variable\TextOnly(null,
+                'tertiary_monitor');
+        $this->tertiary_monitor->allowNull(true);
         $this->video_card = new \phpws2\Variable\TextOnly(null, 'video_card');
         $this->video_card->allowNull(true);
+        $this->secondary_video_card = new \phpws2\Variable\TextOnly(null, 'secondary_video_card');
+        $this->secondary_video_card->allowNull(true);
         $this->os = new \phpws2\Variable\TextOnly(null, 'os');
         $this->os->allowNull(true);
         $this->server_type = new \phpws2\Variable\TextOnly(null, 'server_type');
@@ -80,10 +87,20 @@ class PC extends \phpws2\Resource
     {
         $this->secondary_monitor->set($secondary_monitor);
     }
+    
+    public function setTertiaryMonitor($tertiary_monitor)
+    {
+        $this->tertiary_monitor->set($tertiary_monitor);
+    }
 
     public function setVideoCard($video_card)
     {
         $this->video_card->set($video_card);
+    }
+    
+    public function setSecondaryVideoCard($secondary_video_card)
+    {
+        $this->secondary_video_card->set($secondary_video_card);
     }
 
     public function setOS($os)
