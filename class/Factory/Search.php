@@ -47,21 +47,6 @@ class Search extends \phpws2\ResourceFactory
                     $loctbl->getField('id'), '='));
         }
         
-        //$audit = $request->pullGetBoolean('audit', true);
-        $audit = false;
-        if($audit){
-            $logtbl = $db->addTable('systems_log');    
-            $logtbl->addField('timestamp', 'timestamp');
-            $year_ago = strtotime('-1 year');
-            $c1 = $logtbl->getFieldConditional('timestamp', $year_ago, '>');
-            $c2 = $logtbl->getFieldConditional('device_id', null, 'is');
-            $c3 = $db->createConditional($c1, $c2, 'or');
-            $db->addConditional($c3);
-            $db->joinResources($sd, $logtbl,
-                new Conditional($db, $sd->getField('id'),
-                $logtbl->getField('device_id'), '=', 'left outer join'));
-        }
-        
         $this->createSearchConditional($db, $sd, $request);
 
         // -1 means show everything at once

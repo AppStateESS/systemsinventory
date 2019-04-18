@@ -512,9 +512,9 @@ export default class Search extends FormBase {
 
           <div className="col-sm-6 marginBottom">
           <div className="btn-group" role="group">
+            <button className="btn btn-warning marginLeft" onClick={this.updateFilter.bind(null,'audit',true)}>Audit Filter</button>            
             <button className="btn btn-primary" onClick={this.openModal}>More filters</button>
-            <button className="btn btn-warning marginLeft" onClick={this.updateFilter.bind(null,'audit',true)}>Audit Systems</button>            
-            {
+                        {
               this.state.listing !== null && this.state.listing.length > 0
                 ? <button className="btn btn-info marginLeft" onClick={this.download}>
                     <i className="fa fa-download"></i>&nbsp; Download</button>

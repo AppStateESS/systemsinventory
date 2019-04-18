@@ -12,19 +12,29 @@ import React from 'react'
 
     render() {
         const {device, update} = this.props
+        let disabled = this.canEdit()
+        let primaryIP = null
+        if(this.props.edit){
+            primaryIP = this.inputField('primary_ip', 'Primary IP')
+        }
         return (
                 <div>
                     <div className="row">
-                        <div className="col-sm-3">
-                            {this.inputField('mac', 'MAC address', false, 'XX:XX:XX:XX:XX:XX')}
+                        <div className="col-sm-4">
+                            {this.inputField('mac', 'MAC address', disabled, 'XX:XX:XX:XX:XX:XX')}
                         </div>
-                        <div className="col-sm-3">
-                            {this.inputField('hd_size', 'Memory', false, '32GB, 64GB')}
+                        <div className="col-sm-4">
+                            {this.inputField('hd_size', 'Memory', disabled, '32GB, 64GB')}
                         </div>
-                        <div className="col-sm-3">
-                            {this.inputField('generation', 'Model/Generation', false, 'Ipad Mini Pro, Samsung Galaxy, etc.')}
+                        <div className="col-sm-4">
+                            {primaryIP}
                         </div>
-                        <div className="col-sm-3">
+                    </div>
+                    <div className="row">    
+                        <div className="col-sm-6">
+                            {this.inputField('generation', 'Model/Generation', disabled, 'Ipad Mini Pro, Samsung Galaxy, etc.')}
+                        </div>
+                        <div className="col-sm-6">
                             {this.inputField('apple_id', 'Apple ID', false)}
                         </div>
                     </div>
