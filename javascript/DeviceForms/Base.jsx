@@ -48,30 +48,30 @@ export default class Base extends Component {
     return label
   }
 
-  inputField(varname, label = null, disabled = false, placeholder = null, inputvalue=null) {
+  inputField(varname, label = null, disabled = false, placeholder = null, inputvalue="", required=false) {
     const {device, update} = this.props
     label = this.getLabel(label, varname)
     return (<InputField
       name={varname}
       disabled={disabled}
-      value={inputvalue ? inputvalue : device[varname]}
+      value={device[varname] ? device[varname] : inputvalue}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
-      required={Device.isRequired(device, varname)}
+      required={required ? required : Device.isRequired(device, varname)}
       label={label}
       change={update.bind(null, varname)}/>)
   }
   
-  userSearch(varname, label = null, disabled = false, placeholder = null, inputvalue=null) {
+  userSearch(varname, label = null, disabled = false, placeholder = null, inputvalue="", required=false) {
       const {device, update} = this.props
       label = this.getLabel(label, varname)
       return (<UserSearch
       name={varname}
       disabled={disabled}
-      value={device[varname] ? device[varname] : ""}
+      value={device[varname] ? device[varname] : inputvalue}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
-      required={Device.isRequired(device, varname)}
+      required={required ? required : Device.isRequired(device, varname)}
       setName={this.updateName}
       label={label}/>)
   }

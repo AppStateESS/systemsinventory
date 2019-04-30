@@ -76,6 +76,7 @@ export default class DeviceRow extends Component {
       status
     } = this.props.value
     let assign
+    let checkout
     let editAssign
     let surplus
     let stolen
@@ -117,6 +118,12 @@ export default class DeviceRow extends Component {
           onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
           className="pointer dropdown-item">
           <i className="fa fa-user"></i>&nbsp;Assign</a>
+      </li>
+      checkout = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'checkout')}
+          className="pointer dropdown-item">
+          <i className="fa fa-user"></i>&nbsp;Checkout</a>
       </li>
       stolen = <li>
         <a
@@ -173,6 +180,7 @@ export default class DeviceRow extends Component {
           {inventory}
           {editAssign}
           {assign}
+          {checkout}
           {surplus}
           {unSurplus}
           {stolen}

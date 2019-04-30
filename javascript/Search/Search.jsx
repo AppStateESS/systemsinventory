@@ -9,6 +9,7 @@ import Overlay from '../Mixin/Overlay.jsx'
 import DeviceForm from '../Shared/DeviceForm.jsx'
 import modalCss from './ModalCss.js'
 import AssignForm from '../AssignForms/AssignForm.jsx'
+import CheckoutDevice from './CheckoutDevice.jsx'
 import DeleteDevice from './DeleteDevice.jsx'
 import UnassignDevice from './UnassignDevice.jsx'
 import ViewDevice from '../View/ViewDevice.jsx'
@@ -57,6 +58,7 @@ export default class Search extends FormBase {
     this.reset = this.reset.bind(this)
     this.delete = this.delete.bind(this)
     this.assign = this.assign.bind(this)
+    this.checkout = this.checkout.bind(this)
     this.surplus = this.surplus.bind(this)
     this.download = this.download.bind(this)
     this.unassign = this.unassign.bind(this)
@@ -87,6 +89,7 @@ export default class Search extends FormBase {
   showOverlay(id, formType) {
     this.setState({formType: formType, showOverlay: true})
     this.loadDevice(id)
+    
   }
 
   saveStolen() {
@@ -235,7 +238,21 @@ export default class Search extends FormBase {
       error: function () {}.bind(this)
     })
   }
-
+  
+  checkout(user) {
+    $.ajax({
+      url: './systemsinventory/system/checkout',
+      data: { device: this.state.device, user: user },
+      dataType: 'json',
+      type: 'patch',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
+    })
+  }
+  
   unassign() {
     $.ajax({
       url: './systemsinventory/system/unassign',
@@ -417,6 +434,16 @@ export default class Search extends FormBase {
             options={jsonFilters}
             errors={this.errors}
             assign={this.assign}/>
+          break
+          
+        case 'checkout':
+          overlayTitle = `Checkout device ${this.state.device.physical_id}`
+          formType = <CheckoutDevice
+            update={this.updateDeviceValue}
+            checkout={this.checkout}
+            device={this.state.device}
+            options={jsonFilters}
+            errors={this.errors}/>
           break
 
         case 'unassign':

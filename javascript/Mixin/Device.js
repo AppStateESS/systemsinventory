@@ -60,6 +60,8 @@ export default class Device {
         return 'Surplus'
       case 4:
         return 'Lost/Stolen'
+    case 5:
+        return 'Checked Out'
     }
   }
 
@@ -113,7 +115,6 @@ export default class Device {
         }
       }
     }.bind(this))
-    errorFound = false
     return !errorFound
   }
 
@@ -123,6 +124,8 @@ export default class Device {
     * 1 assigned person
     * 2 assigned location
     * 3 surplus
+    * 4 lost/stolen
+    * 5 checkedout
     */
     const deviceType = this.getType(device.device_type_id)
     const unassigned = required[deviceType].unassigned.indexOf(spec) !== -1
@@ -132,7 +135,7 @@ export default class Device {
       return true
     } else if ((device.status == 2 || device.status == 1) && required[deviceType].assigned.indexOf(spec) !== -1) {
       return true
-    } else if (device.status == 1 && required[deviceType].user.indexOf(spec) !== -1) {
+    } else if ((device.status == 1 || device.status == 5) && required[deviceType].user.indexOf(spec) !== -1) {
       return true
     } else {
       return false
