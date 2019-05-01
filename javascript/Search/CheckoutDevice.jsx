@@ -10,11 +10,13 @@ export default class CheckoutDevice extends Base {
             first_name: "",
             last_name: "",
             username: ""
-        }
+        },
+        notes: ""
     }
     this.updateName = this.updateName.bind(this) 
     this.checkout = this.checkout.bind(this)
     this.validateUser = this.validateUser.bind(this)
+    this.setNotes = this.setNotes.bind(this)
   }
 
   updateName(name){
@@ -28,8 +30,12 @@ export default class CheckoutDevice extends Base {
       
   }
 
+  setNotes(e){
+      this.setState({notes: e.target.value})
+  }
+  
   checkout() {
-    this.props.checkout(this.state.user)
+    this.props.checkout(this.state.user, this.state.notes)
   }
 
   validateUser(){
@@ -65,8 +71,7 @@ export default class CheckoutDevice extends Base {
             <label>Notes</label>
             <textarea
               className="form-control"
-              value=''
-              onChange={this.props.update.bind(null, 'notes')}/>
+              onBlur={this.setNotes.bind(this)}/>
           </div>
         </div>
         <div className="text-center">

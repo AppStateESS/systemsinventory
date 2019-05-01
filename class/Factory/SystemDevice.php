@@ -54,6 +54,27 @@ class SystemDevice extends \phpws2\ResourceFactory
         $device->setNotes($request->pullPatchString('notes'));
         self::saveResource($device);
     }
+    
+    public function checkout(\Canopy\Request $request) {
+        $timestamp = time();
+        $device = $request->pullPatchArray('device');
+        $user = $request->pullPatchArray('user');
+        $username = $user['username'];
+        $first_name = $user['first_name'];
+        $last_name = $user['last_name'];
+        $device_id = $device['id'];
+        $notes = $request->pullPatchString('checkout_notes');
+
+        $db = \phpws2\Database::getDB();
+        $query = "INSERT INTO systems_checkout (device_id, first_name, last_name, username, checkout_time, notes) "
+                . "VALUES('$device_id', '$first_name', '$last_name', '$username', '$timestamp', '$notes')";
+        $result = $db->query($query);
+        if (empty($result)) {
+            return 0; //should be exception
+        }
+        return array("success" => "1", "timestamp" => date("F j, Y, g:i a",
+                    $timestamp), "username" => $username);
+    }
 
     public function postDevice(\Canopy\Request $request)
     {

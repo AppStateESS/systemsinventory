@@ -165,6 +165,16 @@ EOF;
 + Add fields to pc for teriary monitor and secondary video card
 </pre>
 EOF;
+                
+            case version_compare($currentVersion, '1.6', '<'):
+                runDbMigration('update_1_6.sql', '1.6', '<');
+                $content[] = <<<EOF
+<pre>
+1.5.1
+-----
++ Add feature to checkout devices. systems_checkout table created
+</pre>
+EOF;
             }
     return TRUE;
 }

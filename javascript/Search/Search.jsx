@@ -239,10 +239,10 @@ export default class Search extends FormBase {
     })
   }
   
-  checkout(user) {
+  checkout(user, notes) {
     $.ajax({
       url: './systemsinventory/system/checkout',
-      data: { device: this.state.device, user: user },
+      data: { device: this.state.device, user: user, checkout_notes: notes },
       dataType: 'json',
       type: 'patch',
       success: function () {
