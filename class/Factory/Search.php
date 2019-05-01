@@ -45,6 +45,12 @@ class Search extends \phpws2\ResourceFactory
             $db->joinResources($sd, $loctbl,
                     new Conditional($db, $sd->getField('location_id'),
                     $loctbl->getField('id'), '='));
+        }else if($this->status_type == 5){
+            $checkout_tbl = $db->addTable('systems_checkout');
+            $checkout_tbl->addField('id', 'checkout_id');
+            $db->joinResources($sd, $checkout_tbl, 
+                    new Conditional($db, $sd->getField('id'), $checkout_tbl->getField('device_id'), '='));
+            $checkout_tbl->addFieldConditional('checkin_time', null);
         }
         
         $this->createSearchConditional($db, $sd, $request);
@@ -154,6 +160,8 @@ class Search extends \phpws2\ResourceFactory
             
             case 4:
                 $tbl->addFieldConditional('status', 4);
+            case 5:
+                $tbl->addFieldConditional('status', 5);
 
             default:
             // status_typeof 0 means show all

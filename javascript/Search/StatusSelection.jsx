@@ -28,6 +28,9 @@ export default class StatusSelection extends Component {
         <button
           className={this.props.active === 4 ? 'btn btn-primary' : 'btn btn-default'}
           onClick={this.props.update.bind(null, 'statusType', 4)}>Lost/Stolen</button>
+        <button
+          className={this.props.active === 5 ? 'btn btn-primary' : 'btn btn-default'}
+          onClick={this.props.update.bind(null, 'statusType', 5)}>Checkout</button>
       </div>
     )
   }

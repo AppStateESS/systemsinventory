@@ -77,6 +77,7 @@ export default class DeviceRow extends Component {
     } = this.props.value
     let assign
     let checkout
+    let checkin
     let editAssign
     let surplus
     let stolen
@@ -92,7 +93,7 @@ export default class DeviceRow extends Component {
         deleteDevice = (
             <li>
             <a
-                onClick={this.props.showOverlay.bind(null, this.props.value.id, 'delete')}
+                onClick={this.props.showOverlay.bind(null, this.props.value, 'delete')}
                 style={red}
                 className="pointer dropdown-item">
                 <i className="far fa-trash-alt"></i>&nbsp;Delete</a>
@@ -103,61 +104,68 @@ export default class DeviceRow extends Component {
     if (status === 0) {
       inventory = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'inventory')}
           className="pointer dropdown-item">
           <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
         </li>
       surplus = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'surplus')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'surplus')}
           className="pointer dropdown-item">
           <i className="fa fa-truck"></i>&nbsp;Surplus</a>
       </li>
       assign = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'assign')}
           className="pointer dropdown-item">
           <i className="fa fa-user"></i>&nbsp;Assign</a>
       </li>
       checkout = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'checkout')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'checkout')}
           className="pointer dropdown-item">
-          <i className="fa fa-user"></i>&nbsp;Checkout</a>
+          <i className="fas fa-shopping-cart"></i>&nbsp;Checkout</a>
       </li>
       stolen = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'stolen')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'stolen')}
           className="pointer dropdown-item">
           <i className="far fa-thumbs-down"></i>&nbsp;Lost/Stolen</a>
       </li>
     } else if (status === 1 || status === 2) {
         inventory = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'inventory')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'inventory')}
           className="pointer dropdown-item">
           <i className="fa fa-check"></i>&nbsp;Inventory Device</a>
         </li>
         editAssign = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'assign')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'assign')}
           className="pointer dropdown-item">
           <i className="fas fa-pencil-alt"></i>&nbsp;Edit assignment</a>
         </li>
         assign = <li>
             <a
-            onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unassign')}
+            onClick={this.props.showOverlay.bind(null, this.props.value, 'unassign')}
             className="pointer dropdown-item">
             <i className="fas fa-recycle"></i>&nbsp;Unassign</a>
         </li>
     } else if (status === 3) {
       unSurplus = <li>
         <a
-          onClick={this.props.showOverlay.bind(null, this.props.value.id, 'unsurplus')}
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'unsurplus')}
           className="pointer dropdown-item">
           <i className="fa fa-truck"></i>&nbsp;Return to service</a>
       </li>
         
+    } else if (status === 5) {
+        checkin = <li>
+        <a
+          onClick={this.props.showOverlay.bind(null, this.props.value, 'checkin')}
+          className="pointer dropdown-item">
+          <i className="fas fa-arrow-circle-left"></i>&nbsp;Checkin</a>
+      </li>
     }
     
     const editButton = (
@@ -173,7 +181,7 @@ export default class DeviceRow extends Component {
         <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
           <li>
             <a
-              onClick={this.props.showOverlay.bind(null, this.props.value.id, 'edit')}
+              onClick={this.props.showOverlay.bind(null, this.props.value, 'edit')}
               className="pointer dropdown-item">
               <i className="fa fa-cogs"></i>&nbsp;Edit device</a>
           </li>
@@ -181,6 +189,7 @@ export default class DeviceRow extends Component {
           {editAssign}
           {assign}
           {checkout}
+          {checkin}
           {surplus}
           {unSurplus}
           {stolen}

@@ -10,6 +10,7 @@ import DeviceForm from '../Shared/DeviceForm.jsx'
 import modalCss from './ModalCss.js'
 import AssignForm from '../AssignForms/AssignForm.jsx'
 import CheckoutDevice from './CheckoutDevice.jsx'
+import CheckinDevice from './CheckinDevice.jsx'
 import DeleteDevice from './DeleteDevice.jsx'
 import UnassignDevice from './UnassignDevice.jsx'
 import ViewDevice from '../View/ViewDevice.jsx'
@@ -43,6 +44,7 @@ export default class Search extends FormBase {
 
       showOverlay: false,
       formType: null,
+      checkout_id: null,
       total: 0,
       shown: 0,
       more: false,
@@ -59,6 +61,7 @@ export default class Search extends FormBase {
     this.delete = this.delete.bind(this)
     this.assign = this.assign.bind(this)
     this.checkout = this.checkout.bind(this)
+    this.checkin = this.checkin.bind(this)
     this.surplus = this.surplus.bind(this)
     this.download = this.download.bind(this)
     this.unassign = this.unassign.bind(this)
@@ -86,9 +89,9 @@ export default class Search extends FormBase {
     this.load()
   }
 
-  showOverlay(id, formType) {
-    this.setState({formType: formType, showOverlay: true})
-    this.loadDevice(id)
+  showOverlay(data, formType) {
+    this.setState({formType: formType, showOverlay: true, checkout_id: data.checkout_id})
+    this.loadDevice(data.id)
     
   }
 
@@ -243,6 +246,20 @@ export default class Search extends FormBase {
     $.ajax({
       url: './systemsinventory/system/checkout',
       data: { device: this.state.device, user: user, checkout_notes: notes },
+      dataType: 'json',
+      type: 'patch',
+      success: function () {
+        this.closeOverlay()
+        this.load()
+      }.bind(this),
+      error: function () {}.bind(this)
+    })
+  }
+  
+  checkin() {
+    $.ajax({
+      url: './systemsinventory/system/checkin',
+      data: { device_id: this.state.device.id, checkout_id: this.state.checkout_id},
       dataType: 'json',
       type: 'patch',
       success: function () {
@@ -444,6 +461,14 @@ export default class Search extends FormBase {
             device={this.state.device}
             options={jsonFilters}
             errors={this.errors}/>
+          break
+          
+        case 'checkin':
+          overlayTitle = `Checkin device ${this.state.device.physical_id}`
+          formType = <CheckinDevice
+            update={this.updateDeviceValue}
+            checkin={this.checkin}
+            device={this.state.device}/>
           break
 
         case 'unassign':

@@ -70,10 +70,35 @@ class SystemDevice extends \phpws2\ResourceFactory
                 . "VALUES('$device_id', '$first_name', '$last_name', '$username', '$timestamp', '$notes')";
         $result = $db->query($query);
         if (empty($result)) {
-            return 0; //should be exception
+            return array("success" => "0", "message" => "Failed to insert into the checkout table: $device_id");
+        }
+        $query = "UPDATE systems_device set status=5 where id=$device_id";
+        $result = $db->query($query);
+        if (empty($result)){
+            return array("success" => "0", "message" => "Failed to update status of device: $device_id");
         }
         return array("success" => "1", "timestamp" => date("F j, Y, g:i a",
                     $timestamp), "username" => $username);
+    }
+    
+    public function checkin(\Canopy\Request $request) {
+        $timestamp = time();
+        $device_id = $request->pullPatchInteger('device_id');
+        $checkout_id = $request->pullPatchInteger('checkout_id');
+        
+        $db = \phpws2\Database::getDB();
+        $query = "update systems_checkout set checkin_time=$timestamp where id=$checkout_id";
+        $result = $db->query($query);
+        if (empty($result)) {
+            return array("success" => "0", "message" => "Failed to update the device checkin time: $device_id");
+        }
+        $query = "update systems_device set status=0 where id=$device_id";
+        $result = $db->query($query);
+        if (empty($result)) {
+            return array("success" => "0", "message" => "Failed to update the device status: $device_id");
+        }
+        return array("success" => "1", "timestamp" => date("F j, Y, g:i a",
+                    $timestamp));
     }
 
     public function postDevice(\Canopy\Request $request)
