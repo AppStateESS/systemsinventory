@@ -47,6 +47,7 @@ export default class Shared extends Base {
     ]
     let buttonClass
     let purchaseDate = new Date(this.props.device.purchase_date)
+    
     let deviceButtons = deviceList.map((value, key) => {
       buttonClass = "btn btn-default"
       if (this.props.device.device_type_id == value.value) {

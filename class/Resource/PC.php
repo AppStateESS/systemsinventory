@@ -85,12 +85,16 @@ class PC extends \phpws2\Resource
 
     public function setSecondaryMonitor($secondary_monitor)
     {
-        $this->secondary_monitor->set($secondary_monitor);
+        if($secondary_monitor){
+            $this->secondary_monitor->set($secondary_monitor);
+        }
     }
     
     public function setTertiaryMonitor($tertiary_monitor)
     {
-        $this->tertiary_monitor->set($tertiary_monitor);
+        if($tertiary_monitor){
+            $this->tertiary_monitor->set($tertiary_monitor);
+        }
     }
 
     public function setVideoCard($video_card)

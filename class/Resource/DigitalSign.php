@@ -48,7 +48,9 @@ class DigitalSign extends \phpws2\Resource
     }
 
     public function setContentCreator($creator){
-        $this->content_creator = $creator;
+        if($creator){
+            $this->content_creator = $creator;
+        }
     }
 }
 

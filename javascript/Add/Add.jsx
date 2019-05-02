@@ -12,7 +12,7 @@ export default class Add extends FormBase {
       device: {
         id: 0,
         device_type_id: 1,
-        purchase_date: new Date(),
+        purchase_date: (new Date()).toDateString(),
         status: 0
       }
     }

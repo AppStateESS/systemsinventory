@@ -44,7 +44,9 @@ class IPAD extends \phpws2\Resource
 
     public function setAppleID($apple_id)
     {
-        $this->apple_id->set($apple_id);
+        if($apple_id){
+            $this->apple_id->set($apple_id);
+        }
     }
 
     public function setProtectiveCase($case)

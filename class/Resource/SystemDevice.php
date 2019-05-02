@@ -88,7 +88,7 @@ class SystemDevice extends \phpws2\Resource
         $this->username->allowNull(true);
         $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
         $this->phone->allowNull(true);
-        $this->purchase_date = new \phpws2\Variable\DateVar(null, 'purchase_date');
+        $this->purchase_date = new \phpws2\Variable\IntegerVar(null, 'purchase_date');
         $this->purchase_date->allowNull(true);
         $this->profile = new \phpws2\Variable\BooleanVar(false, 'profile');
         $this->profile_name = new \phpws2\Variable\TextOnly(null, 'profile_name');
