@@ -234,7 +234,7 @@ export default class DeviceRow extends Component {
     }
     return (
       <tr
-        onClick={this.props.showOverlay.bind(null, this.props.value.id, 'view')}
+        onClick={this.props.showOverlay.bind(null, this.props.value, 'view')}
         className={rowClass}>
         {
           row.map(function (value, key) {

@@ -92,7 +92,6 @@ export default class Search extends FormBase {
   showOverlay(data, formType) {
     this.setState({formType: formType, showOverlay: true, checkout_id: data.checkout_id})
     this.loadDevice(data.id)
-    
   }
 
   saveStolen() {
