@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import InputField from '../FormMixin/InputField.jsx'
 import SelectFilter from '../FormMixin/SelectFilter.jsx'
 import Device from '../Mixin/Device.js'
-import UserSearch from '../Search/UserSearch.jsx'
+import UserSearch from '../Mixin/UserSearch.jsx'
 
 export default class Base extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ export default class Base extends Component {
       value={device[varname] ? device[varname] : inputvalue}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
-      required={required ? required : Device.isRequired(device, varname)}
+      required={Device.isRequired(device, varname)}
       label={label}
       change={update.bind(null, varname)}/>)
   }
@@ -71,7 +71,7 @@ export default class Base extends Component {
       value={device[varname] ? device[varname] : inputvalue}
       placeholder={placeholder}
       errorMessage={this.errorMessage(varname, label)}
-      required={required ? required : Device.isRequired(device, varname)}
+      required={Device.isRequired(device, varname)}
       setName={this.updateName}
       label={label}/>)
   }

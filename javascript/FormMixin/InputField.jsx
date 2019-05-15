@@ -77,8 +77,8 @@ inputClass = 'form-control error-highlight'
 inputClass = 'form-control'
         }
 let required = this.props.required
-        ? <RequiredIcon/>
-        : null
+        ? <span>&nbsp;<i className="fa fa-asterisk text-danger"></i></span> 
+       : null
 
         let input = (<input
     id={this.props.iid}

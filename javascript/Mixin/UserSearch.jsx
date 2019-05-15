@@ -109,7 +109,7 @@ export default class UserSearch extends Component {
       className: inputClass
     };
 
-    let required = this.props.required ? <RequiredIcon/> : null
+    let required = this.props.required ? <span>&nbsp;<i className="fa fa-asterisk text-danger"></i></span> : null
     
     return (
       <div className="form-group">

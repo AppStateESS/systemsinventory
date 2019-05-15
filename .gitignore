@@ -1,5 +1,6 @@
 config/react.php
 config/defines.php
+assests.json
 \#*
 *~
 *.log
