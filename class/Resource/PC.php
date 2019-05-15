@@ -159,7 +159,9 @@ class PC extends \phpws2\Resource
 
     public function setIsServer($server)
     {
-        $this->is_server->set($server);
+        if(!is_null($server)){
+            $this->is_server->set($server);
+        }
     }
 
 }
