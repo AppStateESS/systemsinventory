@@ -80,7 +80,9 @@ class PC extends \phpws2\Resource
 
     public function setPrimaryMonitor($primary_monitor)
     {
-        $this->primary_monitor->set($primary_monitor);
+        if($primary_monitor){
+            $this->primary_monitor->set($primary_monitor);
+        }
     }
 
     public function setSecondaryMonitor($secondary_monitor)

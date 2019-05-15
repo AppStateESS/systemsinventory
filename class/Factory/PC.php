@@ -9,7 +9,7 @@ class PC extends SystemDevice
 
     public function postNewPC(\Canopy\Request $request, Resource $pc)
     {
-        $pc->setPrimaryMonitor($request->pullPostString('primary_monitor'));
+        $pc->setPrimaryMonitor($request->pullPostString('primary_monitor', true));
         $pc->setSecondaryMonitor($request->pullPostString('secondary_monitor', true));
         $pc->setTertiaryMonitor($request->pullPostString('tertiary_monitor', true));
         $pc->setVideoCard(filter_input(INPUT_POST, 'video_card',

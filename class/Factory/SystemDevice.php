@@ -499,6 +499,7 @@ class SystemDevice extends \phpws2\ResourceFactory
     public static function searchUserByUsername($username)
     {
         include_once(PHPWS_SOURCE_DIR . "mod/systemsinventory/config/defines.php");
+        $username = strtolower($username);
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL, FACULTY_API_URL . "?username=$username");
@@ -507,7 +508,7 @@ class SystemDevice extends \phpws2\ResourceFactory
         curl_setopt($curl, CURLOPT_URL, STUDENT_API_URL . "?username=$username");
         $student_result = curl_exec($curl);
         $student_result = json_decode($student_result, true);
-        $result = NULL;
+        $result = '';
         if (!empty($faculty_result))
             $result = $faculty_result;
         if (!empty($student_result)) {
