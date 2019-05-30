@@ -133,30 +133,4 @@ class Search extends \phpws2\Http\Controller
         return parent::getJsonView(array('restricted' => $restricted, 'listing' => $result, 'total' => $total, 'shown' => $total_shown, 'more' => $more),
                         $request);
     }
-
-    /**
-     * Handle the submit from the search form.
-     * 
-     * @param \Request $request
-     * @return \Response
-     */
-    public function post(\Canopy\Request $request)
-    {
-        $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/sys_pager.js';
-        $source_http = PHPWS_SOURCE_HTTP;
-        \Layout::addJSHeader("<script type='text/javascript'>var source_http = '$source_http';</script>");
-        \Layout::addLink("<script type='text/javascript' src='$script'></script>");
-
-        $factory = new Factory;
-        $search_vars = $request->getVars();
-        $_SESSION['system_search_vars'] = $search_vars['vars'];
-        \phpws2\Pager::prepare();
-        $template = new \phpws2\Template;
-        $template->setModuleTemplate('systemsinventory', 'search_results.html');
-
-        $view = new \phpws2\View\HtmlView($template->get());
-        $response = new \Canopy\Response($view);
-        return $response;
-    }
-
 }
