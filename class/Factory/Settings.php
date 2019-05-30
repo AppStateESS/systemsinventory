@@ -28,9 +28,12 @@ class Settings extends \phpws2\ResourceFactory
         }
         $vars['departments'] = $dep_options;
         $users = Settings::getPHPWSUsers();
+        
         $user_options = '';
-        foreach ($users as $user) {
-            $user_options .= '<option value="' . $user['id'] . '">' . $user['username'] . '</option>';
+        if($users){
+            foreach ($users as $user) {
+                $user_options .= '<option value="' . $user['id'] . '">' . $user['username'] . '</option>';
+            }
         }
         $vars['users'] = $user_options;
 
@@ -56,7 +59,7 @@ class Settings extends \phpws2\ResourceFactory
         }
         $vars['locations'] = $loc_options;
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_loc.js';
-        \Layout::addLink("<script type='text/javascript' src='$script'></script>");
+        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
         $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-location-modal"><i class="fa fa-plus">&nbsp;</i>Add Location</a>';
         \phpws2\Pager::prepare();
         $template = new \phpws2\Template($vars);
@@ -101,7 +104,7 @@ class Settings extends \phpws2\ResourceFactory
         }
         $vars['departments'] = $dep_options;
         $script = PHPWS_SOURCE_HTTP . 'mod/systemsinventory/javascript/edit_dept.js';
-        \Layout::addLink("<script type='text/javascript' src='$script'></script>");
+        \Layout::addJSHeader("<script type='text/javascript' src='$script'></script>");
         $vars['add'] = '<a href="#" class="btn btn-md btn-success" data-toggle="modal" data-target="#edit-department-modal"><i class="fa fa-plus">&nbsp;</i>Add Department</a>';
         \phpws2\Pager::prepare();
         $template = new \phpws2\Template;
@@ -306,8 +309,9 @@ class Settings extends \phpws2\ResourceFactory
         $tbl->addField('id');
         $tbl->addField('username');
         $tbl->addField('display_name');
-        $tbl->addFieldConditional('deity', 0, '=');
+        //$tbl->addFieldConditional('deity', 0, '=');
         $result = $db->select();
+        
         if (!empty($result))
             return $result;
         else
