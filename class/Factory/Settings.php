@@ -309,7 +309,7 @@ class Settings extends \phpws2\ResourceFactory
         $tbl->addField('id');
         $tbl->addField('username');
         $tbl->addField('display_name');
-        //$tbl->addFieldConditional('deity', 0, '=');
+        $tbl->addFieldConditional('deity', 0, '=');
         $result = $db->select();
         
         if (!empty($result))
